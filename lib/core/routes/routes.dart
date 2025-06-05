@@ -6,7 +6,7 @@ import 'package:groc_shopy/helper/extension/base_extension.dart';
 import 'package:groc_shopy/presentation/screens/main/main_screen.dart';
 import 'package:groc_shopy/presentation/screens/profile/profile_screen.dart';
 import 'package:groc_shopy/presentation/screens/auth/admin_signup_screen%20.dart';
-import 'package:groc_shopy/presentation/screens/auth/auth_screen.dart';
+import 'package:groc_shopy/presentation/screens/auth/login_screen.dart';
 import 'package:groc_shopy/presentation/screens/auth/forgot_password_screen.dart';
 import 'package:groc_shopy/presentation/screens/auth/password_reset_confirm_screen.dart';
 import 'package:groc_shopy/presentation/screens/auth/set_new_password_screen.dart';
@@ -83,9 +83,9 @@ class AppRouter {
 
       ///======================= Auth Route =======================
       GoRoute(
-        name: RoutePath.auth,
-        path: RoutePath.auth.addBasePath,
-        builder: (context, state) => AuthScreen(),
+        name: RoutePath.login,
+        path: RoutePath.login.addBasePath,
+        builder: (context, state) => LoginScreen(),
       ),
 
       ///======================= Sign Up Route =======================

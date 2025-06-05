@@ -7,6 +7,7 @@ class AppColors {
   static const black70opacityB2000000 = Color(0xB2000000); // 70% opacity black
   static const black90opacityE5000000 = Color(0xE5000000); // 90% opacity black
   static const yellowFFD673 = Color(0xFFFFD673);
+  static const primary = Color(0xFF77E9D6);
   static const mediumGreyText989898 = Color(0xFF989898);
   static const darkGreyText545454 = Color(0xFF545454);
   static const darkGreyD9D9D9 = Color(0xFFD9D9D9);

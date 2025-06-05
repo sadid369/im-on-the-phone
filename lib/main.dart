@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
               debugShowCheckedModeBanner: false,
               title: AppStrings.appName,
               theme: ThemeData(
-                scaffoldBackgroundColor: AppColors.backgroundColor,
+                scaffoldBackgroundColor: AppColors.whiteFFFFFF,
                 useMaterial3: true,
               ),
               translations: Language(), // your translations class

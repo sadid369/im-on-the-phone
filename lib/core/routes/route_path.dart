@@ -20,7 +20,7 @@ class RoutePath {
   static const String verification = 'verification';
   static const String resetPasswordSuccess = 'resetPasswordSuccess';
   static const String adminSignUp = 'adminSignUp';
-  static const String auth = 'auth';
+  // static const String auth = 'auth';
 
   //==================================== Worker screens =====================================
 

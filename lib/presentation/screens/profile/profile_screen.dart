@@ -312,7 +312,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                     onTap: () {
                       controller.changeIndex(0); // Reset to home
 
-                      context.pushReplacement(RoutePath.auth.addBasePath);
+                      context.pushReplacement(RoutePath.login.addBasePath);
                     },
                     child: Icon(
                       Icons.logout,

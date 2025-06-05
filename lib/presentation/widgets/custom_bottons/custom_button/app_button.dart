@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:groc_shopy/utils/app_colors/app_colors.dart';
 
 class AppButton extends StatelessWidget {
   final String text;
@@ -17,7 +18,7 @@ class AppButton extends StatelessWidget {
     this.onPressed,
     this.width = double.infinity,
     this.height = 48,
-    this.backgroundColor = const Color(0xFFFFD673), // default yellow color
+    this.backgroundColor = AppColors.primary, // default yellow color
     this.disabledBackgroundColor,
     this.borderRadius = 8,
     required this.textStyle,
