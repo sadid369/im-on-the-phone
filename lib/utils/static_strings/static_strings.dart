@@ -1,6 +1,6 @@
 class AppStrings {
   ///====================== Initial ========================
-  static const String appName = "GastRonomIQ";
+  static const String appName = "I'm on the phone";
   static const String appTagLine = "Track items, \nCalculate, Together";
   static const String getStarted = "Get Started";
   static const String welcome = "Welcome";
