@@ -423,4 +423,58 @@ class AppStyle {
     fontWeight: FontWeight.w400,
     height: 1.29,
   );
+  static final kohSantepheap30w700C000000 = GoogleFonts.kohSantepheap(
+    color: const Color(0xFF000000),
+    fontSize: 30.sp,
+    fontWeight: FontWeight.w700,
+    height: 1.67,
+  );
+  static final roboto14w500C7CE3D7 = GoogleFonts.roboto(
+    color: const Color(0xFF7CE3D7),
+    fontSize: 14.sp,
+    fontWeight: FontWeight.w500,
+    height: 1.67,
+  );
+  static final inter14w500C7CE3D7 = GoogleFonts.inter(
+    color: const Color(0xFF7CE3D7),
+    fontSize: 14.sp,
+    fontWeight: FontWeight.w500,
+    height: 1.67,
+  );
+  static final robotoMono32w500CFFFFFF = GoogleFonts.robotoMono(
+    color: const Color(0xFFFFFFFF),
+    fontSize: 32.sp,
+    fontWeight: FontWeight.w500,
+    height: 1.06,
+  );
+  static final kohSantepheap18w700C030303 = GoogleFonts.kohSantepheap(
+    color: const Color(0xFF030303),
+    fontSize: 18.sp,
+    fontWeight: FontWeight.w700,
+    height: 1.89,
+  );
+  static final roboto16w800CFFFFFF = GoogleFonts.roboto(
+    color: const Color(0xFFFFFFFF),
+    fontSize: 16.sp,
+    fontWeight: FontWeight.w800,
+    height: 2.12,
+  );
+  static final roboto32w600CFFFFFF = GoogleFonts.roboto(
+    color: const Color(0xFFFFFFFF),
+    fontSize: 32.sp,
+    fontWeight: FontWeight.w600,
+    height: 1.06,
+  );
+  static final roboto16w500C030303 = GoogleFonts.roboto(
+    color: const Color(0xFF030303),
+    fontSize: 16.sp,
+    fontWeight: FontWeight.w500,
+    height: 2.12,
+  );
+  static final roboto16w600CFFFFFF = GoogleFonts.roboto(
+    color: const Color(0xFFFFFFFF),
+    fontSize: 16.sp,
+    fontWeight: FontWeight.w600,
+    height: 2.12,
+  );
 }

@@ -50,26 +50,12 @@ class AdminSignUpScreenState extends State<AdminSignUpScreen> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Image.asset(
-                    Assets.icons.logo.path,
-                    height: 70.h,
-                    width: 70.w,
-                  ),
                   Gap(16.h),
                   Text(
-                    AppStrings.adminSignUp.tr, // <-- add .tr here
-                    style: AppStyle.kohSantepheap18w700CFFD673,
+                    AppStrings.signUp.tr, // <-- add .tr here
+                    style: AppStyle.kohSantepheap30w700C000000,
                   ),
-                  Gap(24.h),
-                  Container(
-                    height: 1.h,
-                    decoration: BoxDecoration(
-                      color: AppColors.black50opacity80000000,
-                      borderRadius: BorderRadius.circular(3),
-                    ),
-                  ),
-                  Gap(42.h),
-                  Gap(36.h),
+                  Gap(30.h),
                   CustomTextFormField(
                     controller: fullNameController,
                     labelText: AppStrings.fullName.tr, // <-- .tr
@@ -81,7 +67,7 @@ class AdminSignUpScreenState extends State<AdminSignUpScreen> {
                     style: AppStyle.roboto16w500C545454,
                     labelStyle: AppStyle.roboto14w500C000000,
                     enabledBorderColor: AppColors.black30opacity4D000000,
-                    focusedBorderColor: AppColors.yellowFFD673,
+                    focusedBorderColor: AppColors.primary,
                     fillColor: Colors.white,
                     contentPadding: EdgeInsets.fromLTRB(16.w, 20.h, 16.w, 14.h),
                   ),
@@ -96,7 +82,7 @@ class AdminSignUpScreenState extends State<AdminSignUpScreen> {
                     style: AppStyle.roboto16w500C545454,
                     labelStyle: AppStyle.roboto14w500C000000,
                     enabledBorderColor: AppColors.black30opacity4D000000,
-                    focusedBorderColor: AppColors.yellowFFD673,
+                    focusedBorderColor: AppColors.primary,
                     fillColor: Colors.white,
                     contentPadding: EdgeInsets.fromLTRB(16.w, 20.h, 16.w, 14.h),
                   ),
@@ -118,7 +104,7 @@ class AdminSignUpScreenState extends State<AdminSignUpScreen> {
                     style: AppStyle.roboto16w500C545454,
                     labelStyle: AppStyle.roboto14w500C000000,
                     enabledBorderColor: AppColors.black30opacity4D000000,
-                    focusedBorderColor: AppColors.yellowFFD673,
+                    focusedBorderColor: AppColors.primary,
                     fillColor: Colors.white,
                     contentPadding: EdgeInsets.fromLTRB(16.w, 20.h, 16.w, 14.h),
                   ),
@@ -140,7 +126,7 @@ class AdminSignUpScreenState extends State<AdminSignUpScreen> {
                     style: AppStyle.roboto16w500C545454,
                     labelStyle: AppStyle.roboto14w500C000000,
                     enabledBorderColor: AppColors.black30opacity4D000000,
-                    focusedBorderColor: AppColors.yellowFFD673,
+                    focusedBorderColor: AppColors.primary,
                     fillColor: Colors.white,
                     contentPadding: EdgeInsets.fromLTRB(16.w, 20.h, 16.w, 14.h),
                   ),
@@ -153,7 +139,7 @@ class AdminSignUpScreenState extends State<AdminSignUpScreen> {
                             rememberMe = val ?? false;
                           });
                         },
-                        activeColor: AppColors.yellowFFD673,
+                        activeColor: AppColors.primary,
                       ),
                       Text(
                         AppStrings.rememberMe.tr, // <-- .tr
@@ -172,7 +158,7 @@ class AdminSignUpScreenState extends State<AdminSignUpScreen> {
                     },
                     width: double.infinity,
                     height: 48.h,
-                    backgroundColor: AppColors.yellowFFD673,
+                    backgroundColor: AppColors.primary,
                     borderRadius: 8,
                     textStyle: AppStyle.inter16w700CFFFFFF,
                   ),
@@ -195,7 +181,7 @@ class AdminSignUpScreenState extends State<AdminSignUpScreen> {
                               padding: EdgeInsets.only(bottom: 2.h),
                               child: Text(
                                 AppStrings.signIn.tr, // <-- .tr
-                                style: AppStyle.roboto14w500CFFD673,
+                                style: AppStyle.inter14w500C7CE3D7,
                               ),
                             ),
                             Positioned(
@@ -204,7 +190,7 @@ class AdminSignUpScreenState extends State<AdminSignUpScreen> {
                               right: 0,
                               child: Container(
                                 height: 2.h,
-                                color: AppColors.yellowFFD673,
+                                color: AppColors.primary,
                               ),
                             ),
                           ],

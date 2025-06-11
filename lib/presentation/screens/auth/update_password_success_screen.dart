@@ -4,6 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:get/get.dart'; // <-- Add this for .tr support
 import 'package:groc_shopy/helper/extension/base_extension.dart';
+import 'package:groc_shopy/utils/app_colors/app_colors.dart';
 import 'package:groc_shopy/utils/static_strings/static_strings.dart';
 import 'package:groc_shopy/utils/text_style/text_style.dart';
 import '../../../core/routes/route_path.dart';
@@ -27,15 +28,14 @@ class UpdatePasswordSuccessScreen extends StatelessWidget {
                 width: 98.w,
                 height: 98.h,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFF1F5FF),
+                  color: const Color(0xFFE5FFFC),
                   shape: BoxShape.circle,
-                  border:
-                      Border.all(color: const Color(0xFFFDD472), width: 2.w),
+                  border: Border.all(color: AppColors.primary, width: 2.w),
                 ),
                 child: Center(
                   child: Icon(
                     Icons.check,
-                    color: const Color(0xFFFDD472),
+                    color: AppColors.primary,
                     size: 40.w,
                   ),
                 ),
@@ -70,7 +70,7 @@ class UpdatePasswordSuccessScreen extends StatelessWidget {
                       },
                       width: 268.w,
                       height: 44.h,
-                      backgroundColor: const Color(0xFFF7C95C),
+                      backgroundColor: AppColors.primary,
                       borderRadius: 15,
                       textStyle: AppStyle.inter16w700CFFFFFF,
                     )

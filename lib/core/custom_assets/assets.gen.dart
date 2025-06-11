@@ -82,6 +82,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/home.svg
   SvgGenImage get home => const SvgGenImage('assets/icons/home.svg');
 
+  /// File path: assets/icons/icon.png
+  AssetGenImage get icon => const AssetGenImage('assets/icons/icon.png');
+
   /// File path: assets/icons/language.png
   AssetGenImage get language =>
       const AssetGenImage('assets/icons/language.png');
@@ -159,6 +162,7 @@ class $AssetsIconsGen {
     google,
     graph,
     home,
+    icon,
     language,
     logo,
     logout,
@@ -182,6 +186,10 @@ class $AssetsIconsGen {
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/bannerImage1.png
+  AssetGenImage get bannerImage1 =>
+      const AssetGenImage('assets/images/bannerImage1.png');
+
   /// File path: assets/images/brocoli.jpg
   AssetGenImage get brocoli => const AssetGenImage('assets/images/brocoli.jpg');
 
@@ -204,6 +212,7 @@ class $AssetsImagesGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [
+    bannerImage1,
     brocoli,
     dairy,
     invoice,
