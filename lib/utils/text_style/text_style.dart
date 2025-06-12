@@ -477,4 +477,16 @@ class AppStyle {
     fontWeight: FontWeight.w600,
     height: 2.12,
   );
+  static final robotoMono10w500C030303 = GoogleFonts.robotoMono(
+    color: const Color(0xFF030303),
+    fontSize: 10.sp,
+    fontWeight: FontWeight.w500,
+    // height: 2.60,
+  );
+  static final robotoMono12w500C030303 = GoogleFonts.robotoMono(
+    color: const Color(0xFF030303),
+    fontSize: 12.sp,
+    fontWeight: FontWeight.w500,
+    // height: 2.17,
+  );
 }

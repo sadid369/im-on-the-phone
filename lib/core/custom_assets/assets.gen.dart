@@ -102,6 +102,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/meat.svg
   SvgGenImage get meat => const SvgGenImage('assets/icons/meat.svg');
 
+  /// File path: assets/icons/message.svg
+  SvgGenImage get message => const SvgGenImage('assets/icons/message.svg');
+
   /// File path: assets/icons/milk.png
   AssetGenImage get milk => const AssetGenImage('assets/icons/milk.png');
 
@@ -120,11 +123,20 @@ class $AssetsIconsGen {
   /// File path: assets/icons/profile.svg
   SvgGenImage get profile => const SvgGenImage('assets/icons/profile.svg');
 
+  /// File path: assets/icons/remind_me.svg
+  SvgGenImage get remindMe => const SvgGenImage('assets/icons/remind_me.svg');
+
   /// File path: assets/icons/sales.png
   AssetGenImage get sales => const AssetGenImage('assets/icons/sales.png');
 
   /// File path: assets/icons/scan.svg
   SvgGenImage get scan => const SvgGenImage('assets/icons/scan.svg');
+
+  /// File path: assets/icons/search.svg
+  SvgGenImage get search => const SvgGenImage('assets/icons/search.svg');
+
+  /// File path: assets/icons/settings.svg
+  SvgGenImage get settings => const SvgGenImage('assets/icons/settings.svg');
 
   /// File path: assets/icons/shop.png
   AssetGenImage get shop => const AssetGenImage('assets/icons/shop.png');
@@ -168,14 +180,18 @@ class $AssetsIconsGen {
     logout,
     mastercard,
     meat,
+    message,
     milk,
     packaging,
     password,
     plates,
     plus,
     profile,
+    remindMe,
     sales,
     scan,
+    search,
+    settings,
     shop,
     star,
     transaction,

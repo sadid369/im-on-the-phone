@@ -1,38 +1,85 @@
+// import 'package:flutter/material.dart';
+// import 'package:go_router/go_router.dart';
+
+// import '../../widgets/custom_navbar/custom_navbar.dart';
+
+// class MainScreenWithBottomNav extends StatelessWidget {
+//   final StatefulNavigationShell navigationShell;
+
+//   const MainScreenWithBottomNav({
+//     super.key,
+//     required this.navigationShell,
+//   });
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: navigationShell,
+//       bottomNavigationBar: CustomBottomNavBar(
+//         selectedIndex: navigationShell.currentIndex,
+//         onTap: (index) => _onTabTapped(context, index),
+//         // Custom icons and labels for your 3-tab navigation
+//         icons: const [
+//           'assets/icons/home.svg',
+//           'assets/icons/search.svg',
+//           'assets/icons/settings.svg',
+//         ],
+//         labels: const [
+//           'Home',
+//           'Search',
+//           'Settings',
+//         ],
+//       ),
+//     );
+//   }
+
+//   void _onTabTapped(BuildContext context, int index) {
+//     navigationShell.goBranch(
+//       index,
+//       initialLocation: index == navigationShell.currentIndex,
+//     );
+//   }
+// }
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
+import 'package:go_router/go_router.dart';
 import '../../widgets/custom_navbar/custom_navbar.dart';
-import '../../widgets/custom_navbar/navbar_controller.dart';
-import '../home/home_screen.dart';
-import '../profile/profile_screen.dart';
-import '../scan/scan_screen.dart';
-import '../transaction_history/transaction_history_screen.dart';
 
-// Your CustomBottomNavBar widget
+class MainScreenWithBottomNav extends StatelessWidget {
+  final StatefulNavigationShell navigationShell;
 
-class MainScreen extends StatelessWidget {
-  final BottomNavController controller = Get.put(BottomNavController());
-
-  final List<Widget> pages = [
-    HomeScreen(),
-    ScanScreen(),
-    TransactionHistoryScreen(),
-    ProfileScreen(),
-  ];
-
-  MainScreen({super.key});
+  const MainScreenWithBottomNav({
+    super.key,
+    required this.navigationShell,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Obx(() => IndexedStack(
-            index: controller.selectedIndex.value,
-            children: pages,
-          )),
-      bottomNavigationBar: Obx(() => CustomBottomNavBar(
-            selectedIndex: controller.selectedIndex.value,
-            onTap: controller.changeIndex,
-          )),
+      body: navigationShell,
+      bottomNavigationBar: CustomBottomNavBar(
+        selectedIndex: navigationShell.currentIndex,
+        onTap: (index) => _onTabTapped(context, index),
+        // Custom icons and labels for your 3-tab navigation
+        icons: const [
+          'assets/icons/home.svg',
+          'assets/icons/search.svg',
+          'assets/icons/settings.svg',
+        ],
+        labels: const [
+          'Home',
+          'Search',
+          'Settings',
+        ],
+      ),
     );
+  }
+
+  void _onTabTapped(BuildContext context, int index) {
+    if (navigationShell.currentIndex != index) {
+      navigationShell.goBranch(
+        index,
+        initialLocation: index == navigationShell.currentIndex,
+      );
+    }
   }
 }

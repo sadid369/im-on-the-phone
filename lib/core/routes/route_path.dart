@@ -42,4 +42,7 @@ class RoutePath {
   static const String subscriptionPackages = 'subscriptionPackages';
   static const String reqService = 'reqService';
   static const String coupon = 'coupon';
+  static const String search = 'search';
+  static const String settings = 'settings';
+  static const String incomingCallScreen = 'incomingCallScreen';
 }
