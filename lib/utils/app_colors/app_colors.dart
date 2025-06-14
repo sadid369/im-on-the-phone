@@ -18,7 +18,7 @@ class AppColors {
   static const lightGreyTextB3B3B3 = Color(0xFFB3B3B3);
   static const whiteFFFFFF = Color(0xFFFFFFFF);
   static const borderE1E1E1 = Color(0xFFE1E1E1);
-  static const backgroundColor = Color(0xFFF5F0EC);
+  static const backgroundColor = Color(0xFFFCFCF7);
   static const subscriptionModalBackground = Color(0xFFF2F3F6);
   // Add other colors as needed
 }

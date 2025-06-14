@@ -489,4 +489,28 @@ class AppStyle {
     fontWeight: FontWeight.w500,
     // height: 2.17,
   );
+  static final kohSantepheap20w400C030303 = GoogleFonts.kohSantepheap(
+    color: const Color(0xFF030303),
+    fontSize: 20.sp,
+    fontWeight: FontWeight.w400,
+    height: 1.10,
+  );
+  static final roboto12w500CFFFFFF = GoogleFonts.roboto(
+    color: Colors.white,
+    fontSize: 12.sp,
+    fontWeight: FontWeight.w400,
+    height: 1.33,
+  );
+  static final inter13w400C000000 = GoogleFonts.inter(
+    color: Colors.black,
+    fontSize: 13.sp,
+    fontWeight: FontWeight.w400,
+    height: 2.62,
+  );
+  static final inter13w900CFFFFFF = GoogleFonts.inter(
+    color: Colors.white,
+    fontSize: 13.sp,
+    fontWeight: FontWeight.w900,
+    height: 2.62,
+  );
 }

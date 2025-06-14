@@ -39,6 +39,14 @@ class $AssetsIconsGen {
   /// File path: assets/icons/cart.svg
   SvgGenImage get cart => const SvgGenImage('assets/icons/cart.svg');
 
+  /// File path: assets/icons/choose_your_icon_color.svg
+  SvgGenImage get chooseYourIconColor =>
+      const SvgGenImage('assets/icons/choose_your_icon_color.svg');
+
+  /// File path: assets/icons/choose_your_language..svg
+  SvgGenImage get chooseYourLanguage =>
+      const SvgGenImage('assets/icons/choose_your_language..svg');
+
   /// File path: assets/icons/coin.png
   AssetGenImage get coin => const AssetGenImage('assets/icons/coin.png');
 
@@ -126,6 +134,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/remind_me.svg
   SvgGenImage get remindMe => const SvgGenImage('assets/icons/remind_me.svg');
 
+  /// File path: assets/icons/ringtone.svg
+  SvgGenImage get ringtone => const SvgGenImage('assets/icons/ringtone.svg');
+
   /// File path: assets/icons/sales.png
   AssetGenImage get sales => const AssetGenImage('assets/icons/sales.png');
 
@@ -144,6 +155,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/star.png
   AssetGenImage get star => const AssetGenImage('assets/icons/star.png');
 
+  /// File path: assets/icons/switch_app_theme.svg
+  SvgGenImage get switchAppTheme =>
+      const SvgGenImage('assets/icons/switch_app_theme.svg');
+
   /// File path: assets/icons/transaction.svg
   SvgGenImage get transaction =>
       const SvgGenImage('assets/icons/transaction.svg');
@@ -161,6 +176,8 @@ class $AssetsIconsGen {
     backWhite,
     bread,
     cart,
+    chooseYourIconColor,
+    chooseYourLanguage,
     coin,
     dairy,
     drinks,
@@ -188,12 +205,14 @@ class $AssetsIconsGen {
     plus,
     profile,
     remindMe,
+    ringtone,
     sales,
     scan,
     search,
     settings,
     shop,
     star,
+    switchAppTheme,
     transaction,
     vegetables,
   ];

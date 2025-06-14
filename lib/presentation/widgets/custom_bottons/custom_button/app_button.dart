@@ -11,19 +11,23 @@ class AppButton extends StatelessWidget {
   final double borderRadius;
   final TextStyle textStyle;
   final bool enabled;
+  final double? borderWidth;
+  final Color? borderColor;
 
-  const AppButton({
-    Key? key,
-    required this.text,
-    this.onPressed,
-    this.width = double.infinity,
-    this.height = 48,
-    this.backgroundColor = AppColors.primary, // default yellow color
-    this.disabledBackgroundColor,
-    this.borderRadius = 8,
-    required this.textStyle,
-    this.enabled = true,
-  }) : super(key: key);
+  const AppButton(
+      {Key? key,
+      required this.text,
+      this.onPressed,
+      this.width = double.infinity,
+      this.height = 48,
+      this.backgroundColor = AppColors.primary, // default yellow color
+      this.disabledBackgroundColor,
+      this.borderRadius = 8,
+      required this.textStyle,
+      this.enabled = true,
+      this.borderWidth,
+      this.borderColor})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +38,9 @@ class AppButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: isEnabled ? onPressed : null,
         style: ElevatedButton.styleFrom(
+          side: borderWidth == null || borderColor == null
+              ? null
+              : BorderSide(width: borderWidth!, color: borderColor!),
           backgroundColor: isEnabled
               ? backgroundColor
               : (disabledBackgroundColor ?? backgroundColor.withOpacity(0.4)),
