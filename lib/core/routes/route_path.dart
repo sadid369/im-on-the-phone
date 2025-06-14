@@ -45,4 +45,6 @@ class RoutePath {
   static const String search = 'search';
   static const String settings = 'settings';
   static const String incomingCallScreen = 'incomingCallScreen';
+  static const String callReceivedScreen = 'callReceivedScreen';
+  static const String newContactScreen = 'newContactScreen';
 }

@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:groc_shopy/helper/extension/base_extension.dart';
+import 'package:groc_shopy/presentation/screens/call_screens/call_received_screen.dart';
 import 'package:groc_shopy/presentation/screens/main/main_screen.dart';
+import 'package:groc_shopy/presentation/screens/new_contact_screen/new_contact_screen.dart';
 import 'package:groc_shopy/presentation/screens/profile/profile_screen.dart';
 import 'package:groc_shopy/presentation/screens/auth/admin_signup_screen%20.dart';
 import 'package:groc_shopy/presentation/screens/auth/login_screen.dart';
@@ -337,6 +339,16 @@ class AppRouter {
         builder: (context, state) => ReportScreen(),
       ),
       GoRoute(
+        name: RoutePath.callReceivedScreen,
+        path: RoutePath.callReceivedScreen.addBasePath,
+        builder: (context, state) => CallReceivedScreen(),
+      ),
+      GoRoute(
+        name: RoutePath.newContactScreen,
+        path: RoutePath.newContactScreen.addBasePath,
+        builder: (context, state) => NewContactScreen(),
+      ),
+      GoRoute(
         name: RoutePath.incomingCallScreen,
         path: RoutePath.incomingCallScreen.addBasePath,
         builder: (context, state) {
@@ -396,7 +408,7 @@ class AppRouter {
                 name: RoutePath.search, // Add this to your RoutePath class
                 path: RoutePath
                     .search.addBasePath, // Add this to your RoutePath class
-                builder: (context, state) => const SearchScreen(),
+                builder: (context, state) => SearchScreen(),
               ),
             ],
           ),
