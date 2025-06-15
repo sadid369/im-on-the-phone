@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:groc_shopy/core/routes/route_path.dart';
 import 'package:groc_shopy/helper/extension/base_extension.dart';
+import 'package:groc_shopy/utils/app_colors/app_colors.dart';
 
 class SearchScreen extends StatelessWidget {
   SearchScreen({Key? key}) : super(key: key);
@@ -89,9 +90,13 @@ class SearchScreen extends StatelessWidget {
                     margin: const EdgeInsets.symmetric(vertical: 8),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
+                      side: BorderSide(
+                        color: Colors.grey.withOpacity(0.2),
+                      ),
                     ),
+                    elevation: 0,
                     child: ListTile(
-                      tileColor: Colors.white,
+                      tileColor: AppColors.backgroundColor,
                       leading: CircleAvatar(
                         radius: 30,
                         backgroundColor: caller['color'],

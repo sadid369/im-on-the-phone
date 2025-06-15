@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:go_router/go_router.dart';
+import 'package:file_picker/file_picker.dart';
 
 import '../../widgets/custom_bottons/custom_button/app_button.dart';
 import '../../widgets/custom_text_form_field/custom_text_form.dart';
@@ -15,12 +13,21 @@ class _NewContactScreenState extends State<NewContactScreen> {
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
   final _messageController = TextEditingController();
+  final _phoneController = TextEditingController();
+  String? _selectedVoicePath;
+  String _voiceFileName = '';
+  bool _isPickingFile = false;
+
+  // Consistent border style for all text fields
+  final _borderRadius = BorderRadius.circular(12);
+  final _borderColor = Colors.grey.shade300;
 
   @override
   void dispose() {
     _firstNameController.dispose();
     _lastNameController.dispose();
     _messageController.dispose();
+    _phoneController.dispose();
     super.dispose();
   }
 
@@ -28,7 +35,37 @@ class _NewContactScreenState extends State<NewContactScreen> {
     // TODO: Implement save logic
     print('First: ${_firstNameController.text}, '
         'Last: ${_lastNameController.text}, '
-        'Msg: ${_messageController.text}');
+        'Phone: ${_phoneController.text}, '
+        'Msg: ${_messageController.text}, '
+        'Voice: $_selectedVoicePath');
+  }
+
+  Future<void> _pickVoiceFile() async {
+    if (_isPickingFile) return;
+    setState(() {
+      _isPickingFile = true; // Show the loading indicator
+    });
+
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.audio,
+        allowMultiple: false,
+      );
+
+      if (result != null) {
+        setState(() {
+          _selectedVoicePath = result.files.single.path;
+          _voiceFileName = result.files.single.name;
+        });
+      }
+    } catch (e) {
+      // Optionally handle error
+    } finally {
+      setState(() {
+        _isPickingFile =
+            false; // Hide the loading indicator once the process is complete
+      });
+    }
   }
 
   Widget _buildSectionTile({
@@ -36,26 +73,31 @@ class _NewContactScreenState extends State<NewContactScreen> {
     Widget? title,
     Widget? trailing,
     VoidCallback? onTap,
+    bool enabled = true,
   }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 6),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(color: Colors.grey.shade300, width: 1.2),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Row(
-          children: [
-            leading,
-            if (title != null) ...[
-              const SizedBox(width: 12),
-              Expanded(child: title),
+    return Opacity(
+      opacity: enabled ? 1.0 : 0.5,
+      child: InkWell(
+        borderRadius: _borderRadius,
+        onTap: enabled ? onTap : null,
+        child: Container(
+          margin: const EdgeInsets.symmetric(vertical: 6),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(color: _borderColor, width: 1.2),
+            borderRadius: _borderRadius,
+          ),
+          child: Row(
+            children: [
+              leading,
+              if (title != null) ...[
+                const SizedBox(width: 12),
+                Expanded(child: title),
+              ],
+              if (trailing != null) trailing,
             ],
-            if (trailing != null) trailing,
-          ],
+          ),
         ),
       ),
     );
@@ -66,37 +108,17 @@ class _NewContactScreenState extends State<NewContactScreen> {
     final topPadding = MediaQuery.of(context).padding.top;
     return Scaffold(
       backgroundColor: Colors.grey.shade50,
-      // appBar: AppBar(
-      //   backgroundColor: Colors.white,
-      //   elevation: 0,
-      //   leading: GestureDetector(
-      //     onTap: () => context.pop(),
-      //     child: Text('Cancel', style: TextStyle(color: Colors.teal)),
-      //   ),
-      //   centerTitle: true,
-      //   title: const Text(
-      //     'New Contact',
-      //     style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
-      //   ),
-      //   actions: [
-      //     TextButton(
-      //       onPressed: _onSave,
-      //       child: const Text('Done', style: TextStyle(color: Colors.black)),
-      //     ),
-      //   ],
-      // ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: Column(
           children: [
-            // ===== custom “AppBar” =====
+            // ===== custom "AppBar" =====
             SafeArea(
               bottom: false,
               child: Container(
-                height: topPadding + 56, // status bar + toolbar
+                height: topPadding + 56,
                 child: Row(
                   children: [
-                    // Cancel
                     GestureDetector(
                       onTap: () => Navigator.of(context).pop(),
                       child: const Padding(
@@ -107,8 +129,6 @@ class _NewContactScreenState extends State<NewContactScreen> {
                         ),
                       ),
                     ),
-
-                    // Title
                     const Expanded(
                       child: Center(
                         child: Text(
@@ -121,8 +141,6 @@ class _NewContactScreenState extends State<NewContactScreen> {
                         ),
                       ),
                     ),
-
-                    // Done
                     TextButton(
                       onPressed: _onSave,
                       style: TextButton.styleFrom(
@@ -161,15 +179,39 @@ class _NewContactScreenState extends State<NewContactScreen> {
             CustomTextFormField(
               controller: _firstNameController,
               hintText: 'First name',
+              borderRadius: _borderRadius,
+              enabledBorderColor: _borderColor,
+              focusedBorderColor: _borderColor,
+              focusedBorderWidth: 1.2,
+              enabledBorderWidth: 1.2,
             ),
             const SizedBox(height: 12),
             CustomTextFormField(
               controller: _lastNameController,
               hintText: 'Last name',
+              borderRadius: _borderRadius,
+              enabledBorderColor: _borderColor,
+              focusedBorderColor: _borderColor,
+              focusedBorderWidth: 1.2,
+              enabledBorderWidth: 1.2,
             ),
             const SizedBox(height: 12),
 
-            // Message multiline
+            // Phone field
+            CustomTextFormField(
+              controller: _phoneController,
+              hintText: 'Phone number',
+              keyboardType: TextInputType.phone,
+              borderRadius: _borderRadius,
+              enabledBorderColor: _borderColor,
+              focusedBorderColor: _borderColor,
+              focusedBorderWidth: 1.2,
+              enabledBorderWidth: 1.2,
+              prefix: Icon(Icons.phone, color: Colors.green, size: 20),
+            ),
+            const SizedBox(height: 12),
+
+            // Message field
             CustomTextFormField(
               controller: _messageController,
               hintText: 'Message',
@@ -177,17 +219,15 @@ class _NewContactScreenState extends State<NewContactScreen> {
               keyboardType: TextInputType.multiline,
               contentPadding:
                   const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+              borderRadius: _borderRadius,
+              enabledBorderColor: _borderColor,
+              focusedBorderColor: _borderColor,
+              focusedBorderWidth: 1.2,
+              enabledBorderWidth: 1.2,
             ),
             const SizedBox(height: 16),
 
-            // Add Phone
-            _buildSectionTile(
-              leading: const Icon(Icons.add_circle, color: Colors.green),
-              title: const Text('add phone'),
-              onTap: () {/* add phone action */},
-            ),
-
-            // Ringtone
+            // Ringtone section
             _buildSectionTile(
               leading: const Icon(Icons.music_note, color: Colors.grey),
               title: const Text('Ringtone'),
@@ -196,20 +236,27 @@ class _NewContactScreenState extends State<NewContactScreen> {
               onTap: () {/* pick ringtone */},
             ),
 
-            // Add Voice
+            // Add Voice section
             _buildSectionTile(
               leading: const Icon(Icons.add_circle, color: Colors.green),
-              title: const Text('add voice'),
-              trailing: SvgPicture.asset(
-                'assets/icons/waveform.svg',
-                width: 24,
-                height: 24,
-                color: Colors.grey,
-              ),
-              onTap: () {/* add voice */},
+              title: Text(
+                  _selectedVoicePath != null ? _voiceFileName : 'add voice'),
+              trailing: _isPickingFile
+                  ? const SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : const Icon(
+                      Icons.graphic_eq, // Built-in waveform icon
+                      color: Colors.grey,
+                      size: 24,
+                    ),
+              onTap: _pickVoiceFile, // Trigger file picker
+              enabled: !_isPickingFile, // Disable while picking
             ),
 
-            // Add Theme
+            // Add Theme section
             _buildSectionTile(
               leading: const Icon(Icons.add_circle, color: Colors.green),
               title: const Text('add theme'),
