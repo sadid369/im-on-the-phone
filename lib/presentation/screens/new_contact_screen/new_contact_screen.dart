@@ -173,7 +173,7 @@ class _NewContactScreenState extends State<NewContactScreen> {
                 ),
               ],
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
 
             // First & Last name fields
             CustomTextFormField(

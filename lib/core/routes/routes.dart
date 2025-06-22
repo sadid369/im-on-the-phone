@@ -6,6 +6,7 @@ import 'package:groc_shopy/helper/extension/base_extension.dart';
 import 'package:groc_shopy/presentation/screens/call_screens/call_received_screen.dart';
 import 'package:groc_shopy/presentation/screens/main/main_screen.dart';
 import 'package:groc_shopy/presentation/screens/new_contact_screen/new_contact_screen.dart';
+import 'package:groc_shopy/presentation/screens/profile/change_password_screen.dart';
 import 'package:groc_shopy/presentation/screens/profile/profile_screen.dart';
 import 'package:groc_shopy/presentation/screens/auth/admin_signup_screen%20.dart';
 import 'package:groc_shopy/presentation/screens/auth/login_screen.dart';
@@ -16,12 +17,14 @@ import 'package:groc_shopy/presentation/screens/auth/update_password_success_scr
 import 'package:groc_shopy/presentation/screens/auth/verify_code_screen.dart';
 import 'package:groc_shopy/presentation/screens/home/home_screen.dart';
 import 'package:groc_shopy/presentation/screens/scan/scan_screen.dart';
+import 'package:groc_shopy/presentation/screens/settings/ringtone_selection_screen.dart';
 import 'package:groc_shopy/presentation/screens/transaction_history/transaction_history_screen.dart';
 import 'package:groc_shopy/presentation/widgets/payment_modal/payment_modal.dart';
 import 'package:groc_shopy/presentation/widgets/paypal/paypal.dart';
 import 'package:groc_shopy/presentation/widgets/subscription_modal/subscription_modal.dart';
 
 import '../../presentation/screens/call_screens/incoming_call_screen.dart';
+import '../../presentation/screens/profile/update_profile_screen.dart';
 import '../../presentation/screens/report/report_screen.dart';
 import '../../presentation/screens/scannedItemsScreen/scanned_items_screen.dart';
 import '../../presentation/screens/search/search_screen.dart';
@@ -347,6 +350,26 @@ class AppRouter {
         name: RoutePath.newContactScreen,
         path: RoutePath.newContactScreen.addBasePath,
         builder: (context, state) => NewContactScreen(),
+      ),
+      GoRoute(
+        name: RoutePath.changePasswordScreen,
+        path: RoutePath.changePasswordScreen.addBasePath,
+        builder: (context, state) => ChangePasswordScreen(),
+      ),
+      GoRoute(
+        name: RoutePath.ringtoneSelectionScreen,
+        path: RoutePath.ringtoneSelectionScreen.addBasePath,
+        builder: (context, state) => RingtoneSelectionScreen(),
+      ),
+      GoRoute(
+        name: RoutePath.profile,
+        path: RoutePath.profile.addBasePath,
+        builder: (context, state) => ProfileScreen(),
+      ),
+      GoRoute(
+        name: RoutePath.updateProfileScreen,
+        path: RoutePath.updateProfileScreen.addBasePath,
+        builder: (context, state) => UpdateProfileScreen(),
       ),
       GoRoute(
         name: RoutePath.incomingCallScreen,

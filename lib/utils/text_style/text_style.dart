@@ -513,4 +513,37 @@ class AppStyle {
     fontWeight: FontWeight.w900,
     height: 2.62,
   );
+  static final robotoMono18w500C030303 = GoogleFonts.robotoMono(
+    color: Color(0xFF030303),
+    fontSize: 18.sp,
+    fontWeight: FontWeight.w500,
+    height: 1.44,
+  );
+  static final roboto14w400C808080 = GoogleFonts.roboto(
+    color: Colors.black.withOpacity(0.5), // alpha 128 = 0.5 opacity
+    fontSize: 14.sp,
+    fontWeight: FontWeight.w400,
+    height: 1.43,
+    letterSpacing: -0.50,
+  );
+  static final roboto14w600C999999 = GoogleFonts.roboto(
+    color: Colors.black.withOpacity(0.6), // alpha 153 = 0.6 opacity
+    fontSize: 14.sp,
+    fontWeight: FontWeight.w600,
+    height: 1.43,
+    letterSpacing: -0.50,
+  );
+  static final robotoMono16w500C030303 = GoogleFonts.robotoMono(
+    color: Color(0xFF030303),
+    fontSize: 16.sp,
+    fontWeight: FontWeight.w500,
+    height: 1.62,
+  );
+  static final inter12w700CFFFFFF = GoogleFonts.inter(
+    color: Colors.white,
+    fontSize: 12.sp,
+    fontWeight: FontWeight.w700,
+    height: 1.67,
+    letterSpacing: -0.50,
+  );
 }

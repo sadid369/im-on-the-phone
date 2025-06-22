@@ -347,7 +347,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 size: 25.r, // Icon size
                                 color: Colors.black, // Icon color
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                context.push(RoutePath
+                                    .ringtoneSelectionScreen.addBasePath);
+                              },
                               style: IconButton.styleFrom(
                                 padding: EdgeInsets.zero,
                                 backgroundColor: Color(0xffF2F2F2),

@@ -42,6 +42,8 @@ class AppStrings {
   static const String youEmail = "You Email";
   static const String enterYourFullName = "Enter your full name";
   static const String enterYourNewPassword = "Enter your new password";
+  static const String confirmYourNewPassword = "Confirm your new password";
+  static const String enterYourCurrentPassword = "Enter your current password";
   static const String pleaseEnterYourEmailToReset =
       "Please enter your email to reset the password";
   static const String weSent = 'We sent a reset link to ';
@@ -56,6 +58,9 @@ class AppStrings {
   static RegExp emailRegexp = RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
   static const String password = "Password";
+  static const String currentPassword = "Current Password";
+  static const String newPassword = "New Password";
+  static const String confirmNewPassword = "Confirm New Password";
   static const String passwordHint = "********";
   static const String passWordMustBeAtLeast =
       "Password must contain at least one uppercase letter, one lowercase letter, one number";
