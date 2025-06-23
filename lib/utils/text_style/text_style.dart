@@ -546,4 +546,18 @@ class AppStyle {
     height: 1.67,
     letterSpacing: -0.50,
   );
+  static final roboto12w500C666666 = GoogleFonts.roboto(
+    color: Colors.black.withOpacity(0.4), // alpha 102 = 0.4 opacity
+    fontSize: 12.sp,
+    fontWeight: FontWeight.w500,
+    height: 1.67,
+    letterSpacing: -0.50,
+  );
+  static final roboto28w500C000000 = GoogleFonts.roboto(
+    color: Colors.black,
+    fontSize: 28.sp,
+    fontWeight: FontWeight.w500,
+    height: 0.71,
+    letterSpacing: -0.50,
+  );
 }

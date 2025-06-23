@@ -325,7 +325,8 @@ class LoginScreenState extends State<LoginScreen> {
                   Gap(33.h),
                   AppButton(
                     text: AppStrings.signIn.tr,
-                    onPressed: () => context.push(RoutePath.home.addBasePath),
+                    onPressed: () =>
+                        context.push(RoutePath.adminDashboard.addBasePath),
                     width: double.infinity,
                     height: 48.h,
                     backgroundColor: AppColors.primary,

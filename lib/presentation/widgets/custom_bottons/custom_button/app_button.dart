@@ -13,21 +13,23 @@ class AppButton extends StatelessWidget {
   final bool enabled;
   final double? borderWidth;
   final Color? borderColor;
+  final Widget? icon; // <-- Add this line
 
-  const AppButton(
-      {Key? key,
-      required this.text,
-      this.onPressed,
-      this.width = double.infinity,
-      this.height = 48,
-      this.backgroundColor = AppColors.primary, // default yellow color
-      this.disabledBackgroundColor,
-      this.borderRadius = 8,
-      required this.textStyle,
-      this.enabled = true,
-      this.borderWidth,
-      this.borderColor})
-      : super(key: key);
+  const AppButton({
+    Key? key,
+    required this.text,
+    this.onPressed,
+    this.width = double.infinity,
+    this.height = 48,
+    this.backgroundColor = AppColors.primary,
+    this.disabledBackgroundColor,
+    this.borderRadius = 8,
+    required this.textStyle,
+    this.enabled = true,
+    this.borderWidth,
+    this.borderColor,
+    this.icon, // <-- Add this line
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +53,20 @@ class AppButton extends StatelessWidget {
           ),
           elevation: 0,
         ),
-        child: Text(text, style: textStyle),
+        child: icon == null
+            ? Text(text, style: textStyle)
+            : Row(
+                mainAxisAlignment:
+                    MainAxisAlignment.start, // <-- Align to start
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize:
+                    MainAxisSize.max, // <-- Use full width for alignment
+                children: [
+                  icon!,
+                  SizedBox(width: 8),
+                  Text(text, style: textStyle),
+                ],
+              ),
       ),
     );
   }

@@ -46,10 +46,12 @@ import '../../widgets/custom_navbar/custom_navbar.dart';
 
 class MainScreenWithBottomNav extends StatelessWidget {
   final StatefulNavigationShell navigationShell;
+  final bool isAdmin; // <-- Add this
 
   const MainScreenWithBottomNav({
     super.key,
     required this.navigationShell,
+    this.isAdmin = true, // <-- Default to false
   });
 
   @override
@@ -59,17 +61,28 @@ class MainScreenWithBottomNav extends StatelessWidget {
       bottomNavigationBar: CustomBottomNavBar(
         selectedIndex: navigationShell.currentIndex,
         onTap: (index) => _onTabTapped(context, index),
-        // Custom icons and labels for your 3-tab navigation
-        icons: const [
-          'assets/icons/home.svg',
-          'assets/icons/search.svg',
-          'assets/icons/settings.svg',
-        ],
-        labels: const [
-          'Home',
-          'Search',
-          'Settings',
-        ],
+        icons: isAdmin
+            ? const [
+                'assets/icons/dashboard.svg',
+                'assets/icons/users.svg',
+                'assets/icons/settings.svg',
+              ]
+            : const [
+                'assets/icons/home.svg',
+                'assets/icons/search.svg',
+                'assets/icons/settings.svg',
+              ],
+        labels: isAdmin
+            ? const [
+                'Dashboard',
+                'User',
+                'Settings',
+              ]
+            : const [
+                'Home',
+                'Search',
+                'Settings',
+              ],
       ),
     );
   }

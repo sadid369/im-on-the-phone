@@ -53,6 +53,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/dairy.svg
   SvgGenImage get dairy => const SvgGenImage('assets/icons/dairy.svg');
 
+  /// File path: assets/icons/dashboard.svg
+  SvgGenImage get dashboard => const SvgGenImage('assets/icons/dashboard.svg');
+
   /// File path: assets/icons/drinks.svg
   SvgGenImage get drinks => const SvgGenImage('assets/icons/drinks.svg');
 
@@ -152,6 +155,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/shop.png
   AssetGenImage get shop => const AssetGenImage('assets/icons/shop.png');
 
+  /// File path: assets/icons/slider.svg
+  SvgGenImage get slider => const SvgGenImage('assets/icons/slider.svg');
+
   /// File path: assets/icons/star.png
   AssetGenImage get star => const AssetGenImage('assets/icons/star.png');
 
@@ -162,6 +168,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/transaction.svg
   SvgGenImage get transaction =>
       const SvgGenImage('assets/icons/transaction.svg');
+
+  /// File path: assets/icons/users.svg
+  SvgGenImage get users => const SvgGenImage('assets/icons/users.svg');
 
   /// File path: assets/icons/vegetables.svg
   SvgGenImage get vegetables =>
@@ -180,6 +189,7 @@ class $AssetsIconsGen {
     chooseYourLanguage,
     coin,
     dairy,
+    dashboard,
     drinks,
     ellipsisWhite,
     email,
@@ -211,9 +221,11 @@ class $AssetsIconsGen {
     search,
     settings,
     shop,
+    slider,
     star,
     switchAppTheme,
     transaction,
+    users,
     vegetables,
   ];
 }

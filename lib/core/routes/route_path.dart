@@ -50,4 +50,10 @@ class RoutePath {
   static const String updateProfileScreen = 'updateProfileScreen';
   static const String changePasswordScreen = 'changePasswordScreen';
   static const String ringtoneSelectionScreen = 'ringtoneSelectionScreen';
+  static const String adminDashboard = 'adminDashboard';
+  static const String adminUser = 'adminUser';
+  static const String adminSettings = 'adminSettings';
+  static const String adminChangePasswordScreen = 'adminchangePasswordScreen';
+  static const String adminUpdateProfileScreen = 'adminUpdateProfileScreen';
+  static const String appConfigurationsScreen = 'appConfigurationsScreen';
 }
