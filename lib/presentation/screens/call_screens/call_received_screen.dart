@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:groc_shopy/helper/extension/base_extension.dart';
+
+import '../../../core/routes/route_path.dart';
 
 class CallReceivedScreen extends StatefulWidget {
   const CallReceivedScreen({Key? key}) : super(key: key);
@@ -10,6 +15,36 @@ class CallReceivedScreen extends StatefulWidget {
 
 class _CallReceivedScreenState extends State<CallReceivedScreen> {
   bool isPressLoudSpeaker = false;
+  late Stopwatch _stopwatch;
+  late String _timeString;
+
+  @override
+  void initState() {
+    super.initState();
+    _stopwatch = Stopwatch();
+    _timeString = '0:00';
+    _stopwatch.start();
+    _updateTime();
+  }
+
+  void _updateTime() {
+    if (_stopwatch.isRunning) {
+      setState(() {
+        int minutes = _stopwatch.elapsed.inMinutes;
+        int seconds = _stopwatch.elapsed.inSeconds % 60;
+        _timeString = '$minutes:${seconds.toString().padLeft(2, '0')}';
+      });
+
+      Future.delayed(const Duration(seconds: 1), _updateTime);
+    }
+  }
+
+  @override
+  void dispose() {
+    _stopwatch.stop();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,36 +53,35 @@ class _CallReceivedScreenState extends State<CallReceivedScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            // Top spacer
-            const SizedBox(height: 20),
+            Gap(20.h),
             // Avatar and name/duration
             Column(
-              children: const [
+              children: [
                 CircleAvatar(
-                  radius: 50,
-                  backgroundColor: Color(0xFFC57C6B),
+                  radius: 50.r,
+                  backgroundColor: const Color(0xFFC57C6B),
                   child: Text(
                     'M',
                     style: TextStyle(
-                      fontSize: 48,
+                      fontSize: 48.sp,
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
-                SizedBox(height: 16),
+                Gap(16.h),
                 Text(
                   'MOM',
                   style: TextStyle(
-                    fontSize: 28,
+                    fontSize: 28.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 8),
+                Gap(8.h),
                 Text(
-                  '1:30',
+                  _timeString,
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 18.sp,
                     color: Colors.grey,
                   ),
                 ),
@@ -55,7 +89,7 @@ class _CallReceivedScreenState extends State<CallReceivedScreen> {
             ),
             // Buttons grid
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32),
+              padding: EdgeInsets.symmetric(horizontal: 32.w),
               child: Column(
                 children: [
                   Row(
@@ -85,7 +119,7 @@ class _CallReceivedScreenState extends State<CallReceivedScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 32),
+                  Gap(32.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: const [
@@ -108,17 +142,18 @@ class _CallReceivedScreenState extends State<CallReceivedScreen> {
             ),
             // Hang up button
             Padding(
-              padding: const EdgeInsets.only(bottom: 32),
+              padding: EdgeInsets.only(bottom: 32.h),
               child: FloatingActionButton(
                 elevation: 0,
-                shape: CircleBorder(),
+                shape: const CircleBorder(),
                 backgroundColor: Colors.red,
                 onPressed: () {
-                  context.pop();
+                  _stopwatch.stop();
+                  context.go(RoutePath.home.addBasePath);
                 },
-                child: const Icon(
+                child: Icon(
                   Icons.call_end,
-                  size: 32,
+                  size: 32.w,
                   color: Colors.white,
                 ),
               ),
@@ -144,23 +179,23 @@ class _CallOption extends StatelessWidget {
     return Column(
       children: [
         Container(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(16.w),
           decoration: BoxDecoration(
-              color: color == null ? Color(0xff898989) : color,
+              color: color ?? const Color(0xff898989),
               shape: BoxShape.circle,
               border: color == null
                   ? null
                   : Border.all(color: Colors.black.withOpacity(0.2))),
           child: Icon(
             icon,
-            size: 28,
+            size: 28.w,
             color: color == null ? Colors.white : Colors.black,
           ),
         ),
-        const SizedBox(height: 8),
+        Gap(8.h),
         Text(
           label,
-          style: const TextStyle(fontSize: 14),
+          style: TextStyle(fontSize: 14.sp),
         ),
       ],
     );

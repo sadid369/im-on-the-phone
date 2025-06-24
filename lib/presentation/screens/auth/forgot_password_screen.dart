@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:get/get.dart'; // <-- add this
+import 'package:get/get.dart';
 import 'package:groc_shopy/helper/extension/base_extension.dart';
 import 'package:groc_shopy/utils/app_colors/app_colors.dart';
 import 'package:groc_shopy/utils/static_strings/static_strings.dart';
@@ -48,7 +48,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 30),
+          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 30.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -58,24 +58,26 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 },
                 child: Image.asset(
                   Assets.icons.arrowBackGrey.path,
+                  width: 24.w,
+                  height: 24.w,
                 ),
               ),
-              const SizedBox(height: 30),
+              Gap(30.h),
               Text(
                 AppStrings.forgotPassword.tr,
                 style: AppStyle.kohSantepheap18w700C1E1E1E,
               ),
-              const SizedBox(height: 8),
+              Gap(8.h),
               Text(
                 AppStrings.pleaseEnterYourEmailToReset.tr,
                 style: AppStyle.roboto14w600C989898,
               ),
-              const SizedBox(height: 20),
+              Gap(20.h),
               Text(
                 AppStrings.youEmail.tr,
                 style: AppStyle.roboto16w600C2A2A2A,
               ),
-              const SizedBox(height: 8),
+              Gap(8.h),
               CustomTextFormField(
                 controller: emailController,
                 hintText: AppStrings.enterYourEmailHint.tr,
@@ -89,7 +91,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 focusedBorderColor: AppColors.primary,
                 enabledBorderWidth: 1.5.w,
                 focusedBorderWidth: 1.8.w,
-                borderRadius: BorderRadius.circular(12.dg),
+                borderRadius: BorderRadius.circular(12.r),
                 filled: true,
                 obscureText: false,
               ),
@@ -105,7 +107,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 height: 48.h,
                 backgroundColor: AppColors.primary,
                 disabledBackgroundColor: AppColors.primary.withOpacity(0.4),
-                borderRadius: 10,
+                borderRadius: 10.r,
                 textStyle: AppStyle.inter16w700CFFFFFF,
                 enabled: isButtonEnabled,
               )

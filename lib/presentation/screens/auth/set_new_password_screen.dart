@@ -47,12 +47,11 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     final inputBorder = OutlineInputBorder(
-      borderRadius: BorderRadius.circular(10),
+      borderRadius: BorderRadius.circular(10.r),
       borderSide: const BorderSide(color: Color(0xFFE9E1D5)),
     );
 
     return Scaffold(
-      // light cream background
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
@@ -67,6 +66,8 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
                   },
                   child: Image.asset(
                     Assets.icons.arrowBackGrey.path,
+                    width: 24.w,
+                    height: 24.w,
                   ),
                 ),
                 Gap(53.h),
@@ -103,18 +104,14 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
                   focusedBorderColor: AppColors.primary,
                   enabledBorderWidth: 1.5.w,
                   focusedBorderWidth: 1.8.w,
-                  borderRadius: BorderRadius.circular(12.dg),
+                  borderRadius: BorderRadius.circular(12.r),
                 ),
-
                 Gap(16.h),
-
                 Text(
                   AppStrings.confirmPasswordHint.tr,
                   style: AppStyle.roboto16w600C2A2A2A,
                 ),
-
                 Gap(8.h),
-
                 CustomTextFormField(
                   controller: _confirmPasswordController,
                   hintText: AppStrings.reEnterPassword.tr,
@@ -131,11 +128,9 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
                   focusedBorderColor: AppColors.primary,
                   enabledBorderWidth: 1.5.w,
                   focusedBorderWidth: 1.8.w,
-                  borderRadius: BorderRadius.circular(12.dg),
+                  borderRadius: BorderRadius.circular(12.r),
                 ),
-
                 Gap(30.h),
-
                 AppButton(
                   text: AppStrings.updatePassword.tr,
                   onPressed: () {
@@ -144,7 +139,7 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
                   width: double.infinity,
                   height: 48.h,
                   backgroundColor: AppColors.primary,
-                  borderRadius: 8,
+                  borderRadius: 8.r,
                   textStyle: AppStyle.inter16w700CFFFFFF,
                 )
               ],

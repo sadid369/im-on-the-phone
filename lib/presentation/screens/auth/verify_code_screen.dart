@@ -49,7 +49,6 @@ class _CodeVerificationScreenState extends State<CodeVerificationScreen> {
 
   void _onCodeChanged(int index, String value) {
     if (value.length > 1) {
-      // If user pasted more than 1 character, keep only the first
       controllers[index].text = value[0];
     }
     if (value.isNotEmpty && index < codeLength - 1) {
@@ -82,6 +81,8 @@ class _CodeVerificationScreenState extends State<CodeVerificationScreen> {
                 },
                 child: Image.asset(
                   Assets.icons.arrowBackGrey.path,
+                  width: 24.w,
+                  height: 24.h,
                 ),
               ),
               Gap(16.h),
@@ -90,7 +91,6 @@ class _CodeVerificationScreenState extends State<CodeVerificationScreen> {
                 style: AppStyle.kohSantepheap18w700C1E1E1E,
               ),
               Gap(18.h),
-
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -120,7 +120,6 @@ class _CodeVerificationScreenState extends State<CodeVerificationScreen> {
                   ),
                 ],
               ),
-
               Gap(24.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -137,9 +136,8 @@ class _CodeVerificationScreenState extends State<CodeVerificationScreen> {
                       textAlignVertical: TextAlignVertical.center,
                       maxLength: 1,
                       style: AppStyle.poppins18w600C545454,
-                      // Remove large vertical padding to center text correctly:
-                      contentPadding: EdgeInsets.symmetric(vertical: 0),
-                      borderRadius: BorderRadius.circular(8),
+                      contentPadding: EdgeInsets.symmetric(vertical: 0.h),
+                      borderRadius: BorderRadius.circular(8.r),
                       enabledBorderColor: controllers[index].text.isEmpty
                           ? AppColors.borderE1E1E1
                           : AppColors.primary,
@@ -153,23 +151,19 @@ class _CodeVerificationScreenState extends State<CodeVerificationScreen> {
                   );
                 }),
               ),
-
               Gap(24.h),
-
               AppButton(
                 text: AppStrings.verifyCode.tr,
                 onPressed: isCodeComplete ? _verifyCode : null,
                 width: double.infinity,
-                height: 48,
+                height: 48.h,
                 backgroundColor: AppColors.primary,
                 disabledBackgroundColor: AppColors.primary.withOpacity(0.4),
-                borderRadius: 10,
+                borderRadius: 10.r,
                 textStyle: AppStyle.inter16w700CFFFFFF,
                 enabled: isCodeComplete,
               ),
-
               Gap(16.h),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -177,6 +171,7 @@ class _CodeVerificationScreenState extends State<CodeVerificationScreen> {
                     AppStrings.haveNotGotTheMail.tr,
                     style: AppStyle.inter14w600C989898,
                   ),
+                  Gap(4.w),
                   GestureDetector(
                     onTap: () {
                       // TODO: Add resend email logic here

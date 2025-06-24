@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:get/get.dart'; // add this for .tr support
+import 'package:get/get.dart';
 import 'package:groc_shopy/core/routes/route_path.dart';
 import 'package:groc_shopy/helper/extension/base_extension.dart';
 import 'package:groc_shopy/utils/app_colors/app_colors.dart';
@@ -18,7 +18,6 @@ class PasswordResetConfirmScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // light cream background
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 32.h),
@@ -31,30 +30,32 @@ class PasswordResetConfirmScreen extends StatelessWidget {
                 },
                 child: Image.asset(
                   Assets.icons.arrowBackGrey.path,
+                  width: 24.w,
+                  height: 24.w,
                 ),
               ),
               Gap(53.h),
               Text(
-                AppStrings.passwordReset.tr, // <--- translated
+                AppStrings.passwordReset.tr,
                 style: AppStyle.kohSantepheap18w700C1E1E1E,
               ),
               Gap(18.h),
               Text(
-                AppStrings.confirmPassword.tr, // <--- translated
+                AppStrings.confirmPassword.tr,
                 style: AppStyle.roboto14w500C989898,
               ),
               Gap(32.h),
               AppButton(
-                text: AppStrings.confirm.tr, // <--- translated
+                text: AppStrings.confirm.tr,
                 onPressed: () {
                   context.push(RoutePath.resetPass.addBasePath);
                 },
                 width: double.infinity,
                 height: 48.h,
                 backgroundColor: AppColors.primary,
-                borderRadius: 8,
+                borderRadius: 8.r,
                 textStyle: AppStyle.inter16w700CFFFFFF,
-              )
+              ),
             ],
           ),
         ),

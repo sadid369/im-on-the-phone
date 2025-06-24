@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:get/get.dart'; // <-- Add this for .tr support
+import 'package:get/get.dart';
 import 'package:groc_shopy/helper/extension/base_extension.dart';
 import 'package:groc_shopy/utils/app_colors/app_colors.dart';
 import 'package:groc_shopy/utils/static_strings/static_strings.dart';
@@ -48,7 +48,7 @@ class UpdatePasswordSuccessScreen extends StatelessWidget {
                 padding: EdgeInsets.all(22.w),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(4),
+                  borderRadius: BorderRadius.circular(4.r),
                 ),
                 child: Column(
                   children: [
@@ -71,12 +71,12 @@ class UpdatePasswordSuccessScreen extends StatelessWidget {
                       width: 268.w,
                       height: 44.h,
                       backgroundColor: AppColors.primary,
-                      borderRadius: 15,
+                      borderRadius: 15.r,
                       textStyle: AppStyle.inter16w700CFFFFFF,
                     )
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),

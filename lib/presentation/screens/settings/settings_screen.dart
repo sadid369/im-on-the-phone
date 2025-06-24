@@ -26,7 +26,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(16.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -35,7 +35,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SizedBox(),
+                    const SizedBox(),
                     Text(
                       'Settings',
                       style: AppStyle.kohSantepheap20w400C030303,
@@ -45,16 +45,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         context.pushReplacement(RoutePath.login.addBasePath);
                       },
                       child: Container(
-                          alignment: Alignment.center,
-                          width: 30.w,
-                          height: 30.w,
-                          padding: EdgeInsets.all(8.w),
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(width: 0.5.w)),
-                          child: SvgPicture.asset(
-                            Assets.icons.logout.path,
-                          )),
+                        alignment: Alignment.center,
+                        width: 30.w,
+                        height: 30.w,
+                        padding: EdgeInsets.all(8.w),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(width: 0.5.w),
+                        ),
+                        child: SvgPicture.asset(
+                          Assets.icons.logout.path,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -63,7 +65,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               Container(
                 padding: EdgeInsets.all(10.w),
                 height: 116.w,
-                width: MediaQuery.of(context).size.width,
+                width: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.r),
                   color: Colors.white,
@@ -72,41 +74,42 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                 ),
                 child: Column(
-                  spacing: 10.w,
                   children: [
                     Row(
-                      spacing: 10.w,
                       children: [
                         SvgPicture.asset(Assets.icons.chooseYourIconColor.path),
+                        Gap(10.w),
                         Text('Choose your icon color',
                             style: AppStyle.roboto14w400C000000),
                       ],
                     ),
-                    SizedBox(height: 8),
+                    Gap(8.h),
                     Row(
-                      spacing: 15.w,
                       children: [
-                        SizedBox(
-                          width: 15.w,
-                        ),
+                        Gap(15.w),
                         ColorCircle(color: Colors.red),
+                        Gap(8.w),
                         ColorCircle(color: Colors.orange),
+                        Gap(8.w),
                         ColorCircle(color: Colors.green),
+                        Gap(8.w),
                         ColorCircle(color: Colors.cyan),
+                        Gap(8.w),
                         ColorCircle(color: Colors.purple),
+                        Gap(8.w),
                         ColorCircle(color: Colors.pink),
                       ],
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: 16),
+              Gap(16.h),
 
               // Language Picker
               Container(
                 padding: EdgeInsets.all(10.w),
                 height: 104.w,
-                width: MediaQuery.of(context).size.width,
+                width: double.infinity,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   border: Border.all(
@@ -115,70 +118,70 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   borderRadius: BorderRadius.circular(10.r),
                 ),
                 child: Column(
-                  spacing: 20.w,
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Row(
-                      spacing: 10.w,
                       children: [
                         SvgPicture.asset(Assets.icons.chooseYourLanguage.path),
+                        Gap(10.w),
                         Text('Choose your language',
                             style: AppStyle.roboto14w400C000000),
                       ],
                     ),
+                    Gap(20.h),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        SizedBox(
-                          width: 30.w,
+                        Gap(30.w),
+                        AppButton(
+                          text: 'English',
+                          onPressed: () {
+                            setState(() {
+                              selectedLanguage = 'English';
+                            });
+                          },
+                          width: 100.w,
+                          height: 29.h,
+                          borderRadius: 50.r,
+                          backgroundColor: selectedLanguage == 'English'
+                              ? AppColors.primary
+                              : const Color(0xffF2F2F2),
+                          textStyle: selectedLanguage == 'English'
+                              ? AppStyle.roboto12w500CFFFFFF
+                              : AppStyle.roboto12w400C000000,
                         ),
+                        Gap(8.w),
                         AppButton(
-                            text: 'English',
-                            onPressed: () {
-                              setState(() {
-                                selectedLanguage = 'English';
-                              });
-                            },
-                            width: 100.w,
-                            height: 29.w,
-                            borderRadius: 50.r,
-                            backgroundColor: selectedLanguage == 'English'
-                                ? AppColors.primary
-                                : Color(0xffF2F2F2),
-                            textStyle: selectedLanguage == 'English'
-                                ? AppStyle.roboto12w500CFFFFFF
-                                : AppStyle.roboto12w400C000000),
-                        SizedBox(width: 8),
-                        AppButton(
-                            text: 'Spanish',
-                            onPressed: () {
-                              setState(() {
-                                selectedLanguage = 'Spanish';
-                              });
-                            },
-                            width: 100.w,
-                            height: 29.w,
-                            borderRadius: 50.r,
-                            backgroundColor: selectedLanguage == 'Spanish'
-                                ? AppColors.primary
-                                : Color(0xffF2F2F2),
-                            textStyle: selectedLanguage == 'Spanish'
-                                ? AppStyle.roboto12w500CFFFFFF
-                                : AppStyle.roboto12w400C000000),
+                          text: 'Spanish',
+                          onPressed: () {
+                            setState(() {
+                              selectedLanguage = 'Spanish';
+                            });
+                          },
+                          width: 110.w,
+                          height: 29.h,
+                          borderRadius: 50.r,
+                          backgroundColor: selectedLanguage == 'Spanish'
+                              ? AppColors.primary
+                              : const Color(0xffF2F2F2),
+                          textStyle: selectedLanguage == 'Spanish'
+                              ? AppStyle.roboto12w500CFFFFFF
+                              : AppStyle.roboto12w400C000000,
+                        ),
                       ],
                     ),
                   ],
                 ),
               ),
 
-              SizedBox(height: 16),
+              Gap(16.h),
 
               // Theme Picker
               Container(
                 padding: EdgeInsets.all(10.w),
                 height: 104.w,
-                width: MediaQuery.of(context).size.width,
+                width: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.r),
                   color: Colors.white,
@@ -187,83 +190,84 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                 ),
                 child: Column(
-                  spacing: 20.w,
                   children: [
                     Row(
-                      spacing: 10.w,
                       children: [
                         SvgPicture.asset(Assets.icons.switchAppTheme.path),
+                        Gap(10.w),
                         Text('Switch app theme:',
                             style: AppStyle.roboto14w400C000000),
                       ],
                     ),
+                    Gap(20.h),
                     Row(
                       children: [
-                        SizedBox(
-                          width: 30.w,
+                        Gap(30.w),
+                        AppButton(
+                          text: 'Light',
+                          onPressed: () {
+                            setState(() {
+                              selectedTheme = 'Light';
+                            });
+                          },
+                          width: 95.w,
+                          height: 29.h,
+                          borderRadius: 50.r,
+                          backgroundColor: selectedTheme == 'Light'
+                              ? AppColors.primary
+                              : const Color(0xffF2F2F2),
+                          textStyle: selectedTheme == 'Light'
+                              ? AppStyle.roboto12w500CFFFFFF
+                              : AppStyle.roboto12w400C000000,
                         ),
+                        Gap(8.w),
                         AppButton(
-                            text: 'Light',
-                            onPressed: () {
-                              setState(() {
-                                selectedTheme = 'Light';
-                              });
-                            },
-                            width: 95.w,
-                            height: 29.w,
-                            borderRadius: 50.r,
-                            backgroundColor: selectedTheme == 'Light'
-                                ? AppColors.primary
-                                : Color(0xffF2F2F2),
-                            textStyle: selectedTheme == 'Light'
-                                ? AppStyle.roboto12w500CFFFFFF
-                                : AppStyle.roboto12w400C000000),
-                        SizedBox(width: 8),
+                          text: 'Pastel',
+                          onPressed: () {
+                            setState(() {
+                              selectedTheme = 'Pastel';
+                            });
+                          },
+                          width: 95.w,
+                          height: 29.h,
+                          borderRadius: 50.r,
+                          backgroundColor: selectedTheme == 'Pastel'
+                              ? AppColors.primary
+                              : const Color(0xffF2F2F2),
+                          textStyle: selectedTheme == 'Pastel'
+                              ? AppStyle.roboto12w500CFFFFFF
+                              : AppStyle.roboto12w400C000000,
+                        ),
+                        Gap(8.w),
                         AppButton(
-                            text: 'Pastel',
-                            onPressed: () {
-                              setState(() {
-                                selectedTheme = 'Pastel';
-                              });
-                            },
-                            width: 95.w,
-                            height: 29.w,
-                            borderRadius: 50.r,
-                            backgroundColor: selectedTheme == 'Pastel'
-                                ? AppColors.primary
-                                : Color(0xffF2F2F2),
-                            textStyle: selectedTheme == 'Pastel'
-                                ? AppStyle.roboto12w500CFFFFFF
-                                : AppStyle.roboto12w400C000000),
-                        SizedBox(width: 8),
-                        AppButton(
-                            text: 'Dark',
-                            onPressed: () {
-                              setState(() {
-                                selectedTheme = 'Dark';
-                              });
-                            },
-                            width: 95.w,
-                            height: 29.w,
-                            borderRadius: 50.r,
-                            backgroundColor: selectedTheme == 'Dark'
-                                ? AppColors.primary
-                                : Color(0xffF2F2F2),
-                            textStyle: selectedTheme == 'Dark'
-                                ? AppStyle.roboto12w500CFFFFFF
-                                : AppStyle.roboto12w400C000000),
+                          text: 'Dark',
+                          onPressed: () {
+                            setState(() {
+                              selectedTheme = 'Dark';
+                            });
+                          },
+                          width: 95.w,
+                          height: 29.h,
+                          borderRadius: 50.r,
+                          backgroundColor: selectedTheme == 'Dark'
+                              ? AppColors.primary
+                              : const Color(0xffF2F2F2),
+                          textStyle: selectedTheme == 'Dark'
+                              ? AppStyle.roboto12w500CFFFFFF
+                              : AppStyle.roboto12w400C000000,
+                        ),
                       ],
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: 16),
+              Gap(16.h),
 
               // Ringtone Picker
               Container(
                 padding: EdgeInsets.all(10.w),
                 height: 104.w,
-                width: MediaQuery.of(context).size.width,
+                width: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.r),
                   color: Colors.white,
@@ -274,38 +278,36 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 child: Column(
                   children: [
                     Row(
-                      spacing: 10.w,
                       children: [
                         SvgPicture.asset(Assets.icons.ringtone.path),
+                        Gap(10.w),
                         Text('Ringtone', style: AppStyle.roboto14w400C000000),
                       ],
                     ),
-                    SizedBox(height: 8),
+                    Gap(8.h),
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SizedBox(
-                            width: 20.w,
-                          ),
+                          Gap(20.w),
                           AppButton(
-                              text: 'Default',
-                              onPressed: () {
-                                setState(() {
-                                  selectedRingtone = 'Default';
-                                });
-                              },
-                              width: 86.w,
-                              height: 29.w,
-                              borderRadius: 50.r,
-                              backgroundColor: selectedRingtone == 'Default'
-                                  ? AppColors.primary
-                                  : Color(0xffF2F2F2),
-                              textStyle: selectedRingtone == 'Default'
-                                  ? AppStyle.roboto12w500CFFFFFF
-                                  : AppStyle.roboto12w400C000000),
-                          SizedBox(width: 8),
+                            text: 'Default',
+                            onPressed: () {
+                              setState(() {
+                                selectedRingtone = 'Default';
+                              });
+                            },
+                            width: 100.w,
+                            height: 29.h,
+                            borderRadius: 50.r,
+                            backgroundColor: selectedRingtone == 'Default'
+                                ? AppColors.primary
+                                : const Color(0xffF2F2F2),
+                            textStyle: selectedRingtone == 'Default'
+                                ? AppStyle.roboto12w500CFFFFFF
+                                : AppStyle.roboto12w400C000000,
+                          ),
+                          Gap(8.w),
                           AppButton(
                             text: 'Quad',
                             onPressed: () {
@@ -313,78 +315,81 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 selectedRingtone = 'Quad';
                               });
                             },
-                            width: 86.w,
-                            height: 29.w,
+                            width: 100.w,
+                            height: 29.h,
                             borderRadius: 50.r,
                             backgroundColor: selectedRingtone == 'Quad'
                                 ? AppColors.primary
-                                : Color(0xffF2F2F2),
+                                : const Color(0xffF2F2F2),
                             textStyle: selectedRingtone == 'Quad'
                                 ? AppStyle.roboto12w500CFFFFFF
                                 : AppStyle.roboto12w400C000000,
                           ),
-                          SizedBox(width: 8),
+                          Gap(8.w),
                           AppButton(
-                              text: 'Radial',
-                              onPressed: () {
-                                setState(() {
-                                  selectedRingtone = 'Radial';
-                                });
-                              },
-                              width: 86.w,
-                              height: 29.w,
-                              borderRadius: 50.r,
-                              backgroundColor: selectedRingtone == 'Radial'
-                                  ? AppColors.primary
-                                  : Color(0xffF2F2F2),
-                              textStyle: selectedRingtone == 'Radial'
-                                  ? AppStyle.roboto12w500CFFFFFF
-                                  : AppStyle.roboto12w400C000000),
+                            text: 'Radial',
+                            onPressed: () {
+                              setState(() {
+                                selectedRingtone = 'Radial';
+                              });
+                            },
+                            width: 100.w,
+                            height: 29.h,
+                            borderRadius: 50.r,
+                            backgroundColor: selectedRingtone == 'Radial'
+                                ? AppColors.primary
+                                : const Color(0xffF2F2F2),
+                            textStyle: selectedRingtone == 'Radial'
+                                ? AppStyle.roboto12w500CFFFFFF
+                                : AppStyle.roboto12w400C000000,
+                          ),
+                          Gap(8.w),
                           IconButton(
+                            padding: EdgeInsets.zero,
+                            icon: Icon(
+                              Icons.add,
+                              size: 25.r,
+                              color: Colors.black,
+                            ),
+                            onPressed: () {
+                              context.push(RoutePath
+                                  .ringtoneSelectionScreen.addBasePath);
+                            },
+                            style: IconButton.styleFrom(
                               padding: EdgeInsets.zero,
-                              icon: Icon(
-                                Icons.add,
-                                size: 25.r, // Icon size
-                                color: Colors.black, // Icon color
-                              ),
-                              onPressed: () {
-                                context.push(RoutePath
-                                    .ringtoneSelectionScreen.addBasePath);
-                              },
-                              style: IconButton.styleFrom(
-                                padding: EdgeInsets.zero,
-                                backgroundColor: Color(0xffF2F2F2),
-                                shape: OvalBorder(),
-                              ))
+                              backgroundColor: const Color(0xffF2F2F2),
+                              shape: const OvalBorder(),
+                            ),
+                          ),
                         ],
                       ),
                     ),
                   ],
                 ),
               ),
-              Gap(40.w),
+              Gap(40.h),
 
               // Buttons
               Row(
-                spacing: 20.w,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   AppButton(
                     text: 'Reset to Default',
                     onPressed: () {},
                     width: 167.w,
-                    height: 40.w,
+                    height: 40.h,
                     borderRadius: 50.r,
                     textStyle: AppStyle.inter13w400C000000,
                     backgroundColor: Colors.white,
                     borderColor: Colors.black,
                     borderWidth: 1.w,
                   ),
+                  Gap(20.w),
                   AppButton(
                     text: 'Save Changes',
                     onPressed: () {},
                     width: 167.w,
-                    height: 40.w,
+                    height: 40.h,
                     borderRadius: 50.r,
                     backgroundColor: AppColors.primary,
                     textStyle: AppStyle.inter13w900CFFFFFF,
@@ -407,9 +412,9 @@ class ColorCircle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 30,
-      height: 30,
-      margin: EdgeInsets.only(right: 8),
+      width: 30.w,
+      height: 30.h,
+      margin: EdgeInsets.only(right: 8.w),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: color,

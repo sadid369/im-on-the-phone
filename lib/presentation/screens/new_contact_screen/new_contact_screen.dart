@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 
 import '../../widgets/custom_bottons/custom_button/app_button.dart';
 import '../../widgets/custom_text_form_field/custom_text_form.dart';
@@ -19,7 +21,7 @@ class _NewContactScreenState extends State<NewContactScreen> {
   bool _isPickingFile = false;
 
   // Consistent border style for all text fields
-  final _borderRadius = BorderRadius.circular(12);
+  final _borderRadius = BorderRadius.circular(12.r);
   final _borderColor = Colors.grey.shade300;
 
   @override
@@ -43,7 +45,7 @@ class _NewContactScreenState extends State<NewContactScreen> {
   Future<void> _pickVoiceFile() async {
     if (_isPickingFile) return;
     setState(() {
-      _isPickingFile = true; // Show the loading indicator
+      _isPickingFile = true;
     });
 
     try {
@@ -62,8 +64,7 @@ class _NewContactScreenState extends State<NewContactScreen> {
       // Optionally handle error
     } finally {
       setState(() {
-        _isPickingFile =
-            false; // Hide the loading indicator once the process is complete
+        _isPickingFile = false;
       });
     }
   }
@@ -81,18 +82,18 @@ class _NewContactScreenState extends State<NewContactScreen> {
         borderRadius: _borderRadius,
         onTap: enabled ? onTap : null,
         child: Container(
-          margin: const EdgeInsets.symmetric(vertical: 6),
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          margin: EdgeInsets.symmetric(vertical: 6.h),
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
           decoration: BoxDecoration(
             color: Colors.white,
-            border: Border.all(color: _borderColor, width: 1.2),
+            border: Border.all(color: _borderColor, width: 1.2.w),
             borderRadius: _borderRadius,
           ),
           child: Row(
             children: [
               leading,
               if (title != null) ...[
-                const SizedBox(width: 12),
+                Gap(12.w),
                 Expanded(child: title),
               ],
               if (trailing != null) trailing,
@@ -109,33 +110,33 @@ class _NewContactScreenState extends State<NewContactScreen> {
     return Scaffold(
       backgroundColor: Colors.grey.shade50,
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
         child: Column(
           children: [
             // ===== custom "AppBar" =====
             SafeArea(
               bottom: false,
               child: Container(
-                height: topPadding + 56,
+                height: topPadding + 56.h,
                 child: Row(
                   children: [
                     GestureDetector(
                       onTap: () => Navigator.of(context).pop(),
-                      child: const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.w),
                         child: Text(
                           'Cancel',
-                          style: TextStyle(color: Colors.teal, fontSize: 16),
+                          style: TextStyle(color: Colors.teal, fontSize: 16.sp),
                         ),
                       ),
                     ),
-                    const Expanded(
+                    Expanded(
                       child: Center(
                         child: Text(
                           'New Contact',
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 18,
+                            fontSize: 18.sp,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -144,13 +145,13 @@ class _NewContactScreenState extends State<NewContactScreen> {
                     TextButton(
                       onPressed: _onSave,
                       style: TextButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        padding: EdgeInsets.symmetric(horizontal: 16.w),
                         minimumSize: Size.zero,
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
-                      child: const Text(
+                      child: Text(
                         'Done',
-                        style: TextStyle(color: Colors.black, fontSize: 16),
+                        style: TextStyle(color: Colors.black, fontSize: 16.sp),
                       ),
                     ),
                   ],
@@ -161,19 +162,18 @@ class _NewContactScreenState extends State<NewContactScreen> {
             Column(
               children: [
                 CircleAvatar(
-                  radius: 40,
+                  radius: 40.r,
                   backgroundColor: Colors.grey.shade300,
-                  child:
-                      const Icon(Icons.person, size: 40, color: Colors.white70),
+                  child: Icon(Icons.person, size: 40.r, color: Colors.white70),
                 ),
                 TextButton(
                   onPressed: () {/* pick photo */},
-                  child: const Text('Add Photo',
-                      style: TextStyle(color: Colors.grey)),
+                  child: Text('Add Photo',
+                      style: TextStyle(color: Colors.grey, fontSize: 14.sp)),
                 ),
               ],
             ),
-            const SizedBox(height: 10),
+            Gap(10.h),
 
             // First & Last name fields
             CustomTextFormField(
@@ -182,20 +182,20 @@ class _NewContactScreenState extends State<NewContactScreen> {
               borderRadius: _borderRadius,
               enabledBorderColor: _borderColor,
               focusedBorderColor: _borderColor,
-              focusedBorderWidth: 1.2,
-              enabledBorderWidth: 1.2,
+              focusedBorderWidth: 1.2.w,
+              enabledBorderWidth: 1.2.w,
             ),
-            const SizedBox(height: 12),
+            Gap(12.h),
             CustomTextFormField(
               controller: _lastNameController,
               hintText: 'Last name',
               borderRadius: _borderRadius,
               enabledBorderColor: _borderColor,
               focusedBorderColor: _borderColor,
-              focusedBorderWidth: 1.2,
-              enabledBorderWidth: 1.2,
+              focusedBorderWidth: 1.2.w,
+              enabledBorderWidth: 1.2.w,
             ),
-            const SizedBox(height: 12),
+            Gap(12.h),
 
             // Phone field
             CustomTextFormField(
@@ -205,11 +205,11 @@ class _NewContactScreenState extends State<NewContactScreen> {
               borderRadius: _borderRadius,
               enabledBorderColor: _borderColor,
               focusedBorderColor: _borderColor,
-              focusedBorderWidth: 1.2,
-              enabledBorderWidth: 1.2,
-              prefix: Icon(Icons.phone, color: Colors.green, size: 20),
+              focusedBorderWidth: 1.2.w,
+              enabledBorderWidth: 1.2.w,
+              prefix: Icon(Icons.phone, color: Colors.green, size: 20.r),
             ),
-            const SizedBox(height: 12),
+            Gap(12.h),
 
             // Message field
             CustomTextFormField(
@@ -218,65 +218,67 @@ class _NewContactScreenState extends State<NewContactScreen> {
               maxLength: 200,
               keyboardType: TextInputType.multiline,
               contentPadding:
-                  const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+                  EdgeInsets.symmetric(vertical: 16.h, horizontal: 12.w),
               borderRadius: _borderRadius,
               enabledBorderColor: _borderColor,
               focusedBorderColor: _borderColor,
-              focusedBorderWidth: 1.2,
-              enabledBorderWidth: 1.2,
+              focusedBorderWidth: 1.2.w,
+              enabledBorderWidth: 1.2.w,
             ),
-            const SizedBox(height: 16),
+            Gap(16.h),
 
             // Ringtone section
             _buildSectionTile(
-              leading: const Icon(Icons.music_note, color: Colors.grey),
-              title: const Text('Ringtone'),
-              trailing: const Text('Default',
-                  style: TextStyle(color: Colors.black54)),
+              leading: Icon(Icons.music_note, color: Colors.grey, size: 24.r),
+              title: Text('Ringtone', style: TextStyle(fontSize: 15.sp)),
+              trailing: Text('Default',
+                  style: TextStyle(color: Colors.black54, fontSize: 14.sp)),
               onTap: () {/* pick ringtone */},
             ),
 
             // Add Voice section
             _buildSectionTile(
-              leading: const Icon(Icons.add_circle, color: Colors.green),
+              leading: Icon(Icons.add_circle, color: Colors.green, size: 24.r),
               title: Text(
-                  _selectedVoicePath != null ? _voiceFileName : 'add voice'),
+                _selectedVoicePath != null ? _voiceFileName : 'add voice',
+                style: TextStyle(fontSize: 15.sp),
+              ),
               trailing: _isPickingFile
-                  ? const SizedBox(
-                      width: 24,
-                      height: 24,
+                  ? SizedBox(
+                      width: 24.w,
+                      height: 24.h,
                       child: CircularProgressIndicator(strokeWidth: 2),
                     )
-                  : const Icon(
-                      Icons.graphic_eq, // Built-in waveform icon
+                  : Icon(
+                      Icons.graphic_eq,
                       color: Colors.grey,
-                      size: 24,
+                      size: 24.r,
                     ),
-              onTap: _pickVoiceFile, // Trigger file picker
-              enabled: !_isPickingFile, // Disable while picking
+              onTap: _pickVoiceFile,
+              enabled: !_isPickingFile,
             ),
 
             // Add Theme section
             _buildSectionTile(
-              leading: const Icon(Icons.add_circle, color: Colors.green),
-              title: const Text('add theme'),
-              trailing: const Icon(Icons.palette, color: Colors.grey),
+              leading: Icon(Icons.add_circle, color: Colors.green, size: 24.r),
+              title: Text('add theme', style: TextStyle(fontSize: 15.sp)),
+              trailing: Icon(Icons.palette, color: Colors.grey, size: 24.r),
               onTap: () {/* add theme */},
             ),
 
-            const SizedBox(height: 24),
+            Gap(24.h),
 
             // Save button
             AppButton(
               text: 'Save Contact',
               onPressed: _onSave,
-              textStyle: const TextStyle(
+              textStyle: TextStyle(
                 color: Colors.white,
-                fontSize: 16,
+                fontSize: 16.sp,
                 fontWeight: FontWeight.w600,
               ),
-              borderRadius: 12,
-              height: 50,
+              borderRadius: 12.r,
+              height: 50.h,
             ),
           ],
         ),

@@ -17,17 +17,15 @@ class AdminSettingsScreen extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(16.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                // padding: EdgeInsets.symmetric(horizontal: 16.0),
-                height: kToolbarHeight,
+                height: kToolbarHeight.h,
                 decoration: BoxDecoration(
-                  // color: Colors.white,
                   border: Border(
-                    bottom: BorderSide(color: Colors.grey.shade300, width: 1),
+                    bottom: BorderSide(color: Colors.grey.shade300, width: 1.w),
                   ),
                 ),
                 child: Row(
@@ -42,23 +40,22 @@ class AdminSettingsScreen extends StatelessWidget {
               ),
               Gap(20.h),
               Container(
-                height: 100.w,
+                height: 100.h,
                 width: double.infinity,
                 padding: EdgeInsets.all(10.w),
                 decoration: BoxDecoration(
-                  // color: Colors.white,
                   borderRadius: BorderRadius.circular(5.r),
                   border: Border.all(
                     color: Colors.grey.shade300,
-                    width: 1,
+                    width: 1.w,
                   ),
                 ),
                 child: Row(
                   children: [
                     CircleAvatar(
                       radius: 30.r,
-                      backgroundImage: AssetImage(Assets.images.profileImage
-                          .path), // Replace with your image asset
+                      backgroundImage:
+                          AssetImage(Assets.images.profileImage.path),
                     ),
                     Gap(19.w),
                     Column(
@@ -78,20 +75,19 @@ class AdminSettingsScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 32),
+              Gap(32.h),
               Container(
                 width: double.infinity,
-                height: 47,
+                height: 47.h,
                 alignment: Alignment.centerLeft,
-                padding: const EdgeInsets.only(left: 21),
+                padding: EdgeInsets.only(left: 21.w),
                 decoration: BoxDecoration(
                   color: const Color(0x33D9D9D9),
-                  // borderRadius: BorderRadius.circular(50),
                   border: Border(
-                    top:
-                        BorderSide(width: 1, color: Colors.black.withAlpha(51)),
-                    bottom:
-                        BorderSide(width: 1, color: Colors.black.withAlpha(51)),
+                    top: BorderSide(
+                        width: 1.w, color: Colors.black.withAlpha(51)),
+                    bottom: BorderSide(
+                        width: 1.w, color: Colors.black.withAlpha(51)),
                   ),
                 ),
                 child: Text(
@@ -103,7 +99,7 @@ class AdminSettingsScreen extends StatelessWidget {
               Container(
                 decoration: BoxDecoration(
                   border: Border(
-                    bottom: BorderSide(color: Colors.grey.shade300, width: 1),
+                    bottom: BorderSide(color: Colors.grey.shade300, width: 1.w),
                   ),
                 ),
                 child: ListTile(
@@ -114,18 +110,17 @@ class AdminSettingsScreen extends StatelessWidget {
                     style: AppStyle.roboto16w400C000000,
                   ),
                   onTap: () {
-                    // Handle update profile logic
                     context.push(
                         '${RoutePath.adminSettings.addBasePath}/${RoutePath.adminUpdateProfileScreen}');
                   },
                   trailing: Icon(Icons.arrow_forward_ios,
-                      size: 16, color: Colors.grey.shade600),
+                      size: 16.r, color: Colors.grey.shade600),
                 ),
               ),
               Container(
                 decoration: BoxDecoration(
                   border: Border(
-                    bottom: BorderSide(color: Colors.grey.shade300, width: 1),
+                    bottom: BorderSide(color: Colors.grey.shade300, width: 1.w),
                   ),
                 ),
                 child: ListTile(
@@ -140,23 +135,22 @@ class AdminSettingsScreen extends StatelessWidget {
                         '${RoutePath.adminSettings.addBasePath}/${RoutePath.adminChangePasswordScreen}');
                   },
                   trailing: Icon(Icons.arrow_forward_ios,
-                      size: 16, color: Colors.grey.shade600),
+                      size: 16.r, color: Colors.grey.shade600),
                 ),
               ),
               Gap(20.h),
               Container(
                 width: double.infinity,
-                height: 47,
+                height: 47.h,
                 alignment: Alignment.centerLeft,
-                padding: const EdgeInsets.only(left: 21),
+                padding: EdgeInsets.only(left: 21.w),
                 decoration: BoxDecoration(
                   color: const Color(0x33D9D9D9),
-                  // borderRadius: BorderRadius.circular(50),
                   border: Border(
-                    top:
-                        BorderSide(width: 1, color: Colors.black.withAlpha(51)),
-                    bottom:
-                        BorderSide(width: 1, color: Colors.black.withAlpha(51)),
+                    top: BorderSide(
+                        width: 1.w, color: Colors.black.withAlpha(51)),
+                    bottom: BorderSide(
+                        width: 1.w, color: Colors.black.withAlpha(51)),
                   ),
                 ),
                 child: Text(
@@ -168,7 +162,7 @@ class AdminSettingsScreen extends StatelessWidget {
               Container(
                 decoration: BoxDecoration(
                   border: Border(
-                    bottom: BorderSide(color: Colors.grey.shade300, width: 1),
+                    bottom: BorderSide(color: Colors.grey.shade300, width: 1.w),
                   ),
                 ),
                 child: ListTile(
@@ -182,17 +176,19 @@ class AdminSettingsScreen extends StatelessWidget {
                         '${RoutePath.adminSettings.addBasePath}/${RoutePath.appConfigurationsScreen}');
                   },
                   trailing: Icon(Icons.arrow_forward_ios,
-                      size: 16, color: Colors.grey.shade600),
+                      size: 16.r, color: Colors.grey.shade600),
                 ),
               ),
-              Gap(23.w),
+              Gap(23.h),
               AppButton(
                 text: "Logout",
-                onPressed: () {},
+                onPressed: () {
+                  context.pushReplacement(RoutePath.login.addBasePath);
+                },
                 width: double.infinity,
                 height: 35.h,
                 backgroundColor: Colors.grey,
-                borderRadius: 8,
+                borderRadius: 8.r,
                 textStyle: AppStyle.inter16w700CFFFFFF,
               )
             ],

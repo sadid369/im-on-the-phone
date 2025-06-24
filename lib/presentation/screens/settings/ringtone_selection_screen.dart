@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 
 class RingtoneSelectionScreen extends StatefulWidget {
   @override
@@ -29,27 +31,41 @@ class _RingtoneSelectionScreenState extends State<RingtoneSelectionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Ringtone'),
+        title: Text('Ringtone', style: TextStyle(fontSize: 18.sp)),
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: ListView(
-          children: ringtones.map((ringtone) {
+        padding: EdgeInsets.all(20.w),
+        child: ListView.separated(
+          itemCount: ringtones.length,
+          separatorBuilder: (context, index) => Gap(8.h),
+          itemBuilder: (context, index) {
+            final ringtone = ringtones[index];
             return ListTile(
-              title: Text(ringtone),
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
+              title: Text(
+                ringtone,
+                style: TextStyle(fontSize: 16.sp),
+              ),
               trailing: selectedRingtone == ringtone
-                  ? Icon(Icons.check, color: Colors.green)
+                  ? Icon(Icons.check, color: Colors.green, size: 22.r)
                   : null,
               onTap: () {
                 setState(() {
                   selectedRingtone = ringtone;
                 });
               },
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.r),
+              ),
+              tileColor: selectedRingtone == ringtone
+                  ? Colors.green.withOpacity(0.08)
+                  : Colors.transparent,
             );
-          }).toList(),
+          },
         ),
       ),
     );

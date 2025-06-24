@@ -21,27 +21,28 @@ class AdminUserScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('User Management'),
+        title: Text('User Management', style: TextStyle(fontSize: 18.sp)),
         backgroundColor: Colors.white,
         elevation: 0,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.w),
         child: Column(
           children: [
             CustomTextFormField(
               controller: TextEditingController(),
               hintText: "Search users...",
-              prefix: Icon(Icons.search, color: Colors.grey),
+              prefix: Icon(Icons.search, color: Colors.grey, size: 20.r),
               filled: true,
               fillColor: Colors.white,
-              borderRadius: BorderRadius.circular(8),
-              contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 12),
+              borderRadius: BorderRadius.circular(8.r),
+              contentPadding:
+                  EdgeInsets.symmetric(vertical: 0.h, horizontal: 12.w),
               enabledBorderColor: Colors.grey.shade300,
               focusedBorderColor: AppColors.primary,
               showCounter: false,
             ),
-            SizedBox(height: 16),
+            Gap(16.h),
             Expanded(
               child: ListView.builder(
                 itemCount: users.length,
@@ -50,25 +51,26 @@ class AdminUserScreen extends StatelessWidget {
                     height: 70.w,
                     width: double.infinity,
                     padding:
-                        EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                        EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
                     margin: EdgeInsets.only(bottom: 10.w),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(5.r),
                       border: Border.all(
                         color: Colors.grey.shade300,
-                        width: 1,
+                        width: 1.w,
                       ),
                     ),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         CircleAvatar(
-                          radius: 24,
+                          radius: 24.r,
                           backgroundColor: Colors.grey[300],
-                          child: Icon(Icons.person, color: Colors.black),
+                          child: Icon(Icons.person,
+                              color: Colors.black, size: 24.r),
                         ),
-                        SizedBox(width: 12),
+                        Gap(12.w),
                         Expanded(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -76,14 +78,19 @@ class AdminUserScreen extends StatelessWidget {
                             children: [
                               Text(
                                 users[index]['name']!,
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15.sp,
+                                ),
                                 overflow: TextOverflow.ellipsis,
                               ),
-                              SizedBox(height: 2),
+                              Gap(2.h),
                               Text(
                                 users[index]['email']!,
                                 style: TextStyle(
-                                    fontSize: 13, color: Colors.grey[700]),
+                                  fontSize: 13.sp,
+                                  color: Colors.grey[700],
+                                ),
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ],
@@ -92,17 +99,18 @@ class AdminUserScreen extends StatelessWidget {
                         AppButton(
                           text: 'Subscriber',
                           onPressed: () {},
-                          width: 90,
-                          height: 32,
+                          width: 90.w,
+                          height: 32.h,
                           backgroundColor: AppColors.primary,
-                          borderRadius: 10,
+                          borderRadius: 10.r,
                           textStyle:
-                              TextStyle(fontSize: 12, color: Colors.white),
+                              TextStyle(fontSize: 10.sp, color: Colors.white),
                         ),
                         Gap(5.w),
                         Icon(
                           Icons.remove_red_eye_outlined,
                           color: Colors.grey,
+                          size: 22.r,
                         )
                       ],
                     ),

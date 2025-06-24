@@ -560,4 +560,10 @@ class AppStyle {
     height: 0.71,
     letterSpacing: -0.50,
   );
+  static final roboto16w700C000000 = GoogleFonts.roboto(
+    color: const Color(0xFF000000), // Black color
+    fontSize: 16.sp, // Font size 16, using .sp unit
+    fontWeight: FontWeight.w700, // Font weight is bold
+    height: 1.31, // Line height
+  );
 }

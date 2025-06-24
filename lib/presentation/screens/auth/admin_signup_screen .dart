@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:get/get.dart'; // <-- add this import
+import 'package:get/get.dart';
 import 'package:groc_shopy/helper/extension/base_extension.dart';
 import 'package:groc_shopy/utils/app_colors/app_colors.dart';
 import 'package:groc_shopy/utils/static_strings/static_strings.dart';
@@ -52,15 +52,14 @@ class AdminSignUpScreenState extends State<AdminSignUpScreen> {
                 children: [
                   Gap(16.h),
                   Text(
-                    AppStrings.signUp.tr, // <-- add .tr here
+                    AppStrings.signUp.tr,
                     style: AppStyle.kohSantepheap30w700C000000,
                   ),
                   Gap(30.h),
                   CustomTextFormField(
                     controller: fullNameController,
-                    labelText: AppStrings.fullName.tr, // <-- .tr
-                    hintText: AppStrings.enterYourFullName.tr, // <-- .tr
-                    // suffixIconSvgAsset: Assets.icons.fullName.path,
+                    labelText: AppStrings.fullName.tr,
+                    hintText: AppStrings.enterYourFullName.tr,
                     suffixIcon: Icons.person_outline,
                     obscureText: false,
                     hintStyle: AppStyle.roboto14w500CB3B3B3,
@@ -74,8 +73,8 @@ class AdminSignUpScreenState extends State<AdminSignUpScreen> {
                   Gap(35.h),
                   CustomTextFormField(
                     controller: emailController,
-                    labelText: AppStrings.email.tr, // <-- .tr
-                    hintText: AppStrings.enterYourEmailHint.tr, // <-- .tr
+                    labelText: AppStrings.email.tr,
+                    hintText: AppStrings.enterYourEmailHint.tr,
                     suffixIcon: Icons.email_outlined,
                     obscureText: false,
                     hintStyle: AppStyle.roboto14w500CB3B3B3,
@@ -89,8 +88,8 @@ class AdminSignUpScreenState extends State<AdminSignUpScreen> {
                   Gap(35.h),
                   CustomTextFormField(
                     controller: passwordController,
-                    labelText: AppStrings.password.tr, // <-- .tr
-                    hintText: AppStrings.password.tr, // <-- .tr
+                    labelText: AppStrings.password.tr,
+                    hintText: AppStrings.password.tr,
                     suffixIcon: passwordVisible
                         ? Icons.visibility_outlined
                         : Icons.visibility_off_outlined,
@@ -111,8 +110,8 @@ class AdminSignUpScreenState extends State<AdminSignUpScreen> {
                   Gap(35.h),
                   CustomTextFormField(
                     controller: confirmPasswordController,
-                    labelText: AppStrings.confirmPasswordHint.tr, // <-- .tr
-                    hintText: AppStrings.confirmPasswordHint.tr, // <-- .tr
+                    labelText: AppStrings.confirmPasswordHint.tr,
+                    hintText: AppStrings.confirmPasswordHint.tr,
                     suffixIcon: passwordVisible
                         ? Icons.visibility_outlined
                         : Icons.visibility_off_outlined,
@@ -130,6 +129,7 @@ class AdminSignUpScreenState extends State<AdminSignUpScreen> {
                     fillColor: Colors.white,
                     contentPadding: EdgeInsets.fromLTRB(16.w, 20.h, 16.w, 14.h),
                   ),
+                  Gap(20.h),
                   Row(
                     children: [
                       Checkbox(
@@ -140,16 +140,18 @@ class AdminSignUpScreenState extends State<AdminSignUpScreen> {
                           });
                         },
                         activeColor: AppColors.primary,
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        visualDensity: VisualDensity.compact,
                       ),
                       Text(
-                        AppStrings.rememberMe.tr, // <-- .tr
+                        AppStrings.rememberMe.tr,
                         style: AppStyle.roboto14w400C000000,
                       ),
                     ],
                   ),
                   Gap(33.h),
                   AppButton(
-                    text: AppStrings.signUp.tr, // <-- .tr
+                    text: AppStrings.signUp.tr,
                     onPressed: () async {
                       // Handle sign in logic here
                       final response = await http.get(Uri.parse(
@@ -159,7 +161,7 @@ class AdminSignUpScreenState extends State<AdminSignUpScreen> {
                     width: double.infinity,
                     height: 48.h,
                     backgroundColor: AppColors.primary,
-                    borderRadius: 8,
+                    borderRadius: 8.r,
                     textStyle: AppStyle.inter16w700CFFFFFF,
                   ),
                   Gap(15.h),
@@ -167,9 +169,10 @@ class AdminSignUpScreenState extends State<AdminSignUpScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        AppStrings.dontHaveAAccount.tr, // <-- .tr
+                        AppStrings.dontHaveAAccount.tr,
                         style: AppStyle.roboto14w400C000000,
                       ),
+                      Gap(4.w),
                       GestureDetector(
                         onTap: () {
                           context.push(RoutePath.login.addBasePath);
@@ -180,7 +183,7 @@ class AdminSignUpScreenState extends State<AdminSignUpScreen> {
                             Padding(
                               padding: EdgeInsets.only(bottom: 2.h),
                               child: Text(
-                                AppStrings.signIn.tr, // <-- .tr
+                                AppStrings.signIn.tr,
                                 style: AppStyle.inter14w500C7CE3D7,
                               ),
                             ),
@@ -198,9 +201,9 @@ class AdminSignUpScreenState extends State<AdminSignUpScreen> {
                       ),
                     ],
                   ),
-                  Gap(12.w),
+                  Gap(12.h),
                   Text(
-                    AppStrings.or.tr, // <-- .tr
+                    AppStrings.or.tr,
                     style: AppStyle.roboto14w500C80000000,
                   ),
                   Gap(12.h),
@@ -235,7 +238,8 @@ class AdminSignUpScreenState extends State<AdminSignUpScreen> {
       onTap: onTap,
       child: CircleAvatar(
         backgroundColor: Colors.transparent,
-        child: Image.asset(iconPath),
+        radius: 20.r,
+        child: Image.asset(iconPath, width: 24.w, height: 24.w),
       ),
     );
   }

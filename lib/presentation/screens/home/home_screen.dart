@@ -5,9 +5,11 @@ import 'package:go_router/go_router.dart';
 import 'package:groc_shopy/core/custom_assets/assets.gen.dart';
 import 'package:groc_shopy/utils/app_colors/app_colors.dart';
 import 'package:groc_shopy/utils/text_style/text_style.dart';
+import 'dart:async'; // Add this import
 
 import '../../../core/routes/route_path.dart';
 import '../../widgets/custom_bottons/custom_button/app_button.dart';
+import '../../widgets/subscription_modal/subscription_modal.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -17,13 +19,51 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   String? selectedCallTime;
   String? selectedCaller;
+  int? customMinutes;
+  int? customSeconds;
+  Timer? _countdownTimer; // Add this
+  int _remainingSeconds = 0; // Add this
+  bool _isCountdownActive = false; // Add this
+
+  @override
+  void initState() {
+    super.initState();
+    // Show subscription modal after the widget is built
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _showSubscriptionModal();
+    });
+  }
+
+  void _showSubscriptionModal() {
+    showDialog(
+      context: context,
+      barrierDismissible:
+          false, // Set to true if you want users to dismiss by tapping outside
+      builder: (BuildContext context) {
+        return SubscriptionModal(
+          onSubscribe: () {
+            // Handle subscription logic here
+            Navigator.of(context).pop();
+            // Add your subscription handling code
+            print('User subscribed!');
+          },
+        );
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _countdownTimer?.cancel(); // Cancel timer when disposing
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: EdgeInsets.all(20.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -34,11 +74,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Row(
                   children: [
                     CircleAvatar(
-                      radius: 20,
+                      radius: 20.r,
                       backgroundImage:
                           AssetImage(Assets.images.profileImage.path),
                     ),
-                    SizedBox(width: 10),
+                    Gap(10.w),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -74,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(15.r),
                     ),
                     child: Text(
                       "I'm on \nthe phone",
@@ -83,22 +123,24 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   Positioned(
                     right: 0,
-                    top: -25,
+                    top: -25.h,
                     child: Image.asset(
                       Assets.images.bannerImage1.path,
+                      width: 120.w,
+                      height: 120.h,
                     ),
                   ),
                 ],
               ),
-              SizedBox(height: 20),
+              Gap(20.h),
 
               // Call time options
               Text(
                 'Set up fake call',
                 style: AppStyle.kohSantepheap18w700C030303,
               ),
-              SizedBox(height: 10),
-              Container(
+              Gap(10.h),
+              SizedBox(
                 width: MediaQuery.of(context).size.width,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -110,66 +152,41 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               ),
-              SizedBox(height: 20),
+              Gap(20.h),
 
               // Caller options
               Text(
                 'Caller',
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 16.sp,
                   fontWeight: FontWeight.w600,
                   color: Colors.black,
                 ),
               ),
-              SizedBox(height: 10),
+              Gap(10.h),
               Column(
                 children: [
-                  SizedBox(height: 10.h),
+                  Gap(10.h),
                   callerOption("MOM"),
-                  SizedBox(height: 10.h),
+                  Gap(10.h),
                   callerOption("Love"),
-                  SizedBox(height: 10.h),
+                  Gap(10.h),
                   callerOption("Dad"),
                 ],
               ),
 
-              Spacer(),
+              const Spacer(),
 
               // Start call button
               AppButton(
                 text: 'Start Call',
-                onPressed: () {
-                  if (selectedCaller == null || selectedCallTime == null) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content:
-                            Text('Please select both caller and call time'),
-                        behavior: SnackBarBehavior.floating,
-                      ),
-                    );
-                    return;
-                  }
-                  // Navigate to the fake call screen after 20sec
-                  // Future.delayed(Duration(seconds: 20), () {
-                  //   context.pushNamed(RoutePath.incomingCallScreen, extra: {
-                  //     'callerName': selectedCaller!,
-                  //     'time': _getFormattedTime(),
-                  //     'callDuration': selectedCallTime!,
-                  //   });
-                  // });
-
-                  context.pushNamed(RoutePath.incomingCallScreen, extra: {
-                    'callerName': selectedCaller!,
-                    'time': _getFormattedTime(),
-                    'callDuration': selectedCallTime!,
-                  });
-                },
+                onPressed: _startDelayedCall,
                 backgroundColor: AppColors.primary,
                 textStyle: AppStyle.inter16w700CFFFFFF,
                 enabled: true,
                 width: double.infinity,
-                height: 48,
-                borderRadius: 12,
+                height: 48.h,
+                borderRadius: 12.r,
               ),
             ],
           ),
@@ -185,31 +202,516 @@ class _HomeScreenState extends State<HomeScreen> {
     return '$hour:$minute';
   }
 
+  // Add method to show custom time picker
+  // void _showCustomTimePicker() {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       int tempMinutes = customMinutes ?? 0;
+  //       int tempSeconds = customSeconds ?? 0;
+
+  //       return StatefulBuilder(
+  //         builder: (context, setDialogState) {
+  //           return AlertDialog(
+  //             title: Text('Select Custom Time'),
+  //             content: Column(
+  //               mainAxisSize: MainAxisSize.min,
+  //               children: [
+  //                 Row(
+  //                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //                   children: [
+  //                     // Minutes picker
+  //                     Column(
+  //                       children: [
+  //                         Text('Minutes', style: TextStyle(fontSize: 16.sp)),
+  //                         Container(
+  //                           width: 80.w,
+  //                           child: DropdownButton<int>(
+  //                             value: tempMinutes,
+  //                             isExpanded: true,
+  //                             items: List.generate(60, (index) => index)
+  //                                 .map((int value) {
+  //                               return DropdownMenuItem<int>(
+  //                                 value: value,
+  //                                 child: Text(value.toString()),
+  //                               );
+  //                             }).toList(),
+  //                             onChanged: (newValue) {
+  //                               setDialogState(() {
+  //                                 tempMinutes = newValue!;
+  //                               });
+  //                             },
+  //                           ),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                     // Seconds picker
+  //                     Column(
+  //                       children: [
+  //                         Text('Seconds', style: TextStyle(fontSize: 16.sp)),
+  //                         Container(
+  //                           width: 80.w,
+  //                           child: DropdownButton<int>(
+  //                             value: tempSeconds,
+  //                             isExpanded: true,
+  //                             items: List.generate(60, (index) => index)
+  //                                 .map((int value) {
+  //                               return DropdownMenuItem<int>(
+  //                                 value: value,
+  //                                 child: Text(value.toString()),
+  //                               );
+  //                             }).toList(),
+  //                             onChanged: (newValue) {
+  //                               setDialogState(() {
+  //                                 tempSeconds = newValue!;
+  //                               });
+  //                             },
+  //                           ),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                   ],
+  //                 ),
+  //               ],
+  //             ),
+  //             actions: [
+  //               TextButton(
+  //                 onPressed: () => Navigator.of(context).pop(),
+  //                 child: Text('Cancel'),
+  //               ),
+  //               TextButton(
+  //                 onPressed: () {
+  //                   setState(() {
+  //                     customMinutes = tempMinutes;
+  //                     customSeconds = tempSeconds;
+  //                     selectedCallTime = "Custom";
+  //                   });
+  //                   Navigator.of(context).pop();
+  //                 },
+  //                 child: Text('OK'),
+  //               ),
+  //             ],
+  //           );
+  //         },
+  //       );
+  //     },
+  //   );
+  // }
+  // Add method to show custom time picker
+  void _showCustomTimePicker() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        int tempMinutes = customMinutes ?? 0;
+        int tempSeconds = customSeconds ?? 0;
+
+        return StatefulBuilder(
+          builder: (context, setDialogState) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.r),
+              ),
+              child: Container(
+                padding: EdgeInsets.all(24.w),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20.r),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 10,
+                      offset: Offset(0, 5),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Title
+                    Text(
+                      'Set Custom Time',
+                      style: TextStyle(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.primary,
+                      ),
+                    ),
+                    Gap(20.h),
+
+                    // Time pickers container
+                    Container(
+                      padding: EdgeInsets.all(16.w),
+                      decoration: BoxDecoration(
+                        color: Color(0xffF8F9FA),
+                        borderRadius: BorderRadius.circular(12.r),
+                        border: Border.all(
+                          color: AppColors.primary.withOpacity(0.2),
+                          width: 1,
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          // Minutes picker
+                          Expanded(
+                            child: Column(
+                              children: [
+                                Text(
+                                  'Minutes',
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.primary,
+                                  ),
+                                ),
+                                Gap(8.h),
+                                Container(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 12.w),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(8.r),
+                                    border: Border.all(
+                                      color: AppColors.primary.withOpacity(0.3),
+                                      width: 1,
+                                    ),
+                                  ),
+                                  child: DropdownButton<int>(
+                                    value: tempMinutes,
+                                    isExpanded: true,
+                                    underline: SizedBox(),
+                                    icon: Icon(
+                                      Icons.keyboard_arrow_down,
+                                      color: AppColors.primary,
+                                    ),
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                    items: List.generate(60, (index) => index)
+                                        .map((int value) {
+                                      return DropdownMenuItem<int>(
+                                        value: value,
+                                        child: Text(
+                                          value.toString().padLeft(2, '0'),
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16.sp,
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
+                                    onChanged: (newValue) {
+                                      setDialogState(() {
+                                        tempMinutes = newValue!;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          Gap(16.w),
+
+                          // Separator
+                          Container(
+                            width: 1.w,
+                            height: 60.h,
+                            color: AppColors.primary.withOpacity(0.3),
+                          ),
+
+                          Gap(16.w),
+
+                          // Seconds picker
+                          Expanded(
+                            child: Column(
+                              children: [
+                                Text(
+                                  'Seconds',
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.primary,
+                                  ),
+                                ),
+                                Gap(8.h),
+                                Container(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 12.w),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(8.r),
+                                    border: Border.all(
+                                      color: AppColors.primary.withOpacity(0.3),
+                                      width: 1,
+                                    ),
+                                  ),
+                                  child: DropdownButton<int>(
+                                    value: tempSeconds,
+                                    isExpanded: true,
+                                    underline: SizedBox(),
+                                    icon: Icon(
+                                      Icons.keyboard_arrow_down,
+                                      color: AppColors.primary,
+                                    ),
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                    items: List.generate(60, (index) => index)
+                                        .map((int value) {
+                                      return DropdownMenuItem<int>(
+                                        value: value,
+                                        child: Text(
+                                          value.toString().padLeft(2, '0'),
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16.sp,
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
+                                    onChanged: (newValue) {
+                                      setDialogState(() {
+                                        tempSeconds = newValue!;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    Gap(24.h),
+
+                    // Selected time display
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                          vertical: 12.h, horizontal: 16.w),
+                      decoration: BoxDecoration(
+                        color: AppColors.primary.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.access_time,
+                            color: AppColors.primary,
+                            size: 20.r,
+                          ),
+                          Gap(8.w),
+                          Text(
+                            'Selected: ${tempMinutes}m ${tempSeconds}s',
+                            style: TextStyle(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.primary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    Gap(24.h),
+
+                    // Action buttons
+                    Row(
+                      children: [
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () => Navigator.of(context).pop(),
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 12.h),
+                              decoration: BoxDecoration(
+                                color: Colors.grey.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(8.r),
+                                border: Border.all(
+                                  color: Colors.grey.withOpacity(0.3),
+                                  width: 1,
+                                ),
+                              ),
+                              child: Text(
+                                'Cancel',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.grey[600],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Gap(16.w),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                customMinutes = tempMinutes;
+                                customSeconds = tempSeconds;
+                                selectedCallTime = "Custom";
+                              });
+                              Navigator.of(context).pop();
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 12.h),
+                              decoration: BoxDecoration(
+                                color: AppColors.primary,
+                                borderRadius: BorderRadius.circular(8.r),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: AppColors.primary.withOpacity(0.3),
+                                    blurRadius: 8,
+                                    offset: Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                              child: Text(
+                                'Set Time',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  // Add method to convert time to seconds
+  int _getDelayInSeconds() {
+    switch (selectedCallTime) {
+      case "15 sec":
+        return 15;
+      case "30 sec":
+        return 30;
+      case "1 min":
+        return 60;
+      case "Custom":
+        return (customMinutes ?? 0) * 60 + (customSeconds ?? 0);
+      default:
+        return 0;
+    }
+  }
+
+  // Add method to start delayed call
+  void _startDelayedCall() {
+    if (selectedCaller == null || selectedCallTime == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Please select both caller and call time'),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      return;
+    }
+
+    int delaySeconds = _getDelayInSeconds();
+
+    if (delaySeconds == 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Please set a valid time'),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      return;
+    }
+
+    // Show success message
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Fake call will start in ${selectedCallTime}'),
+        behavior: SnackBarBehavior.floating,
+        duration: Duration(seconds: 2),
+      ),
+    );
+
+    // Start timer without showing countdown
+    Timer(Duration(seconds: delaySeconds), () {
+      if (mounted) {
+        context.pushNamed(RoutePath.incomingCallScreen, extra: {
+          'callerName': selectedCaller!,
+          'time': _getFormattedTime(),
+          'callDuration': selectedCallTime!,
+        });
+      }
+    });
+  }
+
+  // Method to cancel countdown
+  void _cancelCountdown() {
+    _countdownTimer?.cancel();
+    setState(() {
+      _isCountdownActive = false;
+      _remainingSeconds = 0;
+    });
+  }
+
+  // Method to format remaining time
+  String _getFormattedRemainingTime() {
+    int minutes = _remainingSeconds ~/ 60;
+    int seconds = _remainingSeconds % 60;
+    if (minutes > 0) {
+      return '${minutes}m ${seconds}s';
+    } else {
+      return '${seconds}s';
+    }
+  }
+
   Widget callTimeButton(String time) {
+    String displayText = time;
+
+    // Only show custom time format for Custom button
+    if (time == "Custom" && selectedCallTime == "Custom") {
+      displayText = "${customMinutes ?? 0}m ${customSeconds ?? 0}s";
+    }
+
     return GestureDetector(
       onTap: () {
-        setState(() {
-          selectedCallTime = time;
-        });
+        if (time == "Custom") {
+          _showCustomTimePicker();
+        } else {
+          setState(() {
+            selectedCallTime = time;
+          });
+        }
       },
       child: Container(
         alignment: Alignment.center,
         width: 79.w,
-        height: 35.w,
-        child: Container(
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: selectedCallTime == time
-                ? AppColors.primary
-                : Color(0xffF2F2F2),
-            borderRadius: BorderRadius.circular(20.r),
-          ),
-          child: Text(
-            time,
-            style: selectedCallTime == time
-                ? AppStyle.roboto16w600CFFFFFF
-                : AppStyle.roboto16w500C030303,
-          ),
+        height: 35.h,
+        decoration: BoxDecoration(
+          color: selectedCallTime == time
+              ? AppColors.primary
+              : const Color(0xffF2F2F2),
+          borderRadius: BorderRadius.circular(20.r),
+        ),
+        child: Text(
+          displayText,
+          style: selectedCallTime == time
+              ? AppStyle.roboto16w600CFFFFFF
+              : AppStyle.roboto16w500C030303,
         ),
       ),
     );
@@ -223,7 +725,7 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       },
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.w),
+        padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
         decoration: BoxDecoration(
           color: selectedCaller == name ? AppColors.primary : Colors.white,
           border: Border.all(color: Colors.black.withOpacity(0.1)),
@@ -234,13 +736,13 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Row(
               children: [
-                SizedBox(width: 16.w),
+                Gap(16.w),
                 Container(
                   alignment: Alignment.center,
                   width: 48.w,
                   height: 48.h,
                   decoration: BoxDecoration(
-                    color: Color(0xffC9867B),
+                    color: const Color(0xffC9867B),
                     shape: BoxShape.circle,
                   ),
                   child: Text(
@@ -248,7 +750,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: AppStyle.roboto32w600CFFFFFF,
                   ),
                 ),
-                SizedBox(width: 16.w),
+                Gap(16.w),
                 Text(
                   name,
                   style: selectedCaller == name
@@ -261,7 +763,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Icons.arrow_forward_ios,
               color:
                   selectedCaller == name ? AppColors.whiteFFFFFF : Colors.black,
-              size: 16,
+              size: 16.r,
             ),
           ],
         ),

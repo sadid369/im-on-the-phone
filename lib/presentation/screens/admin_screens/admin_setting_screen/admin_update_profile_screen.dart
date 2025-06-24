@@ -31,17 +31,15 @@ class _AdminUpdateProfileScreenState extends State<AdminUpdateProfileScreen> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: EdgeInsets.all(20.w),
           child: Column(
             children: [
               // Title
               Container(
-                // padding: EdgeInsets.symmetric(horizontal: 16.0),
-                height: kToolbarHeight,
+                height: kToolbarHeight.h,
                 decoration: BoxDecoration(
-                  // color: Colors.white,
                   border: Border(
-                    bottom: BorderSide(color: Colors.grey.shade300, width: 1),
+                    bottom: BorderSide(color: Colors.grey.shade300, width: 1.w),
                   ),
                 ),
                 child: Row(
@@ -49,26 +47,23 @@ class _AdminUpdateProfileScreenState extends State<AdminUpdateProfileScreen> {
                   children: [
                     IconButton(
                       icon: Icon(Icons.arrow_back_ios,
-                          color: Colors.black, size: 15),
+                          color: Colors.black, size: 15.r),
                       onPressed: () => Navigator.of(context).pop(),
                     ),
                     Text(
                       'Update Profile',
                       style: AppStyle.kohSantepheap18w700C1E1E1E,
                     ),
-                    SizedBox()
+                    Gap(15.w),
                   ],
                 ),
               ),
-              // Divider
-
               // Back arrow (replace with IconButton if needed)
               Container(
                 alignment: Alignment.centerLeft,
-                margin: const EdgeInsets.only(
-                    left: 32, top: 0), // Changed top: -23 to top: 0
-                width: 12,
-                height: 24,
+                margin: EdgeInsets.only(left: 32.w, top: 0.h),
+                width: 12.w,
+                height: 24.h,
                 // Add your back arrow widget here
               ),
               Stack(
@@ -76,20 +71,19 @@ class _AdminUpdateProfileScreenState extends State<AdminUpdateProfileScreen> {
                 children: [
                   // Profile image
                   Container(
-                    margin: const EdgeInsets.only(top: 44),
-                    width: 100,
-                    height: 100,
+                    margin: EdgeInsets.only(top: 44.h),
+                    width: 100.w,
+                    height: 100.w,
                     decoration: ShapeDecoration(
                       color: const Color(0xFFD9D9D9),
                       shape: OvalBorder(),
                     ),
                     child: ClipOval(
                       child: Image.asset(
-                        Assets.images.profileImage
-                            .path, // Replace with your image path
+                        Assets.images.profileImage.path,
                         fit: BoxFit.cover,
-                        width: 100,
-                        height: 100,
+                        width: 100.w,
+                        height: 100.w,
                       ),
                     ),
                   ),
@@ -98,71 +92,71 @@ class _AdminUpdateProfileScreenState extends State<AdminUpdateProfileScreen> {
                     bottom: 0,
                     right: 0,
                     child: Container(
-                      width: 28,
-                      height: 28,
+                      width: 28.w,
+                      height: 28.w,
                       decoration: ShapeDecoration(
                         color: Colors.white.withOpacity(0.7),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50),
+                          borderRadius: BorderRadius.circular(50.r),
                         ),
                       ),
                       child: IconButton(
                         padding: EdgeInsets.zero,
                         icon: Icon(Icons.camera_alt,
-                            color: Colors.black, size: 16),
+                            color: Colors.black, size: 16.r),
                         onPressed: () {
                           showModalBottomSheet(
                             context: context,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.vertical(
-                                  top: Radius.circular(20)),
+                                  top: Radius.circular(20.r)),
                             ),
                             builder: (context) {
                               return Container(
-                                width: 393,
-                                height: 182,
+                                width: 393.w,
+                                height: 182.h,
                                 decoration: ShapeDecoration(
                                   color: Colors.white,
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
+                                    borderRadius: BorderRadius.circular(20.r),
                                   ),
                                 ),
                                 child: Column(
                                   children: [
-                                    SizedBox(height: 5), // top spacing
+                                    Gap(5.h), // top spacing
                                     Align(
                                       alignment: Alignment.center,
                                       child: Container(
-                                        width: 30,
-                                        height: 4,
+                                        width: 30.w,
+                                        height: 4.h,
                                         decoration: ShapeDecoration(
                                           color: const Color(0xFFCACACA),
                                           shape: RoundedRectangleBorder(
                                             borderRadius:
-                                                BorderRadius.circular(50),
+                                                BorderRadius.circular(50.r),
                                           ),
                                         ),
                                       ),
                                     ),
-                                    SizedBox(height: 10), // spacing
+                                    Gap(10.h), // spacing
                                     // Add more widgets here if needed
                                     Container(
-                                      margin: const EdgeInsets.symmetric(
-                                          vertical: 20, horizontal: 20),
+                                      margin: EdgeInsets.symmetric(
+                                          vertical: 20.h, horizontal: 20.w),
                                       child: Row(
                                         children: [
                                           Column(
                                             children: [
                                               Container(
-                                                width: 50,
-                                                height: 50,
+                                                width: 50.w,
+                                                height: 50.w,
                                                 decoration: ShapeDecoration(
                                                   color: Colors.white,
                                                   shape: OvalBorder(),
                                                   shadows: [
                                                     BoxShadow(
                                                       color: Color(0x3F000000),
-                                                      blurRadius: 4,
+                                                      blurRadius: 4.r,
                                                       offset: Offset(1, 2),
                                                       spreadRadius: 0,
                                                     )
@@ -171,14 +165,14 @@ class _AdminUpdateProfileScreenState extends State<AdminUpdateProfileScreen> {
                                                 child: IconButton(
                                                   icon: Icon(Icons.camera_alt,
                                                       color: Colors.black,
-                                                      size: 24),
+                                                      size: 24.r),
                                                   onPressed: () {
                                                     // Handle camera upload
                                                     Navigator.pop(context);
                                                   },
                                                 ),
                                               ),
-                                              SizedBox(height: 8), // spacing
+                                              Gap(8.h), // spacing
                                               Text(
                                                 'Camera',
                                                 style: AppStyle
@@ -186,19 +180,19 @@ class _AdminUpdateProfileScreenState extends State<AdminUpdateProfileScreen> {
                                               ),
                                             ],
                                           ),
-                                          SizedBox(width: 20), // spacing
+                                          Gap(20.w), // spacing
                                           Column(
                                             children: [
                                               Container(
-                                                width: 50,
-                                                height: 50,
+                                                width: 50.w,
+                                                height: 50.w,
                                                 decoration: ShapeDecoration(
                                                   color: Colors.white,
                                                   shape: OvalBorder(),
                                                   shadows: [
                                                     BoxShadow(
                                                       color: Color(0x3F000000),
-                                                      blurRadius: 4,
+                                                      blurRadius: 4.r,
                                                       offset: Offset(1, 2),
                                                       spreadRadius: 0,
                                                     )
@@ -207,14 +201,14 @@ class _AdminUpdateProfileScreenState extends State<AdminUpdateProfileScreen> {
                                                 child: IconButton(
                                                   icon: Icon(Icons.attach_file,
                                                       color: Colors.black,
-                                                      size: 24),
+                                                      size: 24.r),
                                                   onPressed: () {
                                                     // Handle camera upload
                                                     Navigator.pop(context);
                                                   },
                                                 ),
                                               ),
-                                              SizedBox(height: 8), // spacing
+                                              Gap(8.h), // spacing
                                               Text(
                                                 'Upload',
                                                 style: AppStyle
@@ -238,25 +232,22 @@ class _AdminUpdateProfileScreenState extends State<AdminUpdateProfileScreen> {
               ),
               // Upload text
               Container(
-                margin: const EdgeInsets.only(top: 10),
+                margin: EdgeInsets.only(top: 10.h),
                 child: Text(
                   'Tap the camera icon to upload',
                   style: AppStyle.roboto14w400C808080,
                 ),
               ),
-              Gap(13.w),
+              Gap(13.h),
               // Full Name field
               Container(
-                // padding: const EdgeInsets.symmetric(
-                //     vertical: 15, horizontal: 16), // Adjusted padding
                 alignment: Alignment.center,
-                // margin: const EdgeInsets.only(top: 40, left: 20, right: 20),
                 width: double.infinity,
                 height: 100.w,
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: Colors.grey.shade300,
-                    width: 1,
+                    width: 1.w,
                   ),
                   borderRadius: BorderRadius.circular(10.r),
                 ),
@@ -269,7 +260,7 @@ class _AdminUpdateProfileScreenState extends State<AdminUpdateProfileScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(left: 16, top: 8),
+                          padding: EdgeInsets.only(left: 16.w, top: 8.h),
                           child: Text(
                             "Full Name",
                             style: AppStyle.roboto14w400C808080,
@@ -279,14 +270,14 @@ class _AdminUpdateProfileScreenState extends State<AdminUpdateProfileScreen> {
                     ),
                     CustomTextFormField(
                       prefix: Icon(Icons.person_2_outlined,
-                          color: Colors.black.withOpacity(0.5), size: 20),
+                          color: Colors.black.withOpacity(0.5), size: 20.r),
                       controller: _nameController,
                       style: AppStyle.robotoMono16w500C030303,
                       filled: false,
                       enabledBorderColor: Colors.transparent,
                       focusedBorderColor: Colors.transparent,
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 0, horizontal: 0),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 0.h, horizontal: 0.w),
                       borderRadius: BorderRadius.circular(0),
                       showCounter: false,
                       onChanged: (value) {
@@ -296,18 +287,15 @@ class _AdminUpdateProfileScreenState extends State<AdminUpdateProfileScreen> {
                   ],
                 ),
               ),
-              Gap(25.w),
+              Gap(25.h),
               Container(
-                // padding: const EdgeInsets.symmetric(
-                //     vertical: 15, horizontal: 16), // Adjusted padding
                 alignment: Alignment.center,
-                // margin: const EdgeInsets.only(top: 40, left: 20, right: 20),
                 width: double.infinity,
                 height: 100.w,
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: Colors.grey.shade300,
-                    width: 1,
+                    width: 1.w,
                   ),
                   borderRadius: BorderRadius.circular(10.r),
                 ),
@@ -320,7 +308,7 @@ class _AdminUpdateProfileScreenState extends State<AdminUpdateProfileScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(left: 16, top: 8),
+                          padding: EdgeInsets.only(left: 16.w, top: 8.h),
                           child: Text(
                             "Email Address",
                             style: AppStyle.roboto14w400C808080,
@@ -330,14 +318,14 @@ class _AdminUpdateProfileScreenState extends State<AdminUpdateProfileScreen> {
                     ),
                     CustomTextFormField(
                       prefix: Icon(Icons.email_outlined,
-                          color: Colors.black.withOpacity(0.5), size: 20),
+                          color: Colors.black.withOpacity(0.5), size: 20.r),
                       controller: _emailController,
                       style: AppStyle.robotoMono16w500C030303,
                       filled: false,
                       enabledBorderColor: Colors.transparent,
                       focusedBorderColor: Colors.transparent,
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 0, horizontal: 0),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 0.h, horizontal: 0.w),
                       borderRadius: BorderRadius.circular(0),
                       showCounter: false,
                       onChanged: (value) {
@@ -347,16 +335,16 @@ class _AdminUpdateProfileScreenState extends State<AdminUpdateProfileScreen> {
                   ],
                 ),
               ),
-              Gap(57.w),
+              Gap(57.h),
               // Save Changes button
               AppButton(
                 text: 'Save Changes',
                 onPressed: () {
                   // Handle save changes action
                 },
-                height: 35,
+                height: 35.h,
                 backgroundColor: const Color(0xFF77E9D6),
-                borderRadius: 5,
+                borderRadius: 5.r,
                 textStyle: AppStyle.inter12w700CFFFFFF,
               ),
               // Add more fields as needed...

@@ -1,0 +1,2 @@
+/Users/binarybards/Downloads/im-on-the-phone/android/app/.cxx/RelWithDebInfo/445n2d3h/x86/CMakeFiles/edit_cache.dir
+/Users/binarybards/Downloads/im-on-the-phone/android/app/.cxx/RelWithDebInfo/445n2d3h/x86/CMakeFiles/rebuild_cache.dir

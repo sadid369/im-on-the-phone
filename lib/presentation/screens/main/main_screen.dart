@@ -1,45 +1,3 @@
-// import 'package:flutter/material.dart';
-// import 'package:go_router/go_router.dart';
-
-// import '../../widgets/custom_navbar/custom_navbar.dart';
-
-// class MainScreenWithBottomNav extends StatelessWidget {
-//   final StatefulNavigationShell navigationShell;
-
-//   const MainScreenWithBottomNav({
-//     super.key,
-//     required this.navigationShell,
-//   });
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: navigationShell,
-//       bottomNavigationBar: CustomBottomNavBar(
-//         selectedIndex: navigationShell.currentIndex,
-//         onTap: (index) => _onTabTapped(context, index),
-//         // Custom icons and labels for your 3-tab navigation
-//         icons: const [
-//           'assets/icons/home.svg',
-//           'assets/icons/search.svg',
-//           'assets/icons/settings.svg',
-//         ],
-//         labels: const [
-//           'Home',
-//           'Search',
-//           'Settings',
-//         ],
-//       ),
-//     );
-//   }
-
-//   void _onTabTapped(BuildContext context, int index) {
-//     navigationShell.goBranch(
-//       index,
-//       initialLocation: index == navigationShell.currentIndex,
-//     );
-//   }
-// }
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../widgets/custom_navbar/custom_navbar.dart';
@@ -51,7 +9,7 @@ class MainScreenWithBottomNav extends StatelessWidget {
   const MainScreenWithBottomNav({
     super.key,
     required this.navigationShell,
-    this.isAdmin = true, // <-- Default to false
+    this.isAdmin = false, // <-- Default to false
   });
 
   @override

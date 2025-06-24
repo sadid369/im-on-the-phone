@@ -30,6 +30,8 @@ dependencies:
   logger: ^2.5.0
   flutter_paypal: ^0.2.1
   file_picker: ^10.2.0
+  audioplayers: ^6.5.0
+  flutter_ringtone_player: ^4.0.0+4
   
   
 

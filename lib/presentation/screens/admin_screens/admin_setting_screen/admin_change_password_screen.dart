@@ -41,18 +41,16 @@ class _AdminChangePasswordScreenState extends State<AdminChangePasswordScreen> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: EdgeInsets.all(20.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Title
               Container(
-                // padding: EdgeInsets.symmetric(horizontal: 16.0),
-                height: kToolbarHeight,
+                height: kToolbarHeight.h,
                 decoration: BoxDecoration(
-                  // color: Colors.white,
                   border: Border(
-                    bottom: BorderSide(color: Colors.grey.shade300, width: 1),
+                    bottom: BorderSide(color: Colors.grey.shade300, width: 1.w),
                   ),
                 ),
                 child: Row(
@@ -60,27 +58,25 @@ class _AdminChangePasswordScreenState extends State<AdminChangePasswordScreen> {
                   children: [
                     IconButton(
                       icon: Icon(Icons.arrow_back_ios,
-                          color: Colors.black, size: 15),
+                          color: Colors.black, size: 15.r),
                       onPressed: () => Navigator.of(context).pop(),
                     ),
                     Text(
                       'Change Password',
                       style: AppStyle.kohSantepheap18w700C1E1E1E,
                     ),
-                    SizedBox()
+                    Gap(15.w), // replaces SizedBox()
                   ],
                 ),
               ),
-              // Divider
               Gap(18.h),
               // Back arrow (replace with IconButton if needed)
               Container(
                 alignment: Alignment.centerLeft,
-                margin: const EdgeInsets.only(
-                    left: 32, top: 0), // Changed top: -23 to top: 0
-                width: 12,
-                height: 24,
-                // Add your back arrow widget here
+                margin: EdgeInsets.only(left: 32.w, top: 0.h),
+                width: 12.w,
+                height: 24.h,
+                // Add your back arrow widget here if needed
               ),
               Text(
                 AppStrings.currentPassword.tr,
@@ -103,7 +99,7 @@ class _AdminChangePasswordScreenState extends State<AdminChangePasswordScreen> {
                 focusedBorderColor: AppColors.primary,
                 enabledBorderWidth: 1.5.w,
                 focusedBorderWidth: 1.8.w,
-                borderRadius: BorderRadius.circular(12.dg),
+                borderRadius: BorderRadius.circular(12.r),
               ),
               Gap(18.h),
               Text(
@@ -127,7 +123,7 @@ class _AdminChangePasswordScreenState extends State<AdminChangePasswordScreen> {
                 focusedBorderColor: AppColors.primary,
                 enabledBorderWidth: 1.5.w,
                 focusedBorderWidth: 1.8.w,
-                borderRadius: BorderRadius.circular(12.dg),
+                borderRadius: BorderRadius.circular(12.r),
               ),
               Gap(18.h),
               Text(
@@ -151,7 +147,7 @@ class _AdminChangePasswordScreenState extends State<AdminChangePasswordScreen> {
                 focusedBorderColor: AppColors.primary,
                 enabledBorderWidth: 1.5.w,
                 focusedBorderWidth: 1.8.w,
-                borderRadius: BorderRadius.circular(12.dg),
+                borderRadius: BorderRadius.circular(12.r),
               ),
               Gap(26.h),
               // Save Changes button
@@ -160,9 +156,9 @@ class _AdminChangePasswordScreenState extends State<AdminChangePasswordScreen> {
                 onPressed: () {
                   // Handle save changes action
                 },
-                height: 35,
+                height: 35.h,
                 backgroundColor: const Color(0xFF77E9D6),
-                borderRadius: 5,
+                borderRadius: 5.r,
                 textStyle: AppStyle.inter12w700CFFFFFF,
               ),
               // Add more fields as needed...

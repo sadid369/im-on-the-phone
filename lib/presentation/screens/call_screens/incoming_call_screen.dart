@@ -1,252 +1,3 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter_screenutil/flutter_screenutil.dart';
-// import 'package:flutter_svg/flutter_svg.dart';
-// import 'package:gap/gap.dart';
-// import 'package:go_router/go_router.dart';
-// import 'package:groc_shopy/core/custom_assets/assets.gen.dart';
-
-// class IncomingCallScreen extends StatefulWidget {
-//   final String callerName;
-//   final String time;
-//   final String callDuration;
-
-//   const IncomingCallScreen({
-//     Key? key,
-//     required this.callerName,
-//     required this.time,
-//     required this.callDuration,
-//   }) : super(key: key);
-
-//   @override
-//   State<IncomingCallScreen> createState() => _IncomingCallScreenState();
-// }
-
-// class _IncomingCallScreenState extends State<IncomingCallScreen>
-//     with SingleTickerProviderStateMixin {
-//   late AnimationController _controller;
-//   late Animation<double> _dot1Animation;
-//   late Animation<double> _dot2Animation;
-//   late Animation<double> _dot3Animation;
-
-//   @override
-//   void initState() {
-//     super.initState();
-
-//     _controller = AnimationController(
-//       vsync: this,
-//       duration: const Duration(milliseconds: 1500),
-//     )..repeat();
-
-//     // Create staggered animations for each dot
-//     _dot1Animation = _createDotAnimation(begin: 0.0, end: 0.33);
-//     _dot2Animation = _createDotAnimation(begin: 0.33, end: 0.66);
-//     _dot3Animation = _createDotAnimation(begin: 0.66, end: 1.0);
-//   }
-
-//   Animation<double> _createDotAnimation({required double begin, required double end}) {
-//     return TweenSequence<double>([
-//       TweenSequenceItem(weight: 0.01, tween: Tween(begin: 0.3, end: 1.0), // Fade in
-//       TweenSequenceItem(weight: 0.03, tween: Tween(begin: 1.0, end: 0.3),
-//        // Fade out
-//     ]).animate(
-//       CurvedAnimation(
-//         parent: _controller,
-//         curve: Interval(begin, end, curve: Curves.easeInOut),
-//       ),
-//     );
-//   }
-
-//   @override
-//   void dispose() {
-//     _controller.dispose();
-//     super.dispose();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: Colors.white,
-//       body: SafeArea(
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.spaceAround,
-//           children: [
-//             // Caller information
-//             Column(
-//               children: [
-//                 CircleAvatar(
-//                   backgroundColor: const Color(0xffC9867B),
-//                   radius: 40.r,
-//                   child: Text(
-//                     widget.callerName[0],
-//                     style: TextStyle(
-//                       color: Colors.white,
-//                       fontSize: 38.sp,
-//                       fontWeight: FontWeight.bold,
-//                     ),
-//                   ),
-//                 ),
-//                 const Gap(16),
-//                 Text(
-//                   widget.callerName,
-//                   style: TextStyle(
-//                     color: Colors.black,
-//                     fontSize: 32.sp,
-//                     fontWeight: FontWeight.bold,
-//                   ),
-//                 ),
-//                 const Gap(16),
-//                 Row(
-//                   mainAxisAlignment: MainAxisAlignment.center,
-//                   children: [
-//                     Text(
-//                       'Calling',
-//                       style: TextStyle(
-//                         color: Colors.black,
-//                         fontSize: 18.sp,
-//                       ),
-//                     ),
-//                     const Gap(4),
-//                     _buildAnimatedDot(_dot1Animation),
-//                     _buildAnimatedDot(_dot2Animation),
-//                     _buildAnimatedDot(_dot3Animation),
-//                   ],
-//                 ),
-//               ],
-//             ),
-
-//             // Action buttons
-//             Padding(
-//               padding: EdgeInsets.only(bottom: 40.h),
-//               child: Column(
-//                 children: [
-//                   // Top row buttons
-//                   Row(
-//                     mainAxisAlignment: MainAxisAlignment.center,
-//                     children: [
-//                       _buildActionButton(
-//                         text: 'Remind me',
-//                         icon: Assets.icons.remindMe.path,
-//                         onPressed: () {},
-//                       ),
-//                       Gap(120.w),
-//                       _buildActionButton(
-//                         text: 'Message',
-//                         icon: Assets.icons.message.path,
-//                         onPressed: () {},
-//                       ),
-//                     ],
-//                   ),
-
-//                   const Gap(40),
-
-//                   // Bottom row buttons
-//                   Row(
-//                     mainAxisAlignment: MainAxisAlignment.center,
-//                     children: [
-//                       _buildCallButton(
-//                         text: 'Decline',
-//                         color: Colors.red,
-//                         onPressed: () => context.pop(),
-//                         isAccept: false,
-//                       ),
-//                       Gap(120.w),
-//                       _buildCallButton(
-//                         text: 'Accept',
-//                         color: Colors.green,
-//                         onPressed: () {},
-//                         isAccept: true,
-//                       ),
-//                     ],
-//                   ),
-//                 ],
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-
-//   Widget _buildAnimatedDot(Animation<double> animation) {
-//     return AnimatedBuilder(
-//       animation: animation,
-//       builder: (context, child) {
-//         return Opacity(
-//           opacity: animation.value,
-//           child: const Text(
-//             '.',
-//             style: TextStyle(
-//               color: Colors.black,
-//               fontSize: 18,
-//             ),
-//           ),
-//         );
-//       },
-//     );
-//   }
-
-//   Widget _buildActionButton({
-//     required String text,
-//     required String icon,
-//     required VoidCallback onPressed,
-//   }) {
-//     return Row(
-//       children: [
-//         Gap(10.w),
-//         SvgPicture.asset(
-//           icon,
-//           width: 24.w,
-//           height: 24.h,
-//         ),
-//         Gap(8.w),
-//         Text(
-//           text,
-//           style: TextStyle(
-//             color: Colors.black,
-//             fontSize: 16.sp,
-//           ),
-//         ),
-//       ],
-//     );
-//   }
-
-//   Widget _buildCallButton({
-//     required String text,
-//     required Color color,
-//     required VoidCallback onPressed,
-//     required bool isAccept,
-//   }) {
-//     return Column(
-//       children: [
-//         Container(
-//           width: 72.w,
-//           height: 72.h,
-//           decoration: BoxDecoration(
-//             color: color,
-//             shape: BoxShape.circle,
-//           ),
-//           child: IconButton(
-//             icon: Icon(
-//               isAccept ? Icons.call : Icons.call_end,
-//               color: Colors.white,
-//               size: 32.sp,
-//             ),
-//             onPressed: onPressed,
-//             padding: EdgeInsets.zero,
-//           ),
-//         ),
-//         Gap(8.h),
-//         Text(
-//           text,
-//           style: TextStyle(
-//             color: Colors.black,
-//             fontSize: 16.sp,
-//           ),
-//         ),
-//       ],
-//     );
-//   }
-// }
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -254,6 +5,9 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:groc_shopy/core/custom_assets/assets.gen.dart';
 import 'package:groc_shopy/core/routes/route_path.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart'; // Add this
+import 'dart:async';
 
 class IncomingCallScreen extends StatefulWidget {
   final String callerName;
@@ -277,20 +31,108 @@ class _IncomingCallScreenState extends State<IncomingCallScreen>
   late Animation<double> _dot1Animation;
   late Animation<double> _dot2Animation;
   late Animation<double> _dot3Animation;
+  Timer? _ringtoneTimer;
+  bool _isRingtoneActive = false;
 
   @override
   void initState() {
     super.initState();
+
+    // Start playing ringtone and vibration
+    _playRingtone();
 
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1500),
     )..repeat();
 
-    // Initialize animations after the controller is set up
     _dot1Animation = _createDotAnimation(begin: 0.0, end: 0.33);
     _dot2Animation = _createDotAnimation(begin: 0.33, end: 0.66);
     _dot3Animation = _createDotAnimation(begin: 0.66, end: 1.0);
+  }
+
+  void _playRingtone() async {
+    if (_isRingtoneActive) return;
+
+    _isRingtoneActive = true;
+
+    try {
+      // Method 1: Play actual ringtone
+      await FlutterRingtonePlayer().play(
+        android: AndroidSounds.ringtone,
+        ios: IosSounds.glass,
+        looping: true, // Set to true for continuous ringing
+        volume: 1.0,
+        asAlarm: false,
+      );
+
+      // Method 2: Add vibration pattern for extra effect
+      _startVibrationPattern();
+    } catch (e) {
+      print('Error playing ringtone: $e');
+      // Fallback to system sounds if ringtone fails
+      _playSystemSoundsFallback();
+    }
+  }
+
+  void _startVibrationPattern() {
+    // Create a vibration pattern that mimics phone ring
+    _ringtoneTimer = Timer.periodic(Duration(milliseconds: 1000), (timer) {
+      if (mounted && _isRingtoneActive) {
+        HapticFeedback.heavyImpact();
+
+        // Add a second vibration burst
+        Timer(Duration(milliseconds: 200), () {
+          if (mounted && _isRingtoneActive) {
+            HapticFeedback.mediumImpact();
+          }
+        });
+
+        // Add a third vibration burst
+        Timer(Duration(milliseconds: 400), () {
+          if (mounted && _isRingtoneActive) {
+            HapticFeedback.lightImpact();
+          }
+        });
+      } else {
+        timer.cancel();
+      }
+    });
+  }
+
+  void _playSystemSoundsFallback() {
+    // Fallback method using system sounds
+    SystemSound.play(SystemSoundType.alert);
+
+    _ringtoneTimer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (mounted && _isRingtoneActive) {
+        SystemSound.play(SystemSoundType.alert);
+      } else {
+        timer.cancel();
+      }
+    });
+  }
+
+  void _stopRingtone() async {
+    _isRingtoneActive = false;
+
+    try {
+      // Stop the ringtone - use instance method
+      await FlutterRingtonePlayer().stop();
+    } catch (e) {
+      print('Error stopping ringtone: $e');
+    }
+
+    // Cancel timers
+    _ringtoneTimer?.cancel();
+    _ringtoneTimer = null;
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _stopRingtone();
+    super.dispose();
   }
 
   Animation<double> _createDotAnimation(
@@ -317,18 +159,12 @@ class _IncomingCallScreenState extends State<IncomingCallScreen>
   }
 
   @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 50.w),
+          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 50.h),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -372,7 +208,6 @@ class _IncomingCallScreenState extends State<IncomingCallScreen>
                       _buildAnimatedDot(_dot1Animation),
                       _buildAnimatedDot(_dot2Animation),
                       _buildAnimatedDot(_dot3Animation),
-                      _buildAnimatedDot(_dot3Animation),
                     ],
                   ),
                 ],
@@ -380,28 +215,36 @@ class _IncomingCallScreenState extends State<IncomingCallScreen>
 
               // Action buttons
               Padding(
-                padding: EdgeInsets.only(bottom: 0.h, left: 50.w, right: 50.w),
+                padding: EdgeInsets.only(
+                    bottom: 0.h, left: 20.w, right: 20.w), // Reduced padding
                 child: Column(
                   children: [
                     // Top row buttons
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment
+                          .spaceEvenly, // Changed to spaceEvenly
                       children: [
-                        _buildActionButton(
-                          text: 'Remind me',
-                          icon: Assets.icons.remindMe.path,
-                          onPressed: () {},
+                        Flexible(
+                          // Use Flexible instead of Expanded
+                          child: _buildActionButton(
+                            text: 'Remind me',
+                            icon: Assets.icons.remindMe.path,
+                            onPressed: () {},
+                          ),
                         ),
-                        Expanded(child: Gap(10.w)), // Added Expanded
-                        _buildActionButton(
-                          text: 'Message',
-                          icon: Assets.icons.message.path,
-                          onPressed: () {},
+                        Gap(10.w), // Reduced gap
+                        Flexible(
+                          // Use Flexible instead of Expanded
+                          child: _buildActionButton(
+                            text: 'Message',
+                            icon: Assets.icons.message.path,
+                            onPressed: () {},
+                          ),
                         ),
                       ],
                     ),
 
-                    Gap(37.h),
+                    Gap(40.h),
 
                     // Bottom row buttons
                     Row(
@@ -413,10 +256,10 @@ class _IncomingCallScreenState extends State<IncomingCallScreen>
                           onPressed: () => context.pop(),
                           isAccept: false,
                         ),
-                        Expanded(child: Gap(10.w)), // Added Expanded
+                        Gap(120.w),
                         _buildCallButton(
                           text: 'Accept',
-                          color: Color(0xff7FEB12),
+                          color: const Color(0xff7FEB12),
                           onPressed: () {
                             context.pushNamed(RoutePath.callReceivedScreen);
                           },
@@ -440,11 +283,11 @@ class _IncomingCallScreenState extends State<IncomingCallScreen>
       builder: (context, child) {
         return Opacity(
           opacity: animation.value,
-          child: const Text(
+          child: Text(
             '.',
             style: TextStyle(
               color: Colors.black,
-              fontSize: 18,
+              fontSize: 18.sp,
             ),
           ),
         );
@@ -457,23 +300,34 @@ class _IncomingCallScreenState extends State<IncomingCallScreen>
     required String icon,
     required VoidCallback onPressed,
   }) {
-    return Row(
-      children: [
-        Gap(10.w),
-        SvgPicture.asset(
-          icon,
-          width: 18.w,
-          height: 18.h,
+    return GestureDetector(
+      // Wrap with GestureDetector
+      onTap: onPressed,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+        decoration: BoxDecoration(
+          color: Colors.grey.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(20.r),
         ),
-        Gap(8.w),
-        Text(
-          text,
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 16.sp,
-          ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SvgPicture.asset(
+              icon,
+              width: 24.w,
+              height: 24.h,
+            ),
+            Gap(8.w),
+            Text(
+              text,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 16.sp,
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 
@@ -496,9 +350,12 @@ class _IncomingCallScreenState extends State<IncomingCallScreen>
             icon: Icon(
               isAccept ? Icons.call_outlined : Icons.call_end_outlined,
               color: Colors.white,
-              size: 32.sp,
+              size: 32.r,
             ),
-            onPressed: onPressed,
+            onPressed: () {
+              _stopRingtone(); // Stop ringtone when button is pressed
+              onPressed();
+            },
             padding: EdgeInsets.zero,
           ),
         ),
