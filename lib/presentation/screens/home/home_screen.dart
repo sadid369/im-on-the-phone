@@ -6,10 +6,14 @@ import 'package:groc_shopy/core/custom_assets/assets.gen.dart';
 import 'package:groc_shopy/utils/app_colors/app_colors.dart';
 import 'package:groc_shopy/utils/text_style/text_style.dart';
 import 'dart:async'; // Add this import
+import 'package:get/get.dart';
+import 'package:flutter/material.dart';
 
 import '../../../core/routes/route_path.dart';
+import '../../../helper/local_db/local_db.dart';
 import '../../widgets/custom_bottons/custom_button/app_button.dart';
 import '../../widgets/subscription_modal/subscription_modal.dart';
+import 'controller/home_controller.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -24,6 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Timer? _countdownTimer; // Add this
   int _remainingSeconds = 0; // Add this
   bool _isCountdownActive = false; // Add this
+  final HomeController homeController = Get.find<HomeController>();
 
   @override
   void initState() {
@@ -202,102 +207,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return '$hour:$minute';
   }
 
-  // Add method to show custom time picker
-  // void _showCustomTimePicker() {
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       int tempMinutes = customMinutes ?? 0;
-  //       int tempSeconds = customSeconds ?? 0;
-
-  //       return StatefulBuilder(
-  //         builder: (context, setDialogState) {
-  //           return AlertDialog(
-  //             title: Text('Select Custom Time'),
-  //             content: Column(
-  //               mainAxisSize: MainAxisSize.min,
-  //               children: [
-  //                 Row(
-  //                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //                   children: [
-  //                     // Minutes picker
-  //                     Column(
-  //                       children: [
-  //                         Text('Minutes', style: TextStyle(fontSize: 16.sp)),
-  //                         Container(
-  //                           width: 80.w,
-  //                           child: DropdownButton<int>(
-  //                             value: tempMinutes,
-  //                             isExpanded: true,
-  //                             items: List.generate(60, (index) => index)
-  //                                 .map((int value) {
-  //                               return DropdownMenuItem<int>(
-  //                                 value: value,
-  //                                 child: Text(value.toString()),
-  //                               );
-  //                             }).toList(),
-  //                             onChanged: (newValue) {
-  //                               setDialogState(() {
-  //                                 tempMinutes = newValue!;
-  //                               });
-  //                             },
-  //                           ),
-  //                         ),
-  //                       ],
-  //                     ),
-  //                     // Seconds picker
-  //                     Column(
-  //                       children: [
-  //                         Text('Seconds', style: TextStyle(fontSize: 16.sp)),
-  //                         Container(
-  //                           width: 80.w,
-  //                           child: DropdownButton<int>(
-  //                             value: tempSeconds,
-  //                             isExpanded: true,
-  //                             items: List.generate(60, (index) => index)
-  //                                 .map((int value) {
-  //                               return DropdownMenuItem<int>(
-  //                                 value: value,
-  //                                 child: Text(value.toString()),
-  //                               );
-  //                             }).toList(),
-  //                             onChanged: (newValue) {
-  //                               setDialogState(() {
-  //                                 tempSeconds = newValue!;
-  //                               });
-  //                             },
-  //                           ),
-  //                         ),
-  //                       ],
-  //                     ),
-  //                   ],
-  //                 ),
-  //               ],
-  //             ),
-  //             actions: [
-  //               TextButton(
-  //                 onPressed: () => Navigator.of(context).pop(),
-  //                 child: Text('Cancel'),
-  //               ),
-  //               TextButton(
-  //                 onPressed: () {
-  //                   setState(() {
-  //                     customMinutes = tempMinutes;
-  //                     customSeconds = tempSeconds;
-  //                     selectedCallTime = "Custom";
-  //                   });
-  //                   Navigator.of(context).pop();
-  //                 },
-  //                 child: Text('OK'),
-  //               ),
-  //             ],
-  //           );
-  //         },
-  //       );
-  //     },
-  //   );
-  // }
-  // Add method to show custom time picker
   void _showCustomTimePicker() {
     showDialog(
       context: context,
@@ -737,19 +646,19 @@ class _HomeScreenState extends State<HomeScreen> {
             Row(
               children: [
                 Gap(16.w),
-                Container(
-                  alignment: Alignment.center,
-                  width: 48.w,
-                  height: 48.h,
-                  decoration: BoxDecoration(
-                    color: const Color(0xffC9867B),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Text(
-                    name[0],
-                    style: AppStyle.roboto32w600CFFFFFF,
-                  ),
-                ),
+                Obx(() => Container(
+                      alignment: Alignment.center,
+                      width: 48.w,
+                      height: 48.h,
+                      decoration: BoxDecoration(
+                        color: homeController.selectedIconColor.value,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Text(
+                        name[0],
+                        style: AppStyle.roboto32w600CFFFFFF,
+                      ),
+                    )),
                 Gap(16.w),
                 Text(
                   name,
@@ -771,3 +680,32 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
+// class HomeController extends GetxController {
+//   static const String iconColorKey = 'selected_icon_color';
+//   Rx<Color> selectedIconColor = const Color(0xffC9867B).obs;
+
+//   @override
+//   void onInit() {
+//     super.onInit();
+//     loadIconColor();
+//   }
+
+//   void setIconColor(Color color) async {
+//     selectedIconColor.value = color;
+//     // Save as hex string
+//     await SharedPrefsHelper.setString(
+//         iconColorKey, color.value.toRadixString(16));
+//   }
+
+//   void loadIconColor() async {
+//     String colorString = await SharedPrefsHelper.getString(iconColorKey);
+//     if (colorString.isNotEmpty) {
+//       try {
+//         selectedIconColor.value = Color(int.parse(colorString, radix: 16));
+//       } catch (_) {
+//         selectedIconColor.value = const Color(0xffC9867B);
+//       }
+//     }
+//   }
+// }

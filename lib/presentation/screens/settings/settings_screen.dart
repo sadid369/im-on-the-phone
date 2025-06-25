@@ -8,8 +8,10 @@ import 'package:groc_shopy/core/routes/route_path.dart';
 import 'package:groc_shopy/helper/extension/base_extension.dart';
 import 'package:groc_shopy/utils/app_colors/app_colors.dart';
 import 'package:groc_shopy/utils/text_style/text_style.dart';
+import 'package:get/get.dart';
 
 import '../../widgets/custom_bottons/custom_button/app_button.dart';
+import 'package:groc_shopy/presentation/screens/home/controller/home_controller.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -20,6 +22,48 @@ class _SettingsScreenState extends State<SettingsScreen> {
   String selectedLanguage = 'English';
   String selectedTheme = 'Light';
   String selectedRingtone = 'Default';
+  final HomeController homeController = Get.find<HomeController>();
+
+  // 1. Add default color as the first option
+  final List<Color> colorOptions = [
+    const Color(0xffC9867B), // Default color
+    Colors.red,
+    Colors.orange,
+    Colors.green,
+    Colors.cyan,
+    Colors.purple,
+    Colors.pink,
+  ];
+
+  // Local state for pending color selection
+  late Color pendingIconColor;
+  final Color defaultColor = const Color(0xffC9867B);
+
+  @override
+  void initState() {
+    super.initState();
+    // 2. Set pendingIconColor to the controller's color (from local db or default)
+    pendingIconColor = homeController.selectedIconColor.value;
+  }
+
+  void _resetToDefault() {
+    // 3. Set both controller and pending color to default
+    homeController.resetToDefault();
+    setState(() {
+      pendingIconColor = defaultColor;
+    });
+  }
+
+  void _saveChanges() {
+    homeController.setIconColor(pendingIconColor);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Changes saved!'),
+        duration: Duration(seconds: 1),
+        backgroundColor: AppColors.primary.withOpacity(0.6),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,17 +131,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     Row(
                       children: [
                         Gap(15.w),
-                        ColorCircle(color: Colors.red),
-                        Gap(8.w),
-                        ColorCircle(color: Colors.orange),
-                        Gap(8.w),
-                        ColorCircle(color: Colors.green),
-                        Gap(8.w),
-                        ColorCircle(color: Colors.cyan),
-                        Gap(8.w),
-                        ColorCircle(color: Colors.purple),
-                        Gap(8.w),
-                        ColorCircle(color: Colors.pink),
+                        ...colorOptions.map((color) => GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  pendingIconColor = color;
+                                });
+                              },
+                              child: ColorCircle(
+                                color: color,
+                                isSelected: pendingIconColor == color,
+                              ),
+                            )),
                       ],
                     ),
                   ],
@@ -178,89 +222,89 @@ class _SettingsScreenState extends State<SettingsScreen> {
               Gap(16.h),
 
               // Theme Picker
-              Container(
-                padding: EdgeInsets.all(10.w),
-                height: 104.w,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.r),
-                  color: Colors.white,
-                  border: Border.all(
-                    color: Colors.black.withOpacity(0.1),
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        SvgPicture.asset(Assets.icons.switchAppTheme.path),
-                        Gap(10.w),
-                        Text('Switch app theme:',
-                            style: AppStyle.roboto14w400C000000),
-                      ],
-                    ),
-                    Gap(20.h),
-                    Row(
-                      children: [
-                        Gap(30.w),
-                        AppButton(
-                          text: 'Light',
-                          onPressed: () {
-                            setState(() {
-                              selectedTheme = 'Light';
-                            });
-                          },
-                          width: 95.w,
-                          height: 29.h,
-                          borderRadius: 50.r,
-                          backgroundColor: selectedTheme == 'Light'
-                              ? AppColors.primary
-                              : const Color(0xffF2F2F2),
-                          textStyle: selectedTheme == 'Light'
-                              ? AppStyle.roboto12w500CFFFFFF
-                              : AppStyle.roboto12w400C000000,
-                        ),
-                        Gap(8.w),
-                        AppButton(
-                          text: 'Pastel',
-                          onPressed: () {
-                            setState(() {
-                              selectedTheme = 'Pastel';
-                            });
-                          },
-                          width: 95.w,
-                          height: 29.h,
-                          borderRadius: 50.r,
-                          backgroundColor: selectedTheme == 'Pastel'
-                              ? AppColors.primary
-                              : const Color(0xffF2F2F2),
-                          textStyle: selectedTheme == 'Pastel'
-                              ? AppStyle.roboto12w500CFFFFFF
-                              : AppStyle.roboto12w400C000000,
-                        ),
-                        Gap(8.w),
-                        AppButton(
-                          text: 'Dark',
-                          onPressed: () {
-                            setState(() {
-                              selectedTheme = 'Dark';
-                            });
-                          },
-                          width: 95.w,
-                          height: 29.h,
-                          borderRadius: 50.r,
-                          backgroundColor: selectedTheme == 'Dark'
-                              ? AppColors.primary
-                              : const Color(0xffF2F2F2),
-                          textStyle: selectedTheme == 'Dark'
-                              ? AppStyle.roboto12w500CFFFFFF
-                              : AppStyle.roboto12w400C000000,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
+              // Container(
+              //   padding: EdgeInsets.all(10.w),
+              //   height: 104.w,
+              //   width: double.infinity,
+              //   decoration: BoxDecoration(
+              //     borderRadius: BorderRadius.circular(10.r),
+              //     color: Colors.white,
+              //     border: Border.all(
+              //       color: Colors.black.withOpacity(0.1),
+              //     ),
+              //   ),
+              //   child: Column(
+              //     children: [
+              //       Row(
+              //         children: [
+              //           SvgPicture.asset(Assets.icons.switchAppTheme.path),
+              //           Gap(10.w),
+              //           Text('Switch app theme:',
+              //               style: AppStyle.roboto14w400C000000),
+              //         ],
+              //       ),
+              //       Gap(20.h),
+              //       Row(
+              //         children: [
+              //           Gap(30.w),
+              //           AppButton(
+              //             text: 'Light',
+              //             onPressed: () {
+              //               setState(() {
+              //                 selectedTheme = 'Light';
+              //               });
+              //             },
+              //             width: 95.w,
+              //             height: 29.h,
+              //             borderRadius: 50.r,
+              //             backgroundColor: selectedTheme == 'Light'
+              //                 ? AppColors.primary
+              //                 : const Color(0xffF2F2F2),
+              //             textStyle: selectedTheme == 'Light'
+              //                 ? AppStyle.roboto12w500CFFFFFF
+              //                 : AppStyle.roboto12w400C000000,
+              //           ),
+              //           Gap(8.w),
+              //           AppButton(
+              //             text: 'Pastel',
+              //             onPressed: () {
+              //               setState(() {
+              //                 selectedTheme = 'Pastel';
+              //               });
+              //             },
+              //             width: 95.w,
+              //             height: 29.h,
+              //             borderRadius: 50.r,
+              //             backgroundColor: selectedTheme == 'Pastel'
+              //                 ? AppColors.primary
+              //                 : const Color(0xffF2F2F2),
+              //             textStyle: selectedTheme == 'Pastel'
+              //                 ? AppStyle.roboto12w500CFFFFFF
+              //                 : AppStyle.roboto12w400C000000,
+              //           ),
+              //           Gap(8.w),
+              //           AppButton(
+              //             text: 'Dark',
+              //             onPressed: () {
+              //               setState(() {
+              //                 selectedTheme = 'Dark';
+              //               });
+              //             },
+              //             width: 95.w,
+              //             height: 29.h,
+              //             borderRadius: 50.r,
+              //             backgroundColor: selectedTheme == 'Dark'
+              //                 ? AppColors.primary
+              //                 : const Color(0xffF2F2F2),
+              //             textStyle: selectedTheme == 'Dark'
+              //                 ? AppStyle.roboto12w500CFFFFFF
+              //                 : AppStyle.roboto12w400C000000,
+              //           ),
+              //         ],
+              //       ),
+              //     ],
+              //   ),
+              // ),
               Gap(16.h),
 
               // Ringtone Picker
@@ -375,7 +419,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 children: [
                   AppButton(
                     text: 'Reset to Default',
-                    onPressed: () {},
+                    onPressed: _resetToDefault,
                     width: 167.w,
                     height: 40.h,
                     borderRadius: 50.r,
@@ -387,7 +431,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   Gap(20.w),
                   AppButton(
                     text: 'Save Changes',
-                    onPressed: () {},
+                    onPressed: _saveChanges,
                     width: 167.w,
                     height: 40.h,
                     borderRadius: 50.r,
@@ -406,8 +450,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
 class ColorCircle extends StatelessWidget {
   final Color color;
+  final bool isSelected;
 
-  const ColorCircle({Key? key, required this.color}) : super(key: key);
+  const ColorCircle({Key? key, required this.color, this.isSelected = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -418,7 +464,13 @@ class ColorCircle extends StatelessWidget {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: color,
+        border: isSelected
+            ? Border.all(color: AppColors.primary, width: 3.w)
+            : null,
       ),
+      child: isSelected
+          ? Icon(Icons.check, color: Colors.white, size: 18.r)
+          : null,
     );
   }
 }

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:camera/camera.dart';
 import 'package:groc_shopy/utils/static_strings/static_strings.dart';
 import 'core/routes/routes.dart';
+import 'dependency_injection/getx_injection.dart';
 import 'global/language/controller/language_controller.dart';
 import 'utils/app_colors/app_colors.dart';
 // Import your Language translations class
@@ -23,6 +24,7 @@ Future<void> main() async {
   await languageController.getLanguageType();
 
   runApp(const MyApp());
+  initGetx();
 }
 
 class MyApp extends StatelessWidget {
