@@ -7,7 +7,10 @@ import 'package:groc_shopy/helper/extension/base_extension.dart';
 import '../../../core/routes/route_path.dart';
 
 class CallReceivedScreen extends StatefulWidget {
-  const CallReceivedScreen({Key? key}) : super(key: key);
+  final String callerName;
+
+  const CallReceivedScreen({Key? key, required this.callerName})
+      : super(key: key);
 
   @override
   State<CallReceivedScreen> createState() => _CallReceivedScreenState();
@@ -61,7 +64,7 @@ class _CallReceivedScreenState extends State<CallReceivedScreen> {
                   radius: 50.r,
                   backgroundColor: const Color(0xFFC57C6B),
                   child: Text(
-                    'M',
+                    widget.callerName[0], // Use the passed caller name
                     style: TextStyle(
                       fontSize: 48.sp,
                       color: Colors.white,
@@ -71,7 +74,7 @@ class _CallReceivedScreenState extends State<CallReceivedScreen> {
                 ),
                 Gap(16.h),
                 Text(
-                  'MOM',
+                  widget.callerName, // Use the passed caller name
                   style: TextStyle(
                     fontSize: 28.sp,
                     fontWeight: FontWeight.bold,

@@ -21,7 +21,11 @@ class RoutePath {
   static const String resetPasswordSuccess = 'resetPasswordSuccess';
   static const String adminSignUp = 'adminSignUp';
   // static const String auth = 'auth';
+  //=================== User Main Screen ===================
+  static const String userMain = 'userMain';
 
+  //=================== Admin Main Screen ===================
+  static const String adminMain = 'adminMain';
   //==================================== Worker screens =====================================
 
   static const String main = 'main';

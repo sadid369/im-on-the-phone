@@ -5,7 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:get/get.dart';
 import 'package:groc_shopy/helper/extension/base_extension.dart';
 import 'package:groc_shopy/presentation/screens/call_screens/call_received_screen.dart';
-import 'package:groc_shopy/presentation/screens/main/main_screen.dart';
+// import 'package:groc_shopy/presentation/screens/main/user_main_screen.dart';
+// import 'package:groc_shopy/presentation/screens/main/admin_main_screen.dart';
 import 'package:groc_shopy/presentation/screens/new_contact_screen/new_contact_screen.dart';
 import 'package:groc_shopy/presentation/screens/profile/change_password_screen.dart';
 import 'package:groc_shopy/presentation/screens/profile/profile_screen.dart';
@@ -30,6 +31,8 @@ import '../../presentation/screens/admin_screens/admin_setting_screen/app_config
 import '../../presentation/screens/admin_screens/admin_users/admin_user_screen.dart';
 import '../../presentation/screens/call_screens/incoming_call_screen.dart';
 import '../../presentation/screens/admin_screens/dashboard/dashboard_screen.dart';
+import '../../presentation/screens/main/admin_nav.dart';
+import '../../presentation/screens/main/user_nav.dart';
 import '../../presentation/screens/profile/update_profile_screen.dart';
 import '../../presentation/screens/report/report_screen.dart';
 import '../../presentation/screens/scannedItemsScreen/scanned_items_screen.dart';
@@ -40,29 +43,12 @@ import '../../presentation/widgets/error_screen/error_screen.dart';
 import '../../presentation/widgets/subscription_plans/subscription_plans.dart';
 import 'route_observer.dart';
 import 'route_path.dart';
-import '../../presentation/screens/auth/controller/auth_controller.dart';
 
 class AppRouter {
   static final GlobalKey<NavigatorState> _adminSettingsNavigatorKey =
       GlobalKey<NavigatorState>();
 
   static GoRouter? _router;
-
-  // Get admin status from controller
-  static bool get isAdmin {
-    try {
-      final authController = Get.find<AuthController>();
-      return authController.isAdmin.value;
-      // return true; // For testing purposes, always return true
-    } catch (e) {
-      return false;
-    }
-  }
-
-  // Method to refresh router
-  static void refreshRouter() {
-    _router = null; // Force recreation
-  }
 
   static Widget _fadeTransition(
       BuildContext context,
@@ -75,374 +61,378 @@ class AppRouter {
     );
   }
 
+  // Add this method for backward compatibility
+  static void refreshRouter() {
+    _router = null;
+  }
+
   static GoRouter get route {
-    if (_router == null) {
-      // Get current admin status when creating router
-      bool currentAdminStatus = isAdmin;
-      // bool currentAdminStatus = false; // For testing purposes, always true
+    _router ??= GoRouter(
+      initialLocation: RoutePath.splashScreen.addBasePath,
+      debugLogDiagnostics: true,
+      routes: [
+        ///======================= Splash Route =======================
+        GoRoute(
+          name: RoutePath.splashScreen,
+          path: RoutePath.splashScreen.addBasePath,
+          pageBuilder: (context, state) => CustomTransitionPage(
+            key: state.pageKey,
+            child: const SplashScreen(),
+            transitionsBuilder: _fadeTransition,
+          ),
+        ),
 
-      _router = GoRouter(
-        initialLocation: RoutePath.splashScreen.addBasePath,
-        debugLogDiagnostics: true,
-        routes: [
-          ///======================= Splash Route =======================
-          GoRoute(
-            name: RoutePath.splashScreen,
-            path: RoutePath.splashScreen.addBasePath,
-            pageBuilder: (context, state) => CustomTransitionPage(
-              key: state.pageKey,
-              child: const SplashScreen(),
-              transitionsBuilder: _fadeTransition,
-            ),
+        ///======================= Error Route =======================
+        GoRoute(
+          name: RoutePath.errorScreen,
+          path: RoutePath.errorScreen.addBasePath,
+          pageBuilder: (context, state) => CustomTransitionPage(
+            key: state.pageKey,
+            child: const ErrorPage(),
+            transitionsBuilder: _fadeTransition,
           ),
+        ),
 
-          ///======================= Error Route =======================
-          GoRoute(
-            name: RoutePath.errorScreen,
-            path: RoutePath.errorScreen.addBasePath,
-            pageBuilder: (context, state) => CustomTransitionPage(
-              key: state.pageKey,
-              child: const ErrorPage(),
-              transitionsBuilder: _fadeTransition,
-            ),
+        ///======================= Auth Routes =======================
+        GoRoute(
+          name: RoutePath.login,
+          path: RoutePath.login.addBasePath,
+          pageBuilder: (context, state) => CustomTransitionPage(
+            key: state.pageKey,
+            child: LoginScreen(),
+            transitionsBuilder: _fadeTransition,
           ),
+        ),
+        GoRoute(
+          name: RoutePath.adminSignUp,
+          path: RoutePath.adminSignUp.addBasePath,
+          pageBuilder: (context, state) => CustomTransitionPage(
+            key: state.pageKey,
+            child: const AdminSignUpScreen(),
+            transitionsBuilder: _fadeTransition,
+          ),
+        ),
+        GoRoute(
+          name: RoutePath.forgotPass,
+          path: RoutePath.forgotPass.addBasePath,
+          pageBuilder: (context, state) => CustomTransitionPage(
+            key: state.pageKey,
+            child: ForgotPasswordScreen(),
+            transitionsBuilder: _fadeTransition,
+          ),
+        ),
+        GoRoute(
+          name: RoutePath.resetPassConfirm,
+          path: RoutePath.resetPassConfirm.addBasePath,
+          pageBuilder: (context, state) => CustomTransitionPage(
+            key: state.pageKey,
+            child: const PasswordResetConfirmScreen(),
+            transitionsBuilder: _fadeTransition,
+          ),
+        ),
+        GoRoute(
+          name: RoutePath.resetPass,
+          path: RoutePath.resetPass.addBasePath,
+          pageBuilder: (context, state) => CustomTransitionPage(
+            key: state.pageKey,
+            child: const SetPasswordScreen(),
+            transitionsBuilder: _fadeTransition,
+          ),
+        ),
+        GoRoute(
+          name: RoutePath.verification,
+          path: RoutePath.verification.addBasePath,
+          pageBuilder: (context, state) => CustomTransitionPage(
+            key: state.pageKey,
+            child: const CodeVerificationScreen(),
+            transitionsBuilder: _fadeTransition,
+          ),
+        ),
+        GoRoute(
+          name: RoutePath.resetPasswordSuccess,
+          path: RoutePath.resetPasswordSuccess.addBasePath,
+          pageBuilder: (context, state) => CustomTransitionPage(
+            key: state.pageKey,
+            child: UpdatePasswordSuccessScreen(),
+            transitionsBuilder: _fadeTransition,
+          ),
+        ),
 
-          ///======================= Auth Routes =======================
-          GoRoute(
-            name: RoutePath.login,
-            path: RoutePath.login.addBasePath,
-            pageBuilder: (context, state) => CustomTransitionPage(
-              key: state.pageKey,
-              child: LoginScreen(),
-              transitionsBuilder: _fadeTransition,
-            ),
+        ///======================= Other Routes =======================
+        GoRoute(
+          name: RoutePath.subscription,
+          path: RoutePath.subscription.addBasePath,
+          pageBuilder: (context, state) => CustomTransitionPage(
+            key: state.pageKey,
+            child: const SubscriptionModal(),
+            transitionsBuilder: _fadeTransition,
           ),
-          GoRoute(
-            name: RoutePath.adminSignUp,
-            path: RoutePath.adminSignUp.addBasePath,
-            pageBuilder: (context, state) => CustomTransitionPage(
-              key: state.pageKey,
-              child: const AdminSignUpScreen(),
-              transitionsBuilder: _fadeTransition,
-            ),
+        ),
+        GoRoute(
+          name: RoutePath.paymentModal,
+          path: RoutePath.paymentModal.addBasePath,
+          pageBuilder: (context, state) => CustomTransitionPage(
+            key: state.pageKey,
+            child: const PaymentModal(),
+            transitionsBuilder: _fadeTransition,
           ),
-          GoRoute(
-            name: RoutePath.forgotPass,
-            path: RoutePath.forgotPass.addBasePath,
-            pageBuilder: (context, state) => CustomTransitionPage(
-              key: state.pageKey,
-              child: ForgotPasswordScreen(),
-              transitionsBuilder: _fadeTransition,
-            ),
-          ),
-          GoRoute(
-            name: RoutePath.resetPassConfirm,
-            path: RoutePath.resetPassConfirm.addBasePath,
-            pageBuilder: (context, state) => CustomTransitionPage(
-              key: state.pageKey,
-              child: const PasswordResetConfirmScreen(),
-              transitionsBuilder: _fadeTransition,
-            ),
-          ),
-          GoRoute(
-            name: RoutePath.resetPass,
-            path: RoutePath.resetPass.addBasePath,
-            pageBuilder: (context, state) => CustomTransitionPage(
-              key: state.pageKey,
-              child: const SetPasswordScreen(),
-              transitionsBuilder: _fadeTransition,
-            ),
-          ),
-          GoRoute(
-            name: RoutePath.verification,
-            path: RoutePath.verification.addBasePath,
-            pageBuilder: (context, state) => CustomTransitionPage(
-              key: state.pageKey,
-              child: const CodeVerificationScreen(),
-              transitionsBuilder: _fadeTransition,
-            ),
-          ),
-          GoRoute(
-            name: RoutePath.resetPasswordSuccess,
-            path: RoutePath.resetPasswordSuccess.addBasePath,
-            pageBuilder: (context, state) => CustomTransitionPage(
-              key: state.pageKey,
-              child: UpdatePasswordSuccessScreen(),
-              transitionsBuilder: _fadeTransition,
-            ),
-          ),
-
-          ///======================= Other Routes =======================
-          GoRoute(
-            name: RoutePath.subscription,
-            path: RoutePath.subscription.addBasePath,
-            pageBuilder: (context, state) => CustomTransitionPage(
-              key: state.pageKey,
-              child: const SubscriptionModal(),
-              transitionsBuilder: _fadeTransition,
-            ),
-          ),
-          GoRoute(
-            name: RoutePath.paymentModal,
-            path: RoutePath.paymentModal.addBasePath,
-            pageBuilder: (context, state) => CustomTransitionPage(
-              key: state.pageKey,
-              child: const PaymentModal(),
-              transitionsBuilder: _fadeTransition,
-            ),
-          ),
-          GoRoute(
-            name: RoutePath.paypal,
-            path: RoutePath.paypal.addBasePath,
-            pageBuilder: (context, state) {
-              final plan = state.extra as SubscriptionPlan?;
-              Widget child;
-              if (plan == null) {
-                child = const Scaffold(
-                  body: Center(child: Text('No subscription plan provided')),
-                );
-              } else {
-                child = PaypalPage(plan: plan);
-              }
-              return CustomTransitionPage(
-                key: state.pageKey,
-                child: child,
-                transitionsBuilder: _fadeTransition,
+        ),
+        GoRoute(
+          name: RoutePath.paypal,
+          path: RoutePath.paypal.addBasePath,
+          pageBuilder: (context, state) {
+            final plan = state.extra as SubscriptionPlan?;
+            Widget child;
+            if (plan == null) {
+              child = const Scaffold(
+                body: Center(child: Text('No subscription plan provided')),
               );
-            },
-          ),
-          GoRoute(
-            name: RoutePath.transactionHistory,
-            path: RoutePath.transactionHistory.addBasePath,
-            pageBuilder: (context, state) => CustomTransitionPage(
+            } else {
+              child = PaypalPage(plan: plan);
+            }
+            return CustomTransitionPage(
               key: state.pageKey,
-              child: TransactionHistoryScreen(),
+              child: child,
               transitionsBuilder: _fadeTransition,
-            ),
+            );
+          },
+        ),
+        GoRoute(
+          name: RoutePath.transactionHistory,
+          path: RoutePath.transactionHistory.addBasePath,
+          pageBuilder: (context, state) => CustomTransitionPage(
+            key: state.pageKey,
+            child: TransactionHistoryScreen(),
+            transitionsBuilder: _fadeTransition,
           ),
-          GoRoute(
-            name: RoutePath.scannedItemsScreen,
-            path: RoutePath.scannedItemsScreen.addBasePath,
-            pageBuilder: (context, state) {
-              final image = state.extra as File?;
-              return CustomTransitionPage(
-                key: state.pageKey,
-                child: ScannedItemsScreen(image: image),
-                transitionsBuilder: _fadeTransition,
-              );
-            },
-          ),
-          GoRoute(
-            name: RoutePath.report,
-            path: RoutePath.report.addBasePath,
-            pageBuilder: (context, state) => CustomTransitionPage(
+        ),
+        GoRoute(
+          name: RoutePath.scannedItemsScreen,
+          path: RoutePath.scannedItemsScreen.addBasePath,
+          pageBuilder: (context, state) {
+            final image = state.extra as File?;
+            return CustomTransitionPage(
               key: state.pageKey,
-              child: ReportScreen(),
+              child: ScannedItemsScreen(image: image),
               transitionsBuilder: _fadeTransition,
-            ),
+            );
+          },
+        ),
+        GoRoute(
+          name: RoutePath.report,
+          path: RoutePath.report.addBasePath,
+          pageBuilder: (context, state) => CustomTransitionPage(
+            key: state.pageKey,
+            child: ReportScreen(),
+            transitionsBuilder: _fadeTransition,
           ),
-          GoRoute(
-            name: RoutePath.callReceivedScreen,
-            path: RoutePath.callReceivedScreen.addBasePath,
-            pageBuilder: (context, state) => CustomTransitionPage(
+        ),
+        GoRoute(
+          name: RoutePath.callReceivedScreen,
+          path: RoutePath.callReceivedScreen.addBasePath,
+          pageBuilder: (context, state) {
+            final args = state.extra as Map<String, dynamic>? ?? {};
+            return CustomTransitionPage(
               key: state.pageKey,
-              child: CallReceivedScreen(),
+              child: CallReceivedScreen(
+                callerName: args['callerName'] ?? 'Unknown',
+              ),
               transitionsBuilder: _fadeTransition,
-            ),
+            );
+          },
+        ),
+
+        ///======================= Standalone Routes =======================
+        GoRoute(
+          name: RoutePath.newContactScreen,
+          path: RoutePath.newContactScreen.addBasePath,
+          pageBuilder: (context, state) => CustomTransitionPage(
+            key: state.pageKey,
+            child: NewContactScreen(),
+            transitionsBuilder: _fadeTransition,
           ),
-          GoRoute(
-            name: RoutePath.newContactScreen,
-            path: RoutePath.newContactScreen.addBasePath,
-            pageBuilder: (context, state) => CustomTransitionPage(
+        ),
+        GoRoute(
+          name: RoutePath.changePasswordScreen,
+          path: RoutePath.changePasswordScreen.addBasePath,
+          pageBuilder: (context, state) => CustomTransitionPage(
+            key: state.pageKey,
+            child: ChangePasswordScreen(),
+            transitionsBuilder: _fadeTransition,
+          ),
+        ),
+        GoRoute(
+          name: RoutePath.ringtoneSelectionScreen,
+          path: RoutePath.ringtoneSelectionScreen.addBasePath,
+          pageBuilder: (context, state) => CustomTransitionPage(
+            key: state.pageKey,
+            child: RingtoneSelectionScreen(),
+            transitionsBuilder: _fadeTransition,
+          ),
+        ),
+        GoRoute(
+          name: RoutePath.profile,
+          path: RoutePath.profile.addBasePath,
+          pageBuilder: (context, state) => CustomTransitionPage(
+            key: state.pageKey,
+            child: ProfileScreen(),
+            transitionsBuilder: _fadeTransition,
+          ),
+        ),
+        GoRoute(
+          name: RoutePath.updateProfileScreen,
+          path: RoutePath.updateProfileScreen.addBasePath,
+          pageBuilder: (context, state) => CustomTransitionPage(
+            key: state.pageKey,
+            child: UpdateProfileScreen(),
+            transitionsBuilder: _fadeTransition,
+          ),
+        ),
+        GoRoute(
+          name: RoutePath.incomingCallScreen,
+          path: RoutePath.incomingCallScreen.addBasePath,
+          pageBuilder: (context, state) {
+            final args = state.extra as Map<String, dynamic>? ?? {};
+            return CustomTransitionPage(
               key: state.pageKey,
-              child: NewContactScreen(),
+              child: IncomingCallScreen(
+                callerName: args['callerName'] ?? 'Unknown',
+                time: args['time'] ?? 'Now',
+                callDuration: args['callDuration'] ?? '15 sec',
+              ),
               transitionsBuilder: _fadeTransition,
-            ),
-          ),
-          GoRoute(
-            name: RoutePath.changePasswordScreen,
-            path: RoutePath.changePasswordScreen.addBasePath,
-            pageBuilder: (context, state) => CustomTransitionPage(
-              key: state.pageKey,
-              child: ChangePasswordScreen(),
-              transitionsBuilder: _fadeTransition,
-            ),
-          ),
-          GoRoute(
-            name: RoutePath.ringtoneSelectionScreen,
-            path: RoutePath.ringtoneSelectionScreen.addBasePath,
-            pageBuilder: (context, state) => CustomTransitionPage(
-              key: state.pageKey,
-              child: RingtoneSelectionScreen(),
-              transitionsBuilder: _fadeTransition,
-            ),
-          ),
-          GoRoute(
-            name: RoutePath.profile,
-            path: RoutePath.profile.addBasePath,
-            pageBuilder: (context, state) => CustomTransitionPage(
-              key: state.pageKey,
-              child: ProfileScreen(),
-              transitionsBuilder: _fadeTransition,
-            ),
-          ),
-          GoRoute(
-            name: RoutePath.updateProfileScreen,
-            path: RoutePath.updateProfileScreen.addBasePath,
-            pageBuilder: (context, state) => CustomTransitionPage(
-              key: state.pageKey,
-              child: UpdateProfileScreen(),
-              transitionsBuilder: _fadeTransition,
-            ),
-          ),
-          GoRoute(
-            name: RoutePath.incomingCallScreen,
-            path: RoutePath.incomingCallScreen.addBasePath,
-            pageBuilder: (context, state) {
-              final args = state.extra as Map<String, dynamic>? ?? {};
-              return CustomTransitionPage(
-                key: state.pageKey,
-                child: IncomingCallScreen(
-                  callerName: args['callerName'] ?? 'Unknown',
-                  time: args['time'] ?? 'Now',
-                  callDuration: args['callDuration'] ?? '15 sec',
+            );
+          },
+        ),
+
+        ///======================= User Navigation Shell =======================
+        StatefulShellRoute.indexedStack(
+          builder: (context, state, navigationShell) {
+            return UserMainScreen(navigationShell: navigationShell);
+          },
+          branches: [
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  name: RoutePath.home,
+                  path: RoutePath.home.addBasePath,
+                  pageBuilder: (context, state) => CustomTransitionPage(
+                    key: state.pageKey,
+                    child: HomeScreen(),
+                    transitionsBuilder: _fadeTransition,
+                  ),
                 ),
-                transitionsBuilder: _fadeTransition,
-              );
-            },
-          ),
+              ],
+            ),
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  name: RoutePath.search,
+                  path: RoutePath.search.addBasePath,
+                  pageBuilder: (context, state) => CustomTransitionPage(
+                    key: state.pageKey,
+                    child: SearchScreen(),
+                    transitionsBuilder: _fadeTransition,
+                  ),
+                ),
+              ],
+            ),
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  name: RoutePath.settings,
+                  path: RoutePath.settings.addBasePath,
+                  pageBuilder: (context, state) => CustomTransitionPage(
+                    key: state.pageKey,
+                    child: SettingsScreen(),
+                    transitionsBuilder: _fadeTransition,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
 
-          ///======================= Bottom Navigation Shell =======================
-          StatefulShellRoute.indexedStack(
-            builder: (context, state, navigationShell) {
-              return MainScreenWithBottomNav(
-                navigationShell: navigationShell,
-                isAdmin: currentAdminStatus,
-              );
-            },
-            branches: currentAdminStatus
-                ? [
-                    // Admin branches
-                    StatefulShellBranch(
-                      routes: [
-                        GoRoute(
-                          name: RoutePath.adminDashboard,
-                          path: RoutePath.adminDashboard.addBasePath,
-                          pageBuilder: (context, state) => CustomTransitionPage(
-                            key: state.pageKey,
-                            child: DashboardScreen(),
-                            transitionsBuilder: _fadeTransition,
-                          ),
-                        ),
-                      ],
+        ///======================= Admin Navigation Shell =======================
+        StatefulShellRoute.indexedStack(
+          builder: (context, state, navigationShell) {
+            return AdminMainScreen(navigationShell: navigationShell);
+          },
+          branches: [
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  name: RoutePath.adminDashboard,
+                  path: RoutePath.adminDashboard.addBasePath,
+                  pageBuilder: (context, state) => CustomTransitionPage(
+                    key: state.pageKey,
+                    child: DashboardScreen(),
+                    transitionsBuilder: _fadeTransition,
+                  ),
+                ),
+              ],
+            ),
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  name: RoutePath.adminUser,
+                  path: RoutePath.adminUser.addBasePath,
+                  pageBuilder: (context, state) => CustomTransitionPage(
+                    key: state.pageKey,
+                    child: AdminUserScreen(),
+                    transitionsBuilder: _fadeTransition,
+                  ),
+                ),
+              ],
+            ),
+            StatefulShellBranch(
+              navigatorKey: _adminSettingsNavigatorKey,
+              routes: [
+                GoRoute(
+                  name: RoutePath.adminSettings,
+                  path: RoutePath.adminSettings.addBasePath,
+                  pageBuilder: (ctx, state) => CustomTransitionPage(
+                    key: state.pageKey,
+                    child: AdminSettingsScreen(),
+                    transitionsBuilder: _fadeTransition,
+                  ),
+                  routes: [
+                    GoRoute(
+                      name: RoutePath.adminChangePasswordScreen,
+                      path: RoutePath.adminChangePasswordScreen.addBasePath,
+                      pageBuilder: (ctx, state) => CustomTransitionPage(
+                        key: state.pageKey,
+                        child: AdminChangePasswordScreen(),
+                        transitionsBuilder: _fadeTransition,
+                      ),
                     ),
-                    StatefulShellBranch(
-                      routes: [
-                        GoRoute(
-                          name: RoutePath.adminUser,
-                          path: RoutePath.adminUser.addBasePath,
-                          pageBuilder: (context, state) => CustomTransitionPage(
-                            key: state.pageKey,
-                            child: AdminUserScreen(),
-                            transitionsBuilder: _fadeTransition,
-                          ),
-                        ),
-                      ],
+                    GoRoute(
+                      name: RoutePath.adminUpdateProfileScreen,
+                      path: RoutePath.adminUpdateProfileScreen.addBasePath,
+                      pageBuilder: (ctx, state) => CustomTransitionPage(
+                        key: state.pageKey,
+                        child: AdminUpdateProfileScreen(),
+                        transitionsBuilder: _fadeTransition,
+                      ),
                     ),
-                    StatefulShellBranch(
-                      navigatorKey: _adminSettingsNavigatorKey,
-                      routes: [
-                        GoRoute(
-                          name: RoutePath.adminSettings,
-                          path: RoutePath.adminSettings.addBasePath,
-                          pageBuilder: (ctx, state) => CustomTransitionPage(
-                            key: state.pageKey,
-                            child: AdminSettingsScreen(),
-                            transitionsBuilder: _fadeTransition,
-                          ),
-                          routes: [
-                            GoRoute(
-                              name: RoutePath.adminChangePasswordScreen,
-                              path: RoutePath
-                                  .adminChangePasswordScreen.addBasePath,
-                              pageBuilder: (ctx, state) => CustomTransitionPage(
-                                key: state.pageKey,
-                                child: AdminChangePasswordScreen(),
-                                transitionsBuilder: _fadeTransition,
-                              ),
-                            ),
-                            GoRoute(
-                              name: RoutePath.adminUpdateProfileScreen,
-                              path: RoutePath
-                                  .adminUpdateProfileScreen.addBasePath,
-                              pageBuilder: (ctx, state) => CustomTransitionPage(
-                                key: state.pageKey,
-                                child: AdminUpdateProfileScreen(),
-                                transitionsBuilder: _fadeTransition,
-                              ),
-                            ),
-                            GoRoute(
-                              name: RoutePath.appConfigurationsScreen,
-                              path:
-                                  RoutePath.appConfigurationsScreen.addBasePath,
-                              pageBuilder: (ctx, state) => CustomTransitionPage(
-                                key: state.pageKey,
-                                child: AppConfigScreen(),
-                                transitionsBuilder: _fadeTransition,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ]
-                : [
-                    // Non-admin branches
-                    StatefulShellBranch(
-                      routes: [
-                        GoRoute(
-                          name: RoutePath.home,
-                          path: RoutePath.home.addBasePath,
-                          pageBuilder: (context, state) => CustomTransitionPage(
-                            key: state.pageKey,
-                            child: HomeScreen(),
-                            transitionsBuilder: _fadeTransition,
-                          ),
-                        ),
-                      ],
-                    ),
-                    StatefulShellBranch(
-                      routes: [
-                        GoRoute(
-                          name: RoutePath.search,
-                          path: RoutePath.search.addBasePath,
-                          pageBuilder: (context, state) => CustomTransitionPage(
-                            key: state.pageKey,
-                            child: SearchScreen(),
-                            transitionsBuilder: _fadeTransition,
-                          ),
-                        ),
-                      ],
-                    ),
-                    StatefulShellBranch(
-                      routes: [
-                        GoRoute(
-                          name: RoutePath.settings,
-                          path: RoutePath.settings.addBasePath,
-                          pageBuilder: (context, state) => CustomTransitionPage(
-                            key: state.pageKey,
-                            child: SettingsScreen(),
-                            transitionsBuilder: _fadeTransition,
-                          ),
-                        ),
-                      ],
+                    GoRoute(
+                      name: RoutePath.appConfigurationsScreen,
+                      path: RoutePath.appConfigurationsScreen.addBasePath,
+                      pageBuilder: (ctx, state) => CustomTransitionPage(
+                        key: state.pageKey,
+                        child: AppConfigScreen(),
+                        transitionsBuilder: _fadeTransition,
+                      ),
                     ),
                   ],
-          ),
-        ],
-        observers: [routeObserver],
-      );
-    }
+                ),
+              ],
+            ),
+          ],
+        ),
+      ],
+      observers: [routeObserver],
+    );
     return _router!;
   }
 }

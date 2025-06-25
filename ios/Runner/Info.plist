@@ -48,7 +48,7 @@
         <string>$(DEVELOPMENT_LANGUAGE)</string>
 
         <key>CFBundleDisplayName</key>
-        <string>GastRonomIQ</string>
+	<string>I'm on the phone</string>
 
         <key>CFBundleExecutable</key>
         <string>$(EXECUTABLE_NAME)</string>
@@ -60,7 +60,7 @@
         <string>6.0</string>
 
         <key>CFBundleName</key>
-        <string>GastRonomIQ</string>
+	<string>I'm on the phone</string>
 
         <key>CFBundlePackageType</key>
         <string>APPL</string>

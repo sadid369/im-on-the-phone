@@ -56,3 +56,6 @@
 	
 </dict>
 </plist>
+
+
+now i want two navbar separately and no conditinal rendering like isAdmin logic type. i want when user put user it navigate ot home and when user type admin it navigate to admin 

@@ -60,7 +60,7 @@ class _IncomingCallScreenState extends State<IncomingCallScreen>
       // Method 1: Play actual ringtone
       await FlutterRingtonePlayer().play(
         android: AndroidSounds.ringtone,
-        ios: IosSounds.glass,
+        ios: IosSounds.electronic,
         looping: true, // Set to true for continuous ringing
         volume: 1.0,
         asAlarm: false,
@@ -76,19 +76,20 @@ class _IncomingCallScreenState extends State<IncomingCallScreen>
   }
 
   void _startVibrationPattern() {
-    // Create a vibration pattern that mimics phone ring
+    // Create a vibration pattern that mimics phone ring with heavy vibration
     _ringtoneTimer = Timer.periodic(Duration(milliseconds: 1000), (timer) {
       if (mounted && _isRingtoneActive) {
+        // Main heavy burst
         HapticFeedback.heavyImpact();
 
-        // Add a second vibration burst
+        // Optional: Add a medium burst after 200ms
         Timer(Duration(milliseconds: 200), () {
           if (mounted && _isRingtoneActive) {
             HapticFeedback.mediumImpact();
           }
         });
 
-        // Add a third vibration burst
+        // Optional: Add a light burst after 400ms
         Timer(Duration(milliseconds: 400), () {
           if (mounted && _isRingtoneActive) {
             HapticFeedback.lightImpact();
@@ -261,7 +262,10 @@ class _IncomingCallScreenState extends State<IncomingCallScreen>
                           text: 'Accept',
                           color: const Color(0xff7FEB12),
                           onPressed: () {
-                            context.pushNamed(RoutePath.callReceivedScreen);
+                            context.pushNamed(
+                              RoutePath.callReceivedScreen,
+                              extra: {'callerName': widget.callerName},
+                            );
                           },
                           isAccept: true,
                         ),

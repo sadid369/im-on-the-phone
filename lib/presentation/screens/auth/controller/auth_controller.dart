@@ -3,11 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/routes/route_path.dart';
 import '../../../../helper/extension/base_extension.dart';
-import '../../../../core/routes/routes.dart';
 
 class AuthController extends GetxController {
   // Observable variables
-  var isAdmin = false.obs;
   var rememberMe = false.obs;
   var passwordVisible = false.obs;
   var isLoading = false.obs;
@@ -33,13 +31,6 @@ class AuthController extends GetxController {
     rememberMe.value = value ?? false;
   }
 
-  // Set admin status and refresh router
-  void setAdminStatus(bool status) {
-    isAdmin.value = status;
-    // Force router to rebuild with new admin status
-    AppRouter.refreshRouter();
-  }
-
   // Login method
   void login(BuildContext context) {
     if (isLoading.value) return;
@@ -53,11 +44,6 @@ class AuthController extends GetxController {
       return;
     }
 
-    // if (password.isEmpty) {
-    //   _showError(context, 'Please enter password');
-    //   return;
-    // }
-
     isLoading.value = true;
 
     // Simulate login process
@@ -65,14 +51,10 @@ class AuthController extends GetxController {
       isLoading.value = false;
 
       if (email == 'admin') {
-        // Navigate to a route that exists for both admin and user, then redirect
-        // context.go(RoutePath.home.addBasePath);
-        // Then immediately navigate to admin dashboard
-
-        setAdminStatus(true);
+        // Navigate directly to admin dashboard
         context.go(RoutePath.adminDashboard.addBasePath);
       } else if (email == 'user') {
-        setAdminStatus(false);
+        // Navigate directly to user home
         context.go(RoutePath.home.addBasePath);
       } else {
         _showError(context, 'Please enter "admin" or "user" in email field');
