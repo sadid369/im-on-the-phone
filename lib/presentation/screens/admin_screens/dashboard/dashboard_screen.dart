@@ -4,9 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:groc_shopy/core/custom_assets/assets.gen.dart';
 import 'package:groc_shopy/utils/app_colors/app_colors.dart';
 
+import '../../../../core/routes/route_path.dart';
 import '../../../../utils/static_strings/static_strings.dart';
 import '../../../../utils/text_style/text_style.dart';
 import '../../../widgets/custom_bottons/custom_button/app_button.dart';
@@ -99,7 +101,9 @@ class DashboardScreen extends StatelessWidget {
                 children: [
                   AppButton(
                     text: AppStrings.manageUsers.tr, // <-- Added .tr
-                    onPressed: () {},
+                    onPressed: () {
+                      context.goNamed(RoutePath.adminUser);
+                    },
                     width: double.infinity,
                     height: 48.h,
                     backgroundColor: AppColors.primary,
@@ -112,7 +116,9 @@ class DashboardScreen extends StatelessWidget {
                   ),
                   AppButton(
                     text: AppStrings.appSettings.tr, // <-- Added .tr
-                    onPressed: () {},
+                    onPressed: () {
+                      context.goNamed(RoutePath.adminSettings);
+                    },
                     width: double.infinity,
                     height: 48.h,
                     backgroundColor: AppColors.primary,
@@ -131,7 +137,7 @@ class DashboardScreen extends StatelessWidget {
               // Monthly User Growth Chart
               Container(
                 padding: EdgeInsets.all(16),
-                height: 220.w,
+                height: 280.w,
                 width: double.infinity,
                 decoration: BoxDecoration(
                   color: Colors.white,

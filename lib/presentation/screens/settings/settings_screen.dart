@@ -231,7 +231,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               // Ringtone Picker
               Container(
                 padding: EdgeInsets.all(10.w),
-                height: 104.w,
+                height: 120.w,
                 width: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.r),
@@ -264,7 +264,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 selectedRingtone = AppStrings.defaultRingtone;
                               });
                             },
-                            width: 100.w,
+                            width: 120.w,
                             height: 29.h,
                             borderRadius: 50.r,
                             backgroundColor:
@@ -284,7 +284,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 selectedRingtone = AppStrings.quad;
                               });
                             },
-                            width: 110.w,
+                            width: 120.w,
                             height: 29.h,
                             borderRadius: 50.r,
                             backgroundColor: selectedRingtone == AppStrings.quad

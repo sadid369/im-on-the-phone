@@ -61,7 +61,7 @@ class SubscriptionModal extends StatelessWidget {
                     ),
                     Gap(8.h),
                     Text(
-                      AppStrings.pricePerYear.tr, // <-- Added .tr
+                      AppStrings.pricePerYear, // <-- Added .tr
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: const Color(0xFF090A0A),

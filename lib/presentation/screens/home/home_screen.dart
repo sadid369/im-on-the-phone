@@ -181,7 +181,22 @@ class _HomeScreenState extends State<HomeScreen> {
               // Start call button
               AppButton(
                 text: AppStrings.startCall.tr,
-                onPressed: _startDelayedCall,
+                onPressed: () {
+                  if (selectedCaller == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(AppStrings.pleaseSelectCallerAndTime.tr),
+                        behavior: SnackBarBehavior.floating,
+                      ),
+                    );
+                    return;
+                  }
+                  if (selectedCallTime != null) {
+                    _startDelayedCall();
+                  } else {
+                    _startImmediateCall();
+                  }
+                },
                 backgroundColor: AppColors.primary,
                 textStyle: AppStyle.inter16w700CFFFFFF,
                 enabled: true,
@@ -518,49 +533,39 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  void _startDelayedCall() {
-    if (selectedCaller == null || selectedCallTime == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(AppStrings.pleaseSelectCallerAndTime.tr),
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
-      return;
-    }
+  // void _startDelayedCall() {
+  //   int delaySeconds = _getDelayInSeconds();
 
-    int delaySeconds = _getDelayInSeconds();
+  //   if (delaySeconds == 0) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(
+  //         content: Text(AppStrings.pleaseSetValidTime.tr),
+  //         behavior: SnackBarBehavior.floating,
+  //       ),
+  //     );
+  //     return;
+  //   }
 
-    if (delaySeconds == 0) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(AppStrings.pleaseSetValidTime.tr),
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
-      return;
-    }
+  //   // Show success message
+  //   ScaffoldMessenger.of(context).showSnackBar(
+  //     SnackBar(
+  //       content:
+  //           Text('${AppStrings.fakeCallWillStartIn.tr} ${selectedCallTime}'),
+  //       behavior: SnackBarBehavior.floating,
+  //       duration: Duration(seconds: 2),
+  //     ),
+  //   );
 
-    // Show success message
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content:
-            Text('${AppStrings.fakeCallWillStartIn.tr} ${selectedCallTime}'),
-        behavior: SnackBarBehavior.floating,
-        duration: Duration(seconds: 2),
-      ),
-    );
-
-    Timer(Duration(seconds: delaySeconds), () {
-      if (mounted) {
-        context.pushNamed(RoutePath.incomingCallScreen, extra: {
-          'callerName': selectedCaller!,
-          'time': _getFormattedTime(),
-          'callDuration': selectedCallTime!,
-        });
-      }
-    });
-  }
+  //   Timer(Duration(seconds: delaySeconds), () {
+  //     if (mounted) {
+  //       context.pushNamed(RoutePath.incomingCallScreen, extra: {
+  //         'callerName': selectedCaller!,
+  //         'time': _getFormattedTime(),
+  //         'callDuration': selectedCallTime!,
+  //       });
+  //     }
+  //   });
+  // }
 
   void _cancelCountdown() {
     _countdownTimer?.cancel();
@@ -595,6 +600,7 @@ class _HomeScreenState extends State<HomeScreen> {
           setState(() {
             selectedCallTime = timeKey;
           });
+          // Do NOT start the call here!
         }
       },
       child: Container(
@@ -623,6 +629,7 @@ class _HomeScreenState extends State<HomeScreen> {
         setState(() {
           selectedCaller = callerKey;
         });
+        // Do NOT start the call here!
       },
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
@@ -670,6 +677,49 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  // New helper for immediate call
+  void _startImmediateCall() {
+    context.pushNamed(RoutePath.incomingCallScreen, extra: {
+      'callerName': selectedCaller!,
+      'time': _getFormattedTime(),
+      'callDuration': '0',
+    });
+  }
+
+  // Update _startDelayedCall to remove the double-check
+  void _startDelayedCall() {
+    int delaySeconds = _getDelayInSeconds();
+
+    if (delaySeconds == 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AppStrings.pleaseSetValidTime.tr),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      return;
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content:
+            Text('${AppStrings.fakeCallWillStartIn.tr} ${selectedCallTime}'),
+        behavior: SnackBarBehavior.floating,
+        duration: Duration(seconds: 2),
+      ),
+    );
+
+    Timer(Duration(seconds: delaySeconds), () {
+      if (mounted) {
+        context.pushNamed(RoutePath.incomingCallScreen, extra: {
+          'callerName': selectedCaller!,
+          'time': _getFormattedTime(),
+          'callDuration': selectedCallTime!,
+        });
+      }
+    });
   }
 }
 
