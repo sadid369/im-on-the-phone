@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 
 import '../../../../core/custom_assets/assets.gen.dart';
 import '../../../../utils/app_colors/app_colors.dart';
+import '../../../../utils/static_strings/static_strings.dart';
 import '../../../../utils/text_style/text_style.dart';
 import '../../../widgets/custom_bottons/custom_button/app_button.dart';
+import 'package:groc_shopy/global/language/controller/language_controller.dart';
 
 class AppConfigScreen extends StatefulWidget {
   @override
@@ -15,14 +18,21 @@ class AppConfigScreen extends StatefulWidget {
 
 class _AppConfigScreenState extends State<AppConfigScreen> {
   bool _pushNotifications = true;
-  String _selectedLanguage = 'English';
+  String _selectedLanguage = AppStrings.english;
+  final LanguageController languageController = Get.find<LanguageController>();
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedLanguage = languageController.selectedLanguage.value;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'App Configuration',
+          AppStrings.appConfigurations.tr,
           style: AppStyle.kohSantepheap18w700C1E1E1E,
         ),
         backgroundColor: Colors.white,
@@ -53,12 +63,12 @@ class _AppConfigScreenState extends State<AppConfigScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Notifications',
+                    AppStrings.notifications.tr,
                     style: AppStyle.roboto16w500C000000,
                   ),
                   Gap(4.h),
                   Text(
-                    'Control how and when you receive notifications.',
+                    AppStrings.controlNotifications.tr,
                     style: AppStyle.roboto14w400C808080,
                   ),
                   Gap(16.h),
@@ -80,11 +90,11 @@ class _AppConfigScreenState extends State<AppConfigScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Push Notifications',
+                              AppStrings.pushNotifications.tr,
                               style: AppStyle.roboto16w500C000000,
                             ),
                             Text(
-                              'Receive alerts and updates via\n push notifications.',
+                              AppStrings.receivePushNotifications.tr,
                               style: AppStyle.roboto14w400C808080,
                             ),
                           ],
@@ -131,7 +141,7 @@ class _AppConfigScreenState extends State<AppConfigScreen> {
                       SvgPicture.asset(Assets.icons.chooseYourLanguage.path,
                           width: 24.w, height: 24.w),
                       Gap(10.w),
-                      Text('Choose your language',
+                      Text(AppStrings.chooseYourLanguage.tr,
                           style: AppStyle.roboto14w400C000000),
                     ],
                   ),
@@ -141,37 +151,39 @@ class _AppConfigScreenState extends State<AppConfigScreen> {
                     children: [
                       Gap(30.w),
                       AppButton(
-                        text: 'English',
-                        onPressed: () {
+                        text: AppStrings.english.tr,
+                        onPressed: () async {
+                          await languageController.changeLanguage("English");
                           setState(() {
-                            _selectedLanguage = 'English';
+                            _selectedLanguage = "English";
                           });
                         },
                         width: 100.w,
                         height: 29.h,
                         borderRadius: 50.r,
-                        backgroundColor: _selectedLanguage == 'English'
+                        backgroundColor: _selectedLanguage == "English"
                             ? AppColors.primary
                             : const Color(0xffF2F2F2),
-                        textStyle: _selectedLanguage == 'English'
+                        textStyle: _selectedLanguage == "English"
                             ? AppStyle.roboto12w500CFFFFFF
                             : AppStyle.roboto12w400C000000,
                       ),
                       Gap(8.w),
                       AppButton(
-                        text: 'Spanish',
-                        onPressed: () {
+                        text: AppStrings.spanish.tr,
+                        onPressed: () async {
+                          await languageController.changeLanguage("Spanish");
                           setState(() {
-                            _selectedLanguage = 'Spanish';
+                            _selectedLanguage = "Spanish";
                           });
                         },
                         width: 110.w,
                         height: 29.h,
                         borderRadius: 50.r,
-                        backgroundColor: _selectedLanguage == 'Spanish'
+                        backgroundColor: _selectedLanguage == "Spanish"
                             ? AppColors.primary
                             : const Color(0xffF2F2F2),
-                        textStyle: _selectedLanguage == 'Spanish'
+                        textStyle: _selectedLanguage == "Spanish"
                             ? AppStyle.roboto12w500CFFFFFF
                             : AppStyle.roboto12w400C000000,
                       ),
@@ -182,7 +194,7 @@ class _AppConfigScreenState extends State<AppConfigScreen> {
             ),
             Gap(40.h),
             AppButton(
-              text: 'Save Changes',
+              text: AppStrings.saveChanges.tr,
               onPressed: () {
                 // Handle save changes action
               },
@@ -193,25 +205,6 @@ class _AppConfigScreenState extends State<AppConfigScreen> {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildLanguageButton(String language) {
-    return ElevatedButton(
-      onPressed: () {
-        setState(() {
-          _selectedLanguage = language;
-        });
-      },
-      child: Text(language),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: _selectedLanguage == language
-            ? Color(0xFF00BFAE)
-            : Colors.grey[200],
-        foregroundColor:
-            _selectedLanguage == language ? Colors.white : Colors.black,
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       ),
     );
   }

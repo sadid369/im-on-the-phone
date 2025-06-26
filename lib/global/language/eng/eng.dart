@@ -2,7 +2,7 @@ import '../../../utils/static_strings/static_strings.dart';
 
 Map<String, String> english = {
   ///====================== Initial ========================
-  AppStrings.appName: "GastRonomIQ",
+  AppStrings.appName: "I'm on\nthe phone",
   AppStrings.appTagLine: "Track items, \nCalculate, Together",
   AppStrings.getStarted: "Get Started",
   AppStrings.welcome: "Welcome",
@@ -69,10 +69,10 @@ Map<String, String> english = {
   AppStrings.takeTheFirstStep:
       "Take the first step towards a healthier and happier life.",
   AppStrings.popular: "POPULAR",
-  AppStrings.forMoreScan: "For more scan",
+  AppStrings.forMoreAccess: "For more Access",
   AppStrings.sixtyPointNoneNine: "\$60.99",
   AppStrings.forOneYear: "For 1 year",
-  AppStrings.unlimitedAccessTosSan: "Unlimited access to scan",
+  AppStrings.unlimitedAccess: "Unlimited access",
   AppStrings.viewMonthlyRecord: "View monthly record",
   AppStrings.youWillBe:
       "You will be charged \$9.99 (monthly plan) or \n \$60.99 (annual plan) through your iTunes \n account. You can cancel at any time if your \n not satisfied.",

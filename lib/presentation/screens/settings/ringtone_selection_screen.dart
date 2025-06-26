@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart'; // <-- Add this for .tr
 
 class RingtoneSelectionScreen extends StatefulWidget {
   @override
@@ -31,7 +32,8 @@ class _RingtoneSelectionScreenState extends State<RingtoneSelectionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Ringtone', style: TextStyle(fontSize: 18.sp)),
+        title: Text('Ringtone'.tr,
+            style: TextStyle(fontSize: 18.sp)), // <-- .tr added
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
@@ -47,7 +49,7 @@ class _RingtoneSelectionScreenState extends State<RingtoneSelectionScreen> {
               contentPadding:
                   EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
               title: Text(
-                ringtone,
+                ringtone.tr, // <-- .tr added
                 style: TextStyle(fontSize: 16.sp),
               ),
               trailing: selectedRingtone == ringtone

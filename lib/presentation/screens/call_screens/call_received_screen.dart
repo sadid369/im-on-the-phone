@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:groc_shopy/helper/extension/base_extension.dart';
+import 'package:groc_shopy/utils/static_strings/static_strings.dart';
 
 import '../../../core/routes/route_path.dart';
 
@@ -100,11 +102,11 @@ class _CallReceivedScreenState extends State<CallReceivedScreen> {
                     children: [
                       _CallOption(
                         icon: Icons.mic_off,
-                        label: 'Mute',
+                        label: AppStrings.mute, // <-- Use AppStrings
                       ),
                       _CallOption(
                         icon: Icons.dialpad,
-                        label: 'Keyboard',
+                        label: AppStrings.keyboard, // <-- Use AppStrings
                       ),
                       GestureDetector(
                         onTap: () {
@@ -116,7 +118,9 @@ class _CallReceivedScreenState extends State<CallReceivedScreen> {
                           icon: isPressLoudSpeaker
                               ? Icons.volume_up
                               : Icons.volume_off_sharp,
-                          label: isPressLoudSpeaker ? 'Speaker' : 'Sound',
+                          label: isPressLoudSpeaker
+                              ? AppStrings.speaker
+                              : AppStrings.sound, // <-- Use AppStrings
                           color: isPressLoudSpeaker ? Colors.white54 : null,
                         ),
                       ),
@@ -128,15 +132,15 @@ class _CallReceivedScreenState extends State<CallReceivedScreen> {
                     children: const [
                       _CallOption(
                         icon: Icons.add_call,
-                        label: 'Add call',
+                        label: AppStrings.addCall, // <-- Use AppStrings
                       ),
                       _CallOption(
                         icon: Icons.videocam,
-                        label: 'Video',
+                        label: AppStrings.video, // <-- Use AppStrings
                       ),
                       _CallOption(
                         icon: Icons.person_add,
-                        label: 'Callers',
+                        label: AppStrings.callers, // <-- Use AppStrings
                       ),
                     ],
                   ),
@@ -197,7 +201,7 @@ class _CallOption extends StatelessWidget {
         ),
         Gap(8.h),
         Text(
-          label,
+          label.tr, // <-- Add .tr here for localization
           style: TextStyle(fontSize: 14.sp),
         ),
       ],

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:groc_shopy/core/routes/route_path.dart';
 import 'package:groc_shopy/core/routes/routes.dart';
 import 'package:groc_shopy/helper/extension/base_extension.dart';
+import 'package:groc_shopy/utils/static_strings/static_strings.dart';
 import 'package:groc_shopy/utils/text_style/text_style.dart';
 
 import '../../../core/custom_assets/assets.gen.dart';
@@ -35,7 +37,7 @@ class ProfileScreen extends StatelessWidget {
                       onPressed: () => Navigator.of(context).pop(),
                     ),
                     Text(
-                      'Profile',
+                      AppStrings.profile.tr,
                       style: AppStyle.kohSantepheap18w700C1E1E1E,
                     ),
                     Gap(15.w),
@@ -95,7 +97,7 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  'Profile & Account',
+                  AppStrings.profileAndAccount.tr,
                   style: AppStyle.roboto14w600C999999,
                 ),
               ),
@@ -110,7 +112,7 @@ class ProfileScreen extends StatelessWidget {
                   leading:
                       Icon(Icons.person_outlined, color: Colors.grey.shade600),
                   title: Text(
-                    'Update Profile',
+                    AppStrings.updateProfile.tr,
                     style: AppStyle.roboto16w400C000000,
                   ),
                   onTap: () {
@@ -130,7 +132,7 @@ class ProfileScreen extends StatelessWidget {
                   leading:
                       Icon(Icons.lock_outline, color: Colors.grey.shade600),
                   title: Text(
-                    'Change Password',
+                    AppStrings.changePassword.tr,
                     style: AppStyle.roboto16w400C000000,
                   ),
                   onTap: () {

@@ -2,22 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:camera/camera.dart';
-import 'package:groc_shopy/utils/static_strings/static_strings.dart';
+import 'utils/static_strings/static_strings.dart';
 import 'core/routes/routes.dart';
 import 'dependency_injection/getx_injection.dart';
 import 'global/language/controller/language_controller.dart';
 import 'utils/app_colors/app_colors.dart';
-// Import your Language translations class
-
-// your translations
 
 late final List<CameraDescription> cameras;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // Initialize cameras if needed, or do other async initialization here
-  // cameras = await availableCameras();
 
   // Initialize LanguageController and load saved language
   final LanguageController languageController = Get.put(LanguageController());
@@ -45,9 +39,9 @@ class MyApp extends StatelessWidget {
                 useMaterial3: true,
               ),
               translations: Language(), // your translations class
-              locale: languageController.isEnglish.value
-                  ? const Locale('en', 'US')
-                  : const Locale('de', 'DE'),
+              locale: languageController.selectedLanguage.value == "Spanish"
+                  ? const Locale('es', 'ES')
+                  : const Locale('en', 'US'),
               fallbackLocale: const Locale('en', 'US'),
               routeInformationParser: AppRouter.route.routeInformationParser,
               routerDelegate: AppRouter.route.routerDelegate,

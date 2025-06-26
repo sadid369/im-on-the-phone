@@ -29,14 +29,14 @@ class SubscriptionModal extends StatelessWidget {
                 child: TextButton(
                   onPressed: () => Navigator.of(context).pop(),
                   child: Text(
-                    AppStrings.skip.tr,
+                    AppStrings.skip.tr, // <-- Added .tr
                     style: AppStyle.inter16w500C6A4DFF,
                   ),
                 ),
               ),
               Gap(8.h),
               Text(
-                AppStrings.getUnlimitedAccess.tr,
+                AppStrings.getUnlimitedAccess.tr, // <-- Added .tr
                 style: AppStyle.kohSantepheap20w700C090A0A,
                 textAlign: TextAlign.center,
               ),
@@ -49,36 +49,73 @@ class SubscriptionModal extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          AppStrings.freeTrialFor.tr,
-                          style: AppStyle.roboto16w700C000000,
-                        ),
-                        Gap(4.w),
-                        Text(
-                          AppStrings.sevenDays,
-                          style: AppStyle.roboto16w700CFFD673
-                              .copyWith(color: AppColors.primary),
-                        ),
-                      ],
-                    ),
                     Gap(17.w),
                     Text(
-                      AppStrings.popular.tr,
+                      AppStrings.popular.tr, // <-- Added .tr
                       style: AppStyle.inter12w400C090A0A,
                     ),
                     Gap(4.h),
                     Text(
-                      AppStrings.forMoreScan.tr,
+                      AppStrings.forCustom.tr, // <-- Added .tr
                       style: AppStyle.roboto16w700C090A0A,
                     ),
                     Gap(8.h),
+                    Text(
+                      AppStrings.pricePerYear.tr, // <-- Added .tr
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: const Color(0xFF090A0A),
+                        fontSize: 40,
+                        fontFamily: 'Roboto',
+                        fontWeight: FontWeight.w700,
+                        height: 1.40,
+                      ),
+                    ),
                     Gap(4.h),
+                    Text(
+                      AppStrings.forOneYear.tr, // <-- Added .tr
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: const Color(0xFF090A0A),
+                        fontSize: 12,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w400,
+                        height: 1,
+                      ),
+                    ),
+                    Gap(8.h),
+                    SizedBox(
+                      width: 224,
+                      child: Text(
+                        AppStrings.fullLibrary.tr, // <-- Added .tr
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: const Color(0xFF090A0A),
+                          fontSize: 10,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w400,
+                          height: 1.43,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 275,
+                      child: Text(
+                        AppStrings.customCaller.tr, // <-- Added .tr
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: const Color(0xFF090A0A),
+                          fontSize: 10,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w400,
+                          height: 1.43,
+                        ),
+                      ),
+                    ),
+                    Gap(20.h),
                     AppButton(
-                      text: AppStrings.subscribe.tr,
-                      onPressed: onSubscribe, // <-- use the callback
+                      text: AppStrings.subscribe.tr, // <-- Added .tr
+                      onPressed: onSubscribe,
                       width: double.infinity,
                       height: 48.h,
                       backgroundColor: AppColors.primary,
@@ -86,20 +123,23 @@ class SubscriptionModal extends StatelessWidget {
                       textStyle: AppStyle.inter16w500White,
                     ),
                     Gap(20.h),
-                    Text(
-                      AppStrings.unlimitedAccessTosSan.tr,
-                      style: AppStyle.inter14w400C090A0A,
-                      textAlign: TextAlign.center,
-                    ),
-                    Gap(20.h),
                   ],
                 ),
               ),
               Gap(16.h),
-              Text(
-                AppStrings.youWillBe.tr,
-                style: AppStyle.inter12w400C090A0A,
-                textAlign: TextAlign.center,
+              SizedBox(
+                width: 262,
+                child: Text(
+                  AppStrings.subscriptionNote.tr, // <-- Added .tr
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: const Color(0xFF090A0A),
+                    fontSize: 12,
+                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.w400,
+                    height: 1.33,
+                  ),
+                ),
               ),
               Gap(16.h),
             ],

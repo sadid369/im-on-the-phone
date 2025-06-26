@@ -61,7 +61,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       onPressed: () => Navigator.of(context).pop(),
                     ),
                     Text(
-                      'Change Password',
+                      AppStrings.changePassword.tr, // <-- Added .tr
                       style: AppStyle.kohSantepheap18w700C1E1E1E,
                     ),
                     Gap(15.w),
@@ -108,7 +108,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               Gap(8.h),
               CustomTextFormField(
                 controller: _newPassword,
-                hintText: AppStrings.enterYourCurrentPassword.tr,
+                hintText: AppStrings.enterYourNewPassword.tr, // <-- Corrected
                 obscureText: _obscurePassword,
                 suffixIcon: _obscurePassword
                     ? Icons.visibility_off_outlined
@@ -132,7 +132,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               Gap(8.h),
               CustomTextFormField(
                 controller: _confirmPassword,
-                hintText: AppStrings.enterYourCurrentPassword.tr,
+                hintText: AppStrings.confirmYourNewPassword.tr, // <-- Corrected
                 obscureText: _obscurePassword,
                 suffixIcon: _obscurePassword
                     ? Icons.visibility_off_outlined
@@ -151,7 +151,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               Gap(26.h),
               // Save Changes button
               AppButton(
-                text: 'Change Password',
+                text: AppStrings.changePassword.tr, // <-- Added .tr
                 onPressed: () {
                   // Handle save changes action
                 },

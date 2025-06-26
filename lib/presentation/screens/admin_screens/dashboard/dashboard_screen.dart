@@ -3,9 +3,11 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 import 'package:groc_shopy/core/custom_assets/assets.gen.dart';
 import 'package:groc_shopy/utils/app_colors/app_colors.dart';
 
+import '../../../../utils/static_strings/static_strings.dart';
 import '../../../../utils/text_style/text_style.dart';
 import '../../../widgets/custom_bottons/custom_button/app_button.dart';
 
@@ -15,7 +17,7 @@ class DashboardScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.backgroundColor,
-        title: Text("Dashboard"),
+        title: Text(AppStrings.dashboard.tr), // <-- Added .tr
         centerTitle: true,
         actions: [
           Container(
@@ -65,7 +67,7 @@ class DashboardScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Total Subscribers",
+                          AppStrings.totalSubscribers.tr, // <-- Added .tr
                           style: AppStyle.roboto12w500C666666,
                         ),
                         Gap(12.w),
@@ -96,7 +98,7 @@ class DashboardScreen extends StatelessWidget {
                 spacing: 20.w,
                 children: [
                   AppButton(
-                    text: "Manage Users",
+                    text: AppStrings.manageUsers.tr, // <-- Added .tr
                     onPressed: () {},
                     width: double.infinity,
                     height: 48.h,
@@ -106,10 +108,10 @@ class DashboardScreen extends StatelessWidget {
                     icon: SvgPicture.asset(
                       Assets.icons.users.path,
                       color: Colors.white,
-                    ), // <-- Users icon
+                    ),
                   ),
                   AppButton(
-                    text: "App Settings",
+                    text: AppStrings.appSettings.tr, // <-- Added .tr
                     onPressed: () {},
                     width: double.infinity,
                     height: 48.h,
@@ -119,7 +121,7 @@ class DashboardScreen extends StatelessWidget {
                     icon: SvgPicture.asset(
                       Assets.icons.settings.path,
                       color: Colors.white,
-                    ), // <-- Settings icon
+                    ),
                   ),
                 ],
               ),
@@ -145,7 +147,7 @@ class DashboardScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Monthly User Growth",
+                      AppStrings.monthlyUserGrowth.tr, // <-- Added .tr
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                     ),
@@ -194,22 +196,28 @@ class DashboardScreen extends StatelessWidget {
                                     String text = '';
                                     switch (value.toInt()) {
                                       case 0:
-                                        text = 'Jan';
+                                        text =
+                                            AppStrings.jan.tr; // <-- Added .tr
                                         break;
                                       case 1:
-                                        text = 'Feb';
+                                        text =
+                                            AppStrings.feb.tr; // <-- Added .tr
                                         break;
                                       case 2:
-                                        text = 'Mar';
+                                        text =
+                                            AppStrings.mar.tr; // <-- Added .tr
                                         break;
                                       case 3:
-                                        text = 'Apr';
+                                        text =
+                                            AppStrings.apr.tr; // <-- Added .tr
                                         break;
                                       case 4:
-                                        text = 'May';
+                                        text =
+                                            AppStrings.may.tr; // <-- Added .tr
                                         break;
                                       case 5:
-                                        text = 'Jun';
+                                        text =
+                                            AppStrings.jun.tr; // <-- Added .tr
                                         break;
                                       default:
                                         text = '';

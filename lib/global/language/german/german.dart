@@ -127,7 +127,7 @@ import '../../../utils/static_strings/static_strings.dart';
 
 Map<String, String> german = {
   ///====================== Initial ========================
-  AppStrings.appName: "GastRonomIQ",
+  AppStrings.appName: "I'm on\nthe phone",
   AppStrings.appTagLine: "Artikel verfolgen,\nBerechnen, Gemeinsam",
   AppStrings.getStarted: "Start",
   AppStrings.welcome: "Willkommen",
@@ -192,10 +192,10 @@ Map<String, String> german = {
   AppStrings.getUnlimitedAccess: "Unbegrenzt Zugang zu Programmen",
   AppStrings.takeTheFirstStep: "Erster Schritt zu gesünderem Leben",
   AppStrings.popular: "BELIEBT",
-  AppStrings.forMoreScan: "Mehr Scan",
+  AppStrings.forMoreAccess: "Mehr Zugang",
   AppStrings.sixtyPointNoneNine: "\$60,99",
   AppStrings.forOneYear: "1 Jahr",
-  AppStrings.unlimitedAccessTosSan: "Unbegrenzter Scan",
+  AppStrings.unlimitedAccess: "Unbegrenzter Zugang",
   AppStrings.viewMonthlyRecord: "Monatsbericht ansehen",
   AppStrings.youWillBe:
       "\$9,99 (Monat) oder \$60,99 (Jahr) via iTunes belastet. Kündigen jederzeit.",

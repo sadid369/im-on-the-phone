@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:groc_shopy/core/custom_assets/assets.gen.dart';
 import 'package:groc_shopy/core/routes/route_path.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart'; // Add this
 import 'dart:async';
+import 'package:groc_shopy/utils/static_strings/static_strings.dart';
 
 class IncomingCallScreen extends StatefulWidget {
   final String callerName;
@@ -199,7 +201,7 @@ class _IncomingCallScreenState extends State<IncomingCallScreen>
                     children: [
                       Gap(20.w),
                       Text(
-                        'Calling',
+                        AppStrings.calling.tr, // <-- Add .tr here
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 18.sp,
@@ -222,22 +224,19 @@ class _IncomingCallScreenState extends State<IncomingCallScreen>
                   children: [
                     // Top row buttons
                     Row(
-                      mainAxisAlignment: MainAxisAlignment
-                          .spaceEvenly, // Changed to spaceEvenly
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Flexible(
-                          // Use Flexible instead of Expanded
                           child: _buildActionButton(
-                            text: 'Remind me',
+                            text: AppStrings.remindMe.tr,
                             icon: Assets.icons.remindMe.path,
                             onPressed: () {},
                           ),
                         ),
-                        Gap(10.w), // Reduced gap
+                        Gap(10.w),
                         Flexible(
-                          // Use Flexible instead of Expanded
                           child: _buildActionButton(
-                            text: 'Message',
+                            text: AppStrings.message.tr,
                             icon: Assets.icons.message.path,
                             onPressed: () {},
                           ),
@@ -252,14 +251,14 @@ class _IncomingCallScreenState extends State<IncomingCallScreen>
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         _buildCallButton(
-                          text: 'Decline',
+                          text: AppStrings.decline.tr, // <-- Add .tr here
                           color: Colors.red,
                           onPressed: () => context.pop(),
                           isAccept: false,
                         ),
                         Gap(120.w),
                         _buildCallButton(
-                          text: 'Accept',
+                          text: AppStrings.accept.tr, // <-- Add .tr here
                           color: const Color(0xff7FEB12),
                           onPressed: () {
                             context.pushNamed(
@@ -308,7 +307,7 @@ class _IncomingCallScreenState extends State<IncomingCallScreen>
       // Wrap with GestureDetector
       onTap: onPressed,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
         decoration: BoxDecoration(
           color: Colors.grey.withOpacity(0.1),
           borderRadius: BorderRadius.circular(20.r),
@@ -323,7 +322,7 @@ class _IncomingCallScreenState extends State<IncomingCallScreen>
             ),
             Gap(8.w),
             Text(
-              text,
+              text.tr, // <-- Add .tr here for button label
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 16.sp,
@@ -365,7 +364,7 @@ class _IncomingCallScreenState extends State<IncomingCallScreen>
         ),
         Gap(8.h),
         Text(
-          text,
+          text.tr, // <-- Add .tr here for button label
           style: TextStyle(
             color: Colors.black,
             fontSize: 16.sp,

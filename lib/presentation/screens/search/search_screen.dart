@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:groc_shopy/core/routes/route_path.dart';
 import 'package:groc_shopy/helper/extension/base_extension.dart';
 import 'package:groc_shopy/utils/app_colors/app_colors.dart';
+import 'package:groc_shopy/utils/static_strings/static_strings.dart';
 
 class SearchScreen extends StatelessWidget {
   SearchScreen({Key? key}) : super(key: key);
@@ -12,28 +14,26 @@ class SearchScreen extends StatelessWidget {
   final List<Map<String, dynamic>> callers = [
     {
       'initials': 'M',
-      'name': 'MOM',
-      'message':
-          'Mom is really worried about you and wants you home immediately',
+      'name': AppStrings.mom,
+      'message': AppStrings.momWorriedMessage,
       'color': Colors.red[200],
     },
     {
       'initials': 'Bf',
-      'name': 'Best Friend',
-      'message': 'Hey bestfriend let me tell you about my day',
+      'name': AppStrings.bestFriend,
+      'message': AppStrings.bestFriendMessage,
       'color': Colors.brown[400],
     },
     {
       'initials': 'D',
-      'name': 'DAD',
-      'message': 'Hey, how was your day? Dad is waiting for your response',
+      'name': AppStrings.dad,
+      'message': AppStrings.dadMessage,
       'color': Colors.orange[200],
     },
     {
       'initials': 'L',
-      'name': 'Love',
-      'message':
-          'Hey babe, when do you get home? While I have you on the phone......',
+      'name': AppStrings.love,
+      'message': AppStrings.loveMessage,
       'color': Colors.green[200],
     },
   ];
@@ -50,7 +50,7 @@ class SearchScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Caller',
+                    AppStrings.caller.tr,
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 20.sp,
@@ -72,7 +72,7 @@ class SearchScreen extends StatelessWidget {
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.symmetric(vertical: 12.h),
                   prefixIcon: Icon(Icons.search, size: 22.r),
-                  hintText: 'Search',
+                  hintText: AppStrings.search.tr,
                   filled: true,
                   fillColor: Colors.grey[200],
                   border: OutlineInputBorder(

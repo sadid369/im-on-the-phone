@@ -43,7 +43,6 @@ class UpdatePasswordSuccessScreen extends StatelessWidget {
               Gap(31.h),
               // White card container
               Container(
-                height: 230.h,
                 width: 380.w,
                 padding: EdgeInsets.all(22.w),
                 decoration: BoxDecoration(
@@ -51,6 +50,7 @@ class UpdatePasswordSuccessScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(4.r),
                 ),
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
                       AppStrings.successful.tr,

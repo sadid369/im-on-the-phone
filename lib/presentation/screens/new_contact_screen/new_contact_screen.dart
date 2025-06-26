@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
+import 'package:groc_shopy/utils/static_strings/static_strings.dart';
 
 import '../../widgets/custom_bottons/custom_button/app_button.dart';
 import '../../widgets/custom_text_form_field/custom_text_form.dart';
@@ -125,7 +127,7 @@ class _NewContactScreenState extends State<NewContactScreen> {
                       child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16.w),
                         child: Text(
-                          'Cancel',
+                          AppStrings.cancel.tr, // <-- Added .tr
                           style: TextStyle(color: Colors.teal, fontSize: 16.sp),
                         ),
                       ),
@@ -133,7 +135,7 @@ class _NewContactScreenState extends State<NewContactScreen> {
                     Expanded(
                       child: Center(
                         child: Text(
-                          'New Contact',
+                          AppStrings.newContact.tr, // <-- Added .tr
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 18.sp,
@@ -150,7 +152,7 @@ class _NewContactScreenState extends State<NewContactScreen> {
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
                       child: Text(
-                        'Done',
+                        AppStrings.done.tr, // <-- Added .tr
                         style: TextStyle(color: Colors.black, fontSize: 16.sp),
                       ),
                     ),
@@ -168,7 +170,7 @@ class _NewContactScreenState extends State<NewContactScreen> {
                 ),
                 TextButton(
                   onPressed: () {/* pick photo */},
-                  child: Text('Add Photo',
+                  child: Text(AppStrings.addPhoto.tr, // <-- Added .tr
                       style: TextStyle(color: Colors.grey, fontSize: 14.sp)),
                 ),
               ],
@@ -178,7 +180,7 @@ class _NewContactScreenState extends State<NewContactScreen> {
             // First & Last name fields
             CustomTextFormField(
               controller: _firstNameController,
-              hintText: 'First name',
+              hintText: AppStrings.firstName.tr, // <-- Added .tr
               borderRadius: _borderRadius,
               enabledBorderColor: _borderColor,
               focusedBorderColor: _borderColor,
@@ -188,7 +190,7 @@ class _NewContactScreenState extends State<NewContactScreen> {
             Gap(12.h),
             CustomTextFormField(
               controller: _lastNameController,
-              hintText: 'Last name',
+              hintText: AppStrings.lastName.tr, // <-- Added .tr
               borderRadius: _borderRadius,
               enabledBorderColor: _borderColor,
               focusedBorderColor: _borderColor,
@@ -200,7 +202,7 @@ class _NewContactScreenState extends State<NewContactScreen> {
             // Phone field
             CustomTextFormField(
               controller: _phoneController,
-              hintText: 'Phone number',
+              hintText: AppStrings.phoneNumber.tr, // <-- Added .tr
               keyboardType: TextInputType.phone,
               borderRadius: _borderRadius,
               enabledBorderColor: _borderColor,
@@ -214,7 +216,7 @@ class _NewContactScreenState extends State<NewContactScreen> {
             // Message field
             CustomTextFormField(
               controller: _messageController,
-              hintText: 'Message',
+              hintText: AppStrings.message.tr, // <-- Added .tr
               maxLength: 200,
               keyboardType: TextInputType.multiline,
               contentPadding:
@@ -230,8 +232,9 @@ class _NewContactScreenState extends State<NewContactScreen> {
             // Ringtone section
             _buildSectionTile(
               leading: Icon(Icons.music_note, color: Colors.grey, size: 24.r),
-              title: Text('Ringtone', style: TextStyle(fontSize: 15.sp)),
-              trailing: Text('Default',
+              title: Text(AppStrings.ringtone.tr,
+                  style: TextStyle(fontSize: 15.sp)), // <-- Added .tr
+              trailing: Text(AppStrings.defaultRingtone.tr, // <-- Added .tr
                   style: TextStyle(color: Colors.black54, fontSize: 14.sp)),
               onTap: () {/* pick ringtone */},
             ),
@@ -240,7 +243,9 @@ class _NewContactScreenState extends State<NewContactScreen> {
             _buildSectionTile(
               leading: Icon(Icons.add_circle, color: Colors.green, size: 24.r),
               title: Text(
-                _selectedVoicePath != null ? _voiceFileName : 'add voice',
+                _selectedVoicePath != null
+                    ? _voiceFileName
+                    : AppStrings.addVoice.tr, // <-- Added .tr
                 style: TextStyle(fontSize: 15.sp),
               ),
               trailing: _isPickingFile
@@ -261,7 +266,8 @@ class _NewContactScreenState extends State<NewContactScreen> {
             // Add Theme section
             _buildSectionTile(
               leading: Icon(Icons.add_circle, color: Colors.green, size: 24.r),
-              title: Text('add theme', style: TextStyle(fontSize: 15.sp)),
+              title: Text(AppStrings.addTheme.tr,
+                  style: TextStyle(fontSize: 15.sp)), // <-- Added .tr
               trailing: Icon(Icons.palette, color: Colors.grey, size: 24.r),
               onTap: () {/* add theme */},
             ),
@@ -270,7 +276,7 @@ class _NewContactScreenState extends State<NewContactScreen> {
 
             // Save button
             AppButton(
-              text: 'Save Contact',
+              text: AppStrings.saveContact.tr, // <-- Added .tr
               onPressed: _onSave,
               textStyle: TextStyle(
                 color: Colors.white,

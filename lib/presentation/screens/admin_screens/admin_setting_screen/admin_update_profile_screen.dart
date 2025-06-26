@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 import 'package:groc_shopy/core/custom_assets/assets.gen.dart';
+import 'package:groc_shopy/utils/static_strings/static_strings.dart';
 
 import '../../../../utils/text_style/text_style.dart';
 import '../../../widgets/custom_bottons/custom_button/app_button.dart';
@@ -51,7 +53,7 @@ class _AdminUpdateProfileScreenState extends State<AdminUpdateProfileScreen> {
                       onPressed: () => Navigator.of(context).pop(),
                     ),
                     Text(
-                      'Update Profile',
+                      AppStrings.updateProfile.tr, // <-- Added .tr
                       style: AppStyle.kohSantepheap18w700C1E1E1E,
                     ),
                     Gap(15.w),
@@ -174,7 +176,8 @@ class _AdminUpdateProfileScreenState extends State<AdminUpdateProfileScreen> {
                                               ),
                                               Gap(8.h), // spacing
                                               Text(
-                                                'Camera',
+                                                AppStrings
+                                                    .camera.tr, // <-- Added .tr
                                                 style: AppStyle
                                                     .roboto14w400C808080,
                                               ),
@@ -210,7 +213,8 @@ class _AdminUpdateProfileScreenState extends State<AdminUpdateProfileScreen> {
                                               ),
                                               Gap(8.h), // spacing
                                               Text(
-                                                'Upload',
+                                                AppStrings
+                                                    .upload.tr, // <-- Added .tr
                                                 style: AppStyle
                                                     .roboto14w400C808080,
                                               ),
@@ -234,7 +238,7 @@ class _AdminUpdateProfileScreenState extends State<AdminUpdateProfileScreen> {
               Container(
                 margin: EdgeInsets.only(top: 10.h),
                 child: Text(
-                  'Tap the camera icon to upload',
+                  AppStrings.tapCameraToUpload.tr, // <-- Added .tr
                   style: AppStyle.roboto14w400C808080,
                 ),
               ),
@@ -262,7 +266,7 @@ class _AdminUpdateProfileScreenState extends State<AdminUpdateProfileScreen> {
                         Padding(
                           padding: EdgeInsets.only(left: 16.w, top: 8.h),
                           child: Text(
-                            "Full Name",
+                            AppStrings.fullName.tr, // <-- Added .tr
                             style: AppStyle.roboto14w400C808080,
                           ),
                         ),
@@ -310,7 +314,7 @@ class _AdminUpdateProfileScreenState extends State<AdminUpdateProfileScreen> {
                         Padding(
                           padding: EdgeInsets.only(left: 16.w, top: 8.h),
                           child: Text(
-                            "Email Address",
+                            AppStrings.email.tr, // <-- Added .tr
                             style: AppStyle.roboto14w400C808080,
                           ),
                         ),
@@ -338,7 +342,7 @@ class _AdminUpdateProfileScreenState extends State<AdminUpdateProfileScreen> {
               Gap(57.h),
               // Save Changes button
               AppButton(
-                text: 'Save Changes',
+                text: AppStrings.saveChanges.tr, // <-- Added .tr
                 onPressed: () {
                   // Handle save changes action
                 },

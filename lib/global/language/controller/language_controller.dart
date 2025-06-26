@@ -3,22 +3,20 @@ import 'package:get/get.dart';
 
 import '../../../helper/local_db/local_db.dart';
 import '../../../utils/app_const/app_const.dart';
-import '../german/german.dart';
 import '../eng/eng.dart';
+import '../spanish/spanish.dart';
 
 class Language extends Translations {
   @override
   Map<String, Map<String, String>> get keys => {
         "en_US": english,
-        "de_DE": german,
+        "es_ES": spanish,
       };
 }
 
 class LanguageController extends GetxController {
-  final List<String> languages = ["English", "German"];
+  final List<String> languages = ["English", "Spanish"];
   RxString selectedLanguage = "English".obs;
-
-  RxBool isEnglish = true.obs;
 
   @override
   void onInit() {
@@ -27,30 +25,27 @@ class LanguageController extends GetxController {
   }
 
   Future<void> getLanguageType() async {
-    isEnglish.value =
-        await SharedPrefsHelper.getBool(AppConstants.language) ?? true;
+    String? lang = await SharedPrefsHelper.getString(AppConstants.language);
 
-    if (isEnglish.value) {
+    if (lang == "Spanish") {
+      selectedLanguage.value = "Spanish";
+      Get.updateLocale(const Locale("es", "ES"));
+    } else {
       selectedLanguage.value = "English";
       Get.updateLocale(const Locale("en", "US"));
-    } else {
-      selectedLanguage.value = "German";
-      Get.updateLocale(const Locale("de", "DE"));
     }
     update();
   }
 
   Future<void> changeLanguage(String lang) async {
-    if (lang == "English") {
-      isEnglish.value = true;
+    if (lang == "Spanish") {
+      selectedLanguage.value = lang;
+      Get.updateLocale(const Locale("es", "ES"));
+      await SharedPrefsHelper.setString(AppConstants.language, "Spanish");
+    } else {
       selectedLanguage.value = lang;
       Get.updateLocale(const Locale("en", "US"));
-      await SharedPrefsHelper.setBool(AppConstants.language, true);
-    } else if (lang == "German") {
-      isEnglish.value = false;
-      selectedLanguage.value = lang;
-      Get.updateLocale(const Locale("de", "DE"));
-      await SharedPrefsHelper.setBool(AppConstants.language, false);
+      await SharedPrefsHelper.setString(AppConstants.language, "English");
     }
     update();
   }

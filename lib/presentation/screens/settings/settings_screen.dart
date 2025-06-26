@@ -12,6 +12,8 @@ import 'package:get/get.dart';
 
 import '../../widgets/custom_bottons/custom_button/app_button.dart';
 import 'package:groc_shopy/presentation/screens/home/controller/home_controller.dart';
+import 'package:groc_shopy/utils/static_strings/static_strings.dart';
+import 'package:groc_shopy/global/language/controller/language_controller.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -19,10 +21,11 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  String selectedLanguage = 'English';
-  String selectedTheme = 'Light';
-  String selectedRingtone = 'Default';
+  String selectedLanguage = AppStrings.english;
+  String selectedTheme = AppStrings.light.tr;
+  String selectedRingtone = AppStrings.defaultRingtone;
   final HomeController homeController = Get.find<HomeController>();
+  final LanguageController languageController = Get.find<LanguageController>();
 
   // 1. Add default color as the first option
   final List<Color> colorOptions = [
@@ -44,6 +47,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
     super.initState();
     // 2. Set pendingIconColor to the controller's color (from local db or default)
     pendingIconColor = homeController.selectedIconColor.value;
+    // Set selectedLanguage from controller for consistency
+    selectedLanguage = languageController.selectedLanguage.value;
   }
 
   void _resetToDefault() {
@@ -58,7 +63,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     homeController.setIconColor(pendingIconColor);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Changes saved!'),
+        content: Text(AppStrings.changesSaved.tr), // <-- Added .tr
         duration: Duration(seconds: 1),
         backgroundColor: AppColors.primary.withOpacity(0.6),
       ),
@@ -81,7 +86,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   children: [
                     const SizedBox(),
                     Text(
-                      'Settings',
+                      AppStrings.settings.tr, // <-- Added .tr
                       style: AppStyle.kohSantepheap20w400C030303,
                     ),
                     InkWell(
@@ -123,7 +128,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       children: [
                         SvgPicture.asset(Assets.icons.chooseYourIconColor.path),
                         Gap(10.w),
-                        Text('Choose your icon color',
+                        Text(AppStrings.chooseYourIconColor.tr, // <-- Added .tr
                             style: AppStyle.roboto14w400C000000),
                       ],
                     ),
@@ -169,7 +174,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       children: [
                         SvgPicture.asset(Assets.icons.chooseYourLanguage.path),
                         Gap(10.w),
-                        Text('Choose your language',
+                        Text(AppStrings.chooseYourLanguage.tr,
                             style: AppStyle.roboto14w400C000000),
                       ],
                     ),
@@ -179,37 +184,39 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       children: [
                         Gap(30.w),
                         AppButton(
-                          text: 'English',
-                          onPressed: () {
+                          text: AppStrings.english.tr,
+                          onPressed: () async {
+                            await languageController.changeLanguage("English");
                             setState(() {
-                              selectedLanguage = 'English';
+                              selectedLanguage = "English";
                             });
                           },
                           width: 100.w,
                           height: 29.h,
                           borderRadius: 50.r,
-                          backgroundColor: selectedLanguage == 'English'
+                          backgroundColor: selectedLanguage == "English"
                               ? AppColors.primary
                               : const Color(0xffF2F2F2),
-                          textStyle: selectedLanguage == 'English'
+                          textStyle: selectedLanguage == "English"
                               ? AppStyle.roboto12w500CFFFFFF
                               : AppStyle.roboto12w400C000000,
                         ),
                         Gap(8.w),
                         AppButton(
-                          text: 'Spanish',
-                          onPressed: () {
+                          text: AppStrings.spanish.tr,
+                          onPressed: () async {
+                            await languageController.changeLanguage("Spanish");
                             setState(() {
-                              selectedLanguage = 'Spanish';
+                              selectedLanguage = "Spanish";
                             });
                           },
                           width: 110.w,
                           height: 29.h,
                           borderRadius: 50.r,
-                          backgroundColor: selectedLanguage == 'Spanish'
+                          backgroundColor: selectedLanguage == "Spanish"
                               ? AppColors.primary
                               : const Color(0xffF2F2F2),
-                          textStyle: selectedLanguage == 'Spanish'
+                          textStyle: selectedLanguage == "Spanish"
                               ? AppStyle.roboto12w500CFFFFFF
                               : AppStyle.roboto12w400C000000,
                         ),
@@ -219,92 +226,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ),
 
-              Gap(16.h),
-
-              // Theme Picker
-              // Container(
-              //   padding: EdgeInsets.all(10.w),
-              //   height: 104.w,
-              //   width: double.infinity,
-              //   decoration: BoxDecoration(
-              //     borderRadius: BorderRadius.circular(10.r),
-              //     color: Colors.white,
-              //     border: Border.all(
-              //       color: Colors.black.withOpacity(0.1),
-              //     ),
-              //   ),
-              //   child: Column(
-              //     children: [
-              //       Row(
-              //         children: [
-              //           SvgPicture.asset(Assets.icons.switchAppTheme.path),
-              //           Gap(10.w),
-              //           Text('Switch app theme:',
-              //               style: AppStyle.roboto14w400C000000),
-              //         ],
-              //       ),
-              //       Gap(20.h),
-              //       Row(
-              //         children: [
-              //           Gap(30.w),
-              //           AppButton(
-              //             text: 'Light',
-              //             onPressed: () {
-              //               setState(() {
-              //                 selectedTheme = 'Light';
-              //               });
-              //             },
-              //             width: 95.w,
-              //             height: 29.h,
-              //             borderRadius: 50.r,
-              //             backgroundColor: selectedTheme == 'Light'
-              //                 ? AppColors.primary
-              //                 : const Color(0xffF2F2F2),
-              //             textStyle: selectedTheme == 'Light'
-              //                 ? AppStyle.roboto12w500CFFFFFF
-              //                 : AppStyle.roboto12w400C000000,
-              //           ),
-              //           Gap(8.w),
-              //           AppButton(
-              //             text: 'Pastel',
-              //             onPressed: () {
-              //               setState(() {
-              //                 selectedTheme = 'Pastel';
-              //               });
-              //             },
-              //             width: 95.w,
-              //             height: 29.h,
-              //             borderRadius: 50.r,
-              //             backgroundColor: selectedTheme == 'Pastel'
-              //                 ? AppColors.primary
-              //                 : const Color(0xffF2F2F2),
-              //             textStyle: selectedTheme == 'Pastel'
-              //                 ? AppStyle.roboto12w500CFFFFFF
-              //                 : AppStyle.roboto12w400C000000,
-              //           ),
-              //           Gap(8.w),
-              //           AppButton(
-              //             text: 'Dark',
-              //             onPressed: () {
-              //               setState(() {
-              //                 selectedTheme = 'Dark';
-              //               });
-              //             },
-              //             width: 95.w,
-              //             height: 29.h,
-              //             borderRadius: 50.r,
-              //             backgroundColor: selectedTheme == 'Dark'
-              //                 ? AppColors.primary
-              //                 : const Color(0xffF2F2F2),
-              //             textStyle: selectedTheme == 'Dark'
-              //                 ? AppStyle.roboto12w500CFFFFFF
-              //                 : AppStyle.roboto12w400C000000,
-              //           ),
-              //         ],
-              //       ),
-              //     ],
-              //   ),
-              // ),
               Gap(16.h),
 
               // Ringtone Picker
@@ -325,7 +246,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       children: [
                         SvgPicture.asset(Assets.icons.ringtone.path),
                         Gap(10.w),
-                        Text('Ringtone', style: AppStyle.roboto14w400C000000),
+                        Text(AppStrings.ringtone.tr, // <-- Added .tr
+                            style: AppStyle.roboto14w400C000000),
                       ],
                     ),
                     Gap(8.h),
@@ -335,55 +257,59 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         children: [
                           Gap(20.w),
                           AppButton(
-                            text: 'Default',
+                            text:
+                                AppStrings.defaultRingtone.tr, // <-- Added .tr
                             onPressed: () {
                               setState(() {
-                                selectedRingtone = 'Default';
+                                selectedRingtone = AppStrings.defaultRingtone;
                               });
                             },
                             width: 100.w,
                             height: 29.h,
                             borderRadius: 50.r,
-                            backgroundColor: selectedRingtone == 'Default'
+                            backgroundColor:
+                                selectedRingtone == AppStrings.defaultRingtone
+                                    ? AppColors.primary
+                                    : const Color(0xffF2F2F2),
+                            textStyle:
+                                selectedRingtone == AppStrings.defaultRingtone
+                                    ? AppStyle.roboto12w500CFFFFFF
+                                    : AppStyle.roboto12w400C000000,
+                          ),
+                          Gap(8.w),
+                          AppButton(
+                            text: AppStrings.quad.tr, // <-- Added .tr
+                            onPressed: () {
+                              setState(() {
+                                selectedRingtone = AppStrings.quad;
+                              });
+                            },
+                            width: 110.w,
+                            height: 29.h,
+                            borderRadius: 50.r,
+                            backgroundColor: selectedRingtone == AppStrings.quad
                                 ? AppColors.primary
                                 : const Color(0xffF2F2F2),
-                            textStyle: selectedRingtone == 'Default'
+                            textStyle: selectedRingtone == AppStrings.quad
                                 ? AppStyle.roboto12w500CFFFFFF
                                 : AppStyle.roboto12w400C000000,
                           ),
                           Gap(8.w),
                           AppButton(
-                            text: 'Quad',
+                            text: AppStrings.radial.tr, // <-- Added .tr
                             onPressed: () {
                               setState(() {
-                                selectedRingtone = 'Quad';
+                                selectedRingtone = AppStrings.radial;
                               });
                             },
                             width: 100.w,
                             height: 29.h,
                             borderRadius: 50.r,
-                            backgroundColor: selectedRingtone == 'Quad'
-                                ? AppColors.primary
-                                : const Color(0xffF2F2F2),
-                            textStyle: selectedRingtone == 'Quad'
-                                ? AppStyle.roboto12w500CFFFFFF
-                                : AppStyle.roboto12w400C000000,
-                          ),
-                          Gap(8.w),
-                          AppButton(
-                            text: 'Radial',
-                            onPressed: () {
-                              setState(() {
-                                selectedRingtone = 'Radial';
-                              });
-                            },
-                            width: 100.w,
-                            height: 29.h,
-                            borderRadius: 50.r,
-                            backgroundColor: selectedRingtone == 'Radial'
-                                ? AppColors.primary
-                                : const Color(0xffF2F2F2),
-                            textStyle: selectedRingtone == 'Radial'
+                            backgroundColor:
+                                selectedRingtone == AppStrings.radial
+                                    ? AppColors.primary
+                                    : const Color(0xffF2F2F2),
+                            textStyle: selectedRingtone == AppStrings.radial
                                 ? AppStyle.roboto12w500CFFFFFF
                                 : AppStyle.roboto12w400C000000,
                           ),
@@ -418,7 +344,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   AppButton(
-                    text: 'Reset to Default',
+                    text: AppStrings.resetToDefault.tr, // <-- Added .tr
                     onPressed: _resetToDefault,
                     width: 167.w,
                     height: 40.h,
@@ -430,7 +356,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                   Gap(20.w),
                   AppButton(
-                    text: 'Save Changes',
+                    text: AppStrings.saveChanges.tr, // <-- Added .tr
                     onPressed: _saveChanges,
                     width: 167.w,
                     height: 40.h,

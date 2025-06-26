@@ -5,12 +5,12 @@ import 'package:go_router/go_router.dart';
 import 'package:groc_shopy/core/custom_assets/assets.gen.dart';
 import 'package:groc_shopy/utils/app_colors/app_colors.dart';
 import 'package:groc_shopy/utils/text_style/text_style.dart';
-import 'dart:async'; // Add this import
+import 'dart:async';
 import 'package:get/get.dart';
-import 'package:flutter/material.dart';
 
 import '../../../core/routes/route_path.dart';
 import '../../../helper/local_db/local_db.dart';
+import '../../../utils/static_strings/static_strings.dart';
 import '../../widgets/custom_bottons/custom_button/app_button.dart';
 import '../../widgets/subscription_modal/subscription_modal.dart';
 import 'controller/home_controller.dart';
@@ -21,19 +21,18 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String? selectedCallTime;
-  String? selectedCaller;
+  String? selectedCallTime; // Store the key, e.g., AppStrings.fifteenSec
+  String? selectedCaller; // Store the key, e.g., AppStrings.mom
   int? customMinutes;
   int? customSeconds;
-  Timer? _countdownTimer; // Add this
-  int _remainingSeconds = 0; // Add this
-  bool _isCountdownActive = false; // Add this
+  Timer? _countdownTimer;
+  int _remainingSeconds = 0;
+  bool _isCountdownActive = false;
   final HomeController homeController = Get.find<HomeController>();
 
   @override
   void initState() {
     super.initState();
-    // Show subscription modal after the widget is built
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _showSubscriptionModal();
     });
@@ -42,14 +41,11 @@ class _HomeScreenState extends State<HomeScreen> {
   void _showSubscriptionModal() {
     showDialog(
       context: context,
-      barrierDismissible:
-          false, // Set to true if you want users to dismiss by tapping outside
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return SubscriptionModal(
           onSubscribe: () {
-            // Handle subscription logic here
             Navigator.of(context).pop();
-            // Add your subscription handling code
             print('User subscribed!');
           },
         );
@@ -59,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
-    _countdownTimer?.cancel(); // Cancel timer when disposing
+    _countdownTimer?.cancel();
     super.dispose();
   }
 
@@ -88,11 +84,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Welcome back!',
+                          AppStrings.welcome.tr,
                           style: AppStyle.robotoMono10w500C030303,
                         ),
                         Text(
-                          'Angel Mthembu',
+                          'Angel Mthembu', // You may want to use a variable here
                           style: AppStyle.robotoMono12w500C030303,
                         ),
                       ],
@@ -122,7 +118,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       borderRadius: BorderRadius.circular(15.r),
                     ),
                     child: Text(
-                      "I'm on \nthe phone",
+                      AppStrings.appName.tr,
                       style: AppStyle.robotoMono32w500CFFFFFF,
                     ),
                   ),
@@ -141,7 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
               // Call time options
               Text(
-                'Set up fake call',
+                AppStrings.setUpFakeCall.tr,
                 style: AppStyle.kohSantepheap18w700C030303,
               ),
               Gap(10.h),
@@ -150,10 +146,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    callTimeButton("15 sec"),
-                    callTimeButton("30 sec"),
-                    callTimeButton("1 min"),
-                    callTimeButton("Custom"),
+                    callTimeButton(AppStrings.fifteenSec),
+                    callTimeButton(AppStrings.thirtySec),
+                    callTimeButton(AppStrings.oneMin),
+                    callTimeButton(AppStrings.custom),
                   ],
                 ),
               ),
@@ -161,7 +157,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
               // Caller options
               Text(
-                'Caller',
+                AppStrings.caller.tr,
                 style: TextStyle(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w600,
@@ -172,11 +168,11 @@ class _HomeScreenState extends State<HomeScreen> {
               Column(
                 children: [
                   Gap(10.h),
-                  callerOption("MOM"),
+                  callerOption(AppStrings.mom),
                   Gap(10.h),
-                  callerOption("Love"),
+                  callerOption(AppStrings.love),
                   Gap(10.h),
-                  callerOption("Dad"),
+                  callerOption(AppStrings.dad),
                 ],
               ),
 
@@ -184,7 +180,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
               // Start call button
               AppButton(
-                text: 'Start Call',
+                text: AppStrings.startCall.tr,
                 onPressed: _startDelayedCall,
                 backgroundColor: AppColors.primary,
                 textStyle: AppStyle.inter16w700CFFFFFF,
@@ -239,7 +235,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     // Title
                     Text(
-                      'Set Custom Time',
+                      AppStrings.setCustomTime.tr,
                       style: TextStyle(
                         fontSize: 20.sp,
                         fontWeight: FontWeight.w700,
@@ -267,7 +263,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Column(
                               children: [
                                 Text(
-                                  'Minutes',
+                                  AppStrings.minutes.tr,
                                   style: TextStyle(
                                     fontSize: 14.sp,
                                     fontWeight: FontWeight.w600,
@@ -339,7 +335,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Column(
                               children: [
                                 Text(
-                                  'Seconds',
+                                  AppStrings.seconds.tr,
                                   style: TextStyle(
                                     fontSize: 14.sp,
                                     fontWeight: FontWeight.w600,
@@ -418,7 +414,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           Gap(8.w),
                           Text(
-                            'Selected: ${tempMinutes}m ${tempSeconds}s',
+                            '${AppStrings.selected.tr}: ${tempMinutes}m ${tempSeconds}s',
                             style: TextStyle(
                               fontSize: 16.sp,
                               fontWeight: FontWeight.w600,
@@ -448,7 +444,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                               child: Text(
-                                'Cancel',
+                                AppStrings.cancel.tr,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 16.sp,
@@ -466,7 +462,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               setState(() {
                                 customMinutes = tempMinutes;
                                 customSeconds = tempSeconds;
-                                selectedCallTime = "Custom";
+                                selectedCallTime = AppStrings.custom;
                               });
                               Navigator.of(context).pop();
                             },
@@ -484,7 +480,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ],
                               ),
                               child: Text(
-                                'Set Time',
+                                AppStrings.setTime.tr,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 16.sp,
@@ -507,28 +503,26 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // Add method to convert time to seconds
   int _getDelayInSeconds() {
     switch (selectedCallTime) {
-      case "15 sec":
+      case AppStrings.fifteenSec:
         return 15;
-      case "30 sec":
+      case AppStrings.thirtySec:
         return 30;
-      case "1 min":
+      case AppStrings.oneMin:
         return 60;
-      case "Custom":
+      case AppStrings.custom:
         return (customMinutes ?? 0) * 60 + (customSeconds ?? 0);
       default:
         return 0;
     }
   }
 
-  // Add method to start delayed call
   void _startDelayedCall() {
     if (selectedCaller == null || selectedCallTime == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Please select both caller and call time'),
+          content: Text(AppStrings.pleaseSelectCallerAndTime.tr),
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -540,7 +534,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (delaySeconds == 0) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Please set a valid time'),
+          content: Text(AppStrings.pleaseSetValidTime.tr),
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -550,13 +544,13 @@ class _HomeScreenState extends State<HomeScreen> {
     // Show success message
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Fake call will start in ${selectedCallTime}'),
+        content:
+            Text('${AppStrings.fakeCallWillStartIn.tr} ${selectedCallTime}'),
         behavior: SnackBarBehavior.floating,
         duration: Duration(seconds: 2),
       ),
     );
 
-    // Start timer without showing countdown
     Timer(Duration(seconds: delaySeconds), () {
       if (mounted) {
         context.pushNamed(RoutePath.incomingCallScreen, extra: {
@@ -568,7 +562,6 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  // Method to cancel countdown
   void _cancelCountdown() {
     _countdownTimer?.cancel();
     setState(() {
@@ -577,7 +570,6 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  // Method to format remaining time
   String _getFormattedRemainingTime() {
     int minutes = _remainingSeconds ~/ 60;
     int seconds = _remainingSeconds % 60;
@@ -588,21 +580,20 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  Widget callTimeButton(String time) {
-    String displayText = time;
+  Widget callTimeButton(String timeKey) {
+    String displayText = timeKey.tr;
 
-    // Only show custom time format for Custom button
-    if (time == "Custom" && selectedCallTime == "Custom") {
+    if (timeKey == AppStrings.custom && selectedCallTime == AppStrings.custom) {
       displayText = "${customMinutes ?? 0}m ${customSeconds ?? 0}s";
     }
 
     return GestureDetector(
       onTap: () {
-        if (time == "Custom") {
+        if (timeKey == AppStrings.custom) {
           _showCustomTimePicker();
         } else {
           setState(() {
-            selectedCallTime = time;
+            selectedCallTime = timeKey;
           });
         }
       },
@@ -611,14 +602,14 @@ class _HomeScreenState extends State<HomeScreen> {
         width: 79.w,
         height: 35.h,
         decoration: BoxDecoration(
-          color: selectedCallTime == time
+          color: selectedCallTime == timeKey
               ? AppColors.primary
               : const Color(0xffF2F2F2),
           borderRadius: BorderRadius.circular(20.r),
         ),
         child: Text(
           displayText,
-          style: selectedCallTime == time
+          style: selectedCallTime == timeKey
               ? AppStyle.roboto16w600CFFFFFF
               : AppStyle.roboto16w500C030303,
         ),
@@ -626,17 +617,17 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget callerOption(String name) {
+  Widget callerOption(String callerKey) {
     return GestureDetector(
       onTap: () {
         setState(() {
-          selectedCaller = name;
+          selectedCaller = callerKey;
         });
       },
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
         decoration: BoxDecoration(
-          color: selectedCaller == name ? AppColors.primary : Colors.white,
+          color: selectedCaller == callerKey ? AppColors.primary : Colors.white,
           border: Border.all(color: Colors.black.withOpacity(0.1)),
           borderRadius: BorderRadius.circular(10.r),
         ),
@@ -655,14 +646,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         shape: BoxShape.circle,
                       ),
                       child: Text(
-                        name[0],
+                        callerKey.tr[0],
                         style: AppStyle.roboto32w600CFFFFFF,
                       ),
                     )),
                 Gap(16.w),
                 Text(
-                  name,
-                  style: selectedCaller == name
+                  callerKey.tr,
+                  style: selectedCaller == callerKey
                       ? AppStyle.roboto16w800CFFFFFF
                       : AppStyle.roboto16w500C000000,
                 ),
@@ -670,8 +661,9 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             Icon(
               Icons.arrow_forward_ios,
-              color:
-                  selectedCaller == name ? AppColors.whiteFFFFFF : Colors.black,
+              color: selectedCaller == callerKey
+                  ? AppColors.whiteFFFFFF
+                  : Colors.black,
               size: 16.r,
             ),
           ],

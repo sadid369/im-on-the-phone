@@ -1,6 +1,6 @@
 class AppStrings {
   ///====================== Initial ========================
-  static const String appName = "I'm on the phone";
+  static const String appName = "I'm on\nthe phone";
   static const String appTagLine = "Track items, \nCalculate, Together";
   static const String getStarted = "Get Started";
   static const String welcome = "Welcome";
@@ -82,10 +82,10 @@ class AppStrings {
   static const String takeTheFirstStep =
       "Take the first step towards a healthier and happier life.";
   static const String popular = "POPULAR";
-  static const String forMoreScan = "For more scan";
+  static const String forMoreAccess = "For more Access";
   static const String sixtyPointNoneNine = "\$60.99";
   static const String forOneYear = "For 1 year";
-  static const String unlimitedAccessTosSan = "Unlimited access to scan";
+  static const String unlimitedAccess = "Unlimited access";
   static const String viewMonthlyRecord = "View monthly record";
   static const String youWillBe =
       "You will be charged \$9.99 (monthly plan) or \n \$60.99 (annual plan) through your iTunes \n account. You can cancel at any time if your \n not satisfied.";
@@ -147,4 +147,109 @@ class AppStrings {
   static const pricingInfo = 'pricing_info';
   static const freeTrialFor = 'Free Trial For';
   static const sevenDays = '7days';
+  static const String fifteenSec = "15 sec";
+  static const String thirtySec = "30 sec";
+  static const String oneMin = "1 min";
+  static const String custom = "Custom";
+  static const String startCall = "Start Call";
+  static const String caller = "Caller";
+  static const String mom = "MOM";
+  static const String dad = "Dad";
+  static const String love = "Love";
+  static const String setUpFakeCall = "Set up fake call";
+  static const String setCustomTime = "Set Custom Time";
+  static const String minutes = "Minutes";
+  static const String seconds = "Seconds";
+  static const String selected = "Selected";
+  static const String setTime = "Set Time";
+  static const String pleaseSelectCallerAndTime =
+      "Please select both caller and call time";
+  static const String pleaseSetValidTime = "Please set a valid time";
+  static const String fakeCallWillStartIn = "Fake call will start in";
+  static const String search = "Search";
+  static const String bestFriend = "Best Friend";
+  static const String momWorriedMessage =
+      "Mom is really worried about you and wants you home immediately";
+  static const String bestFriendMessage =
+      "Hey bestfriend let me tell you about my day";
+  static const String dadMessage =
+      "Hey, how was your day? Dad is waiting for your response";
+  static const String loveMessage =
+      "Hey babe, when do you get home? While I have you on the phone......";
+  static const String settings = "Settings";
+  static const String chooseYourIconColor = "Choose your icon color";
+  static const String chooseYourLanguage = "Choose your language";
+  static const String english = "English";
+  static const String spanish = "Spanish";
+  static const String ringtone = "Ringtone";
+  static const String defaultRingtone = "Default";
+  static const String quad = "Quad";
+  static const String radial = "Radial";
+  static const String resetToDefault = "Reset to Default";
+  static const String saveChanges = "Save Changes";
+  static const String changesSaved = "Changes saved!";
+  static const String light = "Light";
+  static const String dashboard = "Dashboard";
+  static const String totalSubscribers = "Total Subscribers";
+  static const String manageUsers = "Manage Users";
+  static const String appSettings = "App Settings";
+  static const String monthlyUserGrowth = "Monthly User Growth";
+  static const String jan = "Jan";
+  static const String feb = "Feb";
+  static const String mar = "Mar";
+  static const String apr = "Apr";
+  static const String may = "May";
+  static const String jun = "Jun";
+  static const String userManagement = "User Management";
+  static const String searchUsers = "Search users...";
+  static const String subscriber = "Subscriber";
+  static const String adminEmail = "admin@example.com";
+  static const String profileAndAccount = "Profile & Account";
+  static const String updateProfile = "Update Profile";
+  static const String changePassword = "Change Password";
+  static const String appPreference = "App Preference";
+  static const String appConfigurations = "App Configurations";
+  static const String logout = "Logout";
+  static const String camera = "Camera";
+  static const String upload = "Upload";
+  static const String tapCameraToUpload = "Tap the camera icon to upload";
+
+  static const String notifications = "Notifications";
+  static const String controlNotifications =
+      "Control how and when you receive notifications.";
+  static const String pushNotifications = "Push Notifications";
+  static const String receivePushNotifications =
+      "Receive alerts and updates via\n push notifications.";
+  static const String calling = "Calling";
+  static const String remindMe = "Remind me";
+  static const String message = "Message";
+  static const String decline = "Decline";
+  static const String accept = "Accept";
+  static const String mute = "Mute";
+  static const String keyboard = "Keyboard";
+  static const String speaker = "Speaker";
+  static const String sound = "Sound";
+  static const String addCall = "Add call";
+  static const String video = "Video";
+  static const String callers = "Callers";
+
+  static const String newContact = "New Contact";
+  static const String done = "Done";
+  static const String addPhoto = "Add Photo";
+  static const String firstName = "First name";
+  static const String lastName = "Last name";
+  static const String phoneNumber = "Phone number";
+
+  static const String addVoice = "Add voice";
+  static const String addTheme = "Add theme";
+  static const String saveContact = "Save Contact";
+
+  static const String forCustom = "For Custom";
+  static const String pricePerYear = "\$9.99";
+
+  static const String fullLibrary = "Full library of voices and themes";
+  static const String customCaller = "Custom caller name and contact image";
+
+  static const String subscriptionNote =
+      "You will be charged \$9.99 (annual plan) through your iTunes account. You can cancel at any time if you're not satisfied.";
 }

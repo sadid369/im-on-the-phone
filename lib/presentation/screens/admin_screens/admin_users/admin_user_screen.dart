@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 import 'package:groc_shopy/utils/app_colors/app_colors.dart';
+import 'package:groc_shopy/utils/static_strings/static_strings.dart';
 
 import '../../../widgets/custom_text_form_field/custom_text_form.dart';
 
@@ -21,7 +23,8 @@ class AdminUserScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('User Management', style: TextStyle(fontSize: 18.sp)),
+        title: Text(AppStrings.userManagement.tr,
+            style: TextStyle(fontSize: 18.sp)),
         backgroundColor: Colors.white,
         elevation: 0,
       ),
@@ -31,7 +34,7 @@ class AdminUserScreen extends StatelessWidget {
           children: [
             CustomTextFormField(
               controller: TextEditingController(),
-              hintText: "Search users...",
+              hintText: AppStrings.searchUsers.tr,
               prefix: Icon(Icons.search, color: Colors.grey, size: 20.r),
               filled: true,
               fillColor: Colors.white,
@@ -97,7 +100,7 @@ class AdminUserScreen extends StatelessWidget {
                           ),
                         ),
                         AppButton(
-                          text: 'Subscriber',
+                          text: AppStrings.subscriber.tr,
                           onPressed: () {},
                           width: 90.w,
                           height: 32.h,
@@ -157,7 +160,7 @@ class AppButton extends StatelessWidget {
       child: TextButton(
         onPressed: onPressed,
         child: Text(
-          text,
+          text.tr,
           style: textStyle,
         ),
       ),

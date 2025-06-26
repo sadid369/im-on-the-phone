@@ -11,7 +11,7 @@ class AuthController extends GetxController {
   var isLoading = false.obs;
 
   // Text controllers
-  final emailController = TextEditingController();
+  final emailController = TextEditingController(text: 'user');
   final passwordController = TextEditingController();
 
   @override
