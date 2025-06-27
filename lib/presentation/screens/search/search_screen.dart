@@ -136,19 +136,19 @@ class _SearchScreenState extends State<SearchScreen> {
                     elevation: 0,
                     child: ListTile(
                       tileColor: AppColors.backgroundColor,
-                      leading: CircleAvatar(
-                        radius: 30.r,
-                        backgroundColor: homeController
-                            .selectedIconColor.value, // Use selected color
-                        child: Text(
-                          caller['initials'],
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20.sp,
-                          ),
-                        ),
-                      ),
+                      leading: Obx(() => CircleAvatar(
+                            radius: 30.r,
+                            backgroundColor: homeController
+                                .selectedIconColor.value, // Use selected color
+                            child: Text(
+                              caller['initials'],
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20.sp,
+                              ),
+                            ),
+                          )),
                       title: Text(
                         caller['name'],
                         style: TextStyle(

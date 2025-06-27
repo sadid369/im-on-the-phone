@@ -766,3 +766,41 @@ class _HomeScreenState extends State<HomeScreen> {
 //     }
 //   }
 // }
+//////////////////////////////////////
+package com.iamonthephone.app
+
+import android.content.Context
+import android.media.AudioManager
+import io.flutter.embedding.android.FlutterActivity
+import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.plugin.common.MethodChannel
+
+class MainActivity : FlutterActivity() {
+
+    override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
+        super.configureFlutterEngine(flutterEngine)
+        
+        // Define the method channel for audio routing
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "audio_route").setMethodCallHandler { call, result ->
+            if (call.method == "setSpeaker") {
+                val enabled = call.argument<Boolean>("enabled") ?: false
+                val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+                
+                // Set the audio mode to communication mode
+                audioManager.mode = AudioManager.MODE_IN_COMMUNICATION
+                audioManager.isMicrophoneMute = false
+                audioManager.isSpeakerphoneOn = enabled
+                
+                // Force the setting to apply, some devices may require this
+                android.os.Handler().postDelayed({
+                    audioManager.isSpeakerphoneOn = enabled
+                }, 100)
+
+                // Return success once the speaker state is set
+                result.success(null)
+            } else {
+                result.notImplemented()  // Return error if the method is not implemented
+            }
+        }
+    }
+}
