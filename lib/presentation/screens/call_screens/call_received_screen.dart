@@ -4,6 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:groc_shopy/helper/extension/base_extension.dart';
+import 'package:groc_shopy/presentation/screens/home/controller/home_controller.dart'; // Add this import
 import 'package:groc_shopy/utils/static_strings/static_strings.dart';
 
 import '../../../core/routes/route_path.dart';
@@ -22,6 +23,7 @@ class _CallReceivedScreenState extends State<CallReceivedScreen> {
   bool isPressLoudSpeaker = false;
   late Stopwatch _stopwatch;
   late String _timeString;
+  final HomeController homeController = Get.find<HomeController>(); // Add this
 
   @override
   void initState() {
@@ -64,7 +66,8 @@ class _CallReceivedScreenState extends State<CallReceivedScreen> {
               children: [
                 CircleAvatar(
                   radius: 50.r,
-                  backgroundColor: const Color(0xFFC57C6B),
+                  backgroundColor: homeController
+                      .selectedIconColor.value, // <-- Use selected color
                   child: Text(
                     widget.callerName[0], // Use the passed caller name
                     style: TextStyle(

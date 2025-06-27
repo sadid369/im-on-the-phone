@@ -8,8 +8,15 @@ import 'package:groc_shopy/helper/extension/base_extension.dart';
 import 'package:groc_shopy/utils/app_colors/app_colors.dart';
 import 'package:groc_shopy/utils/static_strings/static_strings.dart';
 
-class SearchScreen extends StatelessWidget {
+class SearchScreen extends StatefulWidget {
   SearchScreen({Key? key}) : super(key: key);
+
+  @override
+  State<SearchScreen> createState() => _SearchScreenState();
+}
+
+class _SearchScreenState extends State<SearchScreen> {
+  final TextEditingController _searchController = TextEditingController();
 
   final List<Map<String, dynamic>> callers = [
     {
@@ -37,6 +44,31 @@ class SearchScreen extends StatelessWidget {
       'color': Colors.green[200],
     },
   ];
+
+  List<Map<String, dynamic>> filteredCallers = [];
+
+  @override
+  void initState() {
+    super.initState();
+    filteredCallers = List.from(callers);
+    _searchController.addListener(_onSearchChanged);
+  }
+
+  void _onSearchChanged() {
+    String query = _searchController.text.toLowerCase();
+    setState(() {
+      filteredCallers = callers.where((caller) {
+        final name = (caller['name'] ?? '').toString().toLowerCase();
+        return name.contains(query);
+      }).toList();
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +101,7 @@ class SearchScreen extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
               child: TextField(
+                controller: _searchController,
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.symmetric(vertical: 12.h),
                   prefixIcon: Icon(Icons.search, size: 22.r),
@@ -86,10 +119,10 @@ class SearchScreen extends StatelessWidget {
             Gap(8.h),
             Expanded(
               child: ListView.builder(
-                itemCount: callers.length,
+                itemCount: filteredCallers.length,
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
                 itemBuilder: (context, index) {
-                  final caller = callers[index];
+                  final caller = filteredCallers[index];
                   return Card(
                     margin: EdgeInsets.symmetric(vertical: 8.h),
                     shape: RoundedRectangleBorder(

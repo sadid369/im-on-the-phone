@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart'; // Add this
 import 'dart:async';
 import 'package:groc_shopy/utils/static_strings/static_strings.dart';
+import 'package:groc_shopy/presentation/screens/home/controller/home_controller.dart'; // Add this import
 
 class IncomingCallScreen extends StatefulWidget {
   final String callerName;
@@ -35,6 +36,7 @@ class _IncomingCallScreenState extends State<IncomingCallScreen>
   late Animation<double> _dot3Animation;
   Timer? _ringtoneTimer;
   bool _isRingtoneActive = false;
+  final HomeController homeController = Get.find<HomeController>(); // Add this
 
   @override
   void initState() {
@@ -175,7 +177,8 @@ class _IncomingCallScreenState extends State<IncomingCallScreen>
               Column(
                 children: [
                   CircleAvatar(
-                    backgroundColor: const Color(0xffC9867B),
+                    backgroundColor: homeController
+                        .selectedIconColor.value, // <-- Use selected color
                     radius: 40.r,
                     child: Text(
                       widget.callerName[0],

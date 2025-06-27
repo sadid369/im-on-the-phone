@@ -19,9 +19,9 @@ import 'package:groc_shopy/presentation/screens/auth/update_password_success_scr
 import 'package:groc_shopy/presentation/screens/auth/verify_code_screen.dart';
 import 'package:groc_shopy/presentation/screens/home/home_screen.dart';
 import 'package:groc_shopy/presentation/screens/settings/ringtone_selection_screen.dart';
-import 'package:groc_shopy/presentation/screens/transaction_history/transaction_history_screen.dart';
+
 import 'package:groc_shopy/presentation/widgets/payment_modal/payment_modal.dart';
-import 'package:groc_shopy/presentation/widgets/paypal/paypal.dart';
+
 import 'package:groc_shopy/presentation/widgets/subscription_modal/subscription_modal.dart';
 
 import '../../presentation/screens/admin_screens/admin_setting_screen/admin_change_password_screen.dart';
@@ -34,8 +34,7 @@ import '../../presentation/screens/admin_screens/dashboard/dashboard_screen.dart
 import '../../presentation/screens/main/admin_nav.dart';
 import '../../presentation/screens/main/user_nav.dart';
 import '../../presentation/screens/profile/update_profile_screen.dart';
-import '../../presentation/screens/report/report_screen.dart';
-import '../../presentation/screens/scannedItemsScreen/scanned_items_screen.dart';
+
 import '../../presentation/screens/search/search_screen.dart';
 import '../../presentation/screens/settings/settings_screen.dart';
 import '../../presentation/screens/splash_screen/splash_screen.dart';
@@ -177,56 +176,56 @@ class AppRouter {
             transitionsBuilder: _fadeTransition,
           ),
         ),
-        GoRoute(
-          name: RoutePath.paypal,
-          path: RoutePath.paypal.addBasePath,
-          pageBuilder: (context, state) {
-            final plan = state.extra as SubscriptionPlan?;
-            Widget child;
-            if (plan == null) {
-              child = const Scaffold(
-                body: Center(child: Text('No subscription plan provided')),
-              );
-            } else {
-              child = PaypalPage(plan: plan);
-            }
-            return CustomTransitionPage(
-              key: state.pageKey,
-              child: child,
-              transitionsBuilder: _fadeTransition,
-            );
-          },
-        ),
-        GoRoute(
-          name: RoutePath.transactionHistory,
-          path: RoutePath.transactionHistory.addBasePath,
-          pageBuilder: (context, state) => CustomTransitionPage(
-            key: state.pageKey,
-            child: TransactionHistoryScreen(),
-            transitionsBuilder: _fadeTransition,
-          ),
-        ),
-        GoRoute(
-          name: RoutePath.scannedItemsScreen,
-          path: RoutePath.scannedItemsScreen.addBasePath,
-          pageBuilder: (context, state) {
-            final image = state.extra as File?;
-            return CustomTransitionPage(
-              key: state.pageKey,
-              child: ScannedItemsScreen(image: image),
-              transitionsBuilder: _fadeTransition,
-            );
-          },
-        ),
-        GoRoute(
-          name: RoutePath.report,
-          path: RoutePath.report.addBasePath,
-          pageBuilder: (context, state) => CustomTransitionPage(
-            key: state.pageKey,
-            child: ReportScreen(),
-            transitionsBuilder: _fadeTransition,
-          ),
-        ),
+        // GoRoute(
+        //   name: RoutePath.paypal,
+        //   path: RoutePath.paypal.addBasePath,
+        //   pageBuilder: (context, state) {
+        //     final plan = state.extra as SubscriptionPlan?;
+        //     Widget child;
+        //     if (plan == null) {
+        //       child = const Scaffold(
+        //         body: Center(child: Text('No subscription plan provided')),
+        //       );
+        //     } else {
+        //       child = PaypalPage(plan: plan);
+        //     }
+        //     return CustomTransitionPage(
+        //       key: state.pageKey,
+        //       child: child,
+        //       transitionsBuilder: _fadeTransition,
+        //     );
+        //   },
+        // ),
+        // GoRoute(
+        //   name: RoutePath.transactionHistory,
+        //   path: RoutePath.transactionHistory.addBasePath,
+        //   pageBuilder: (context, state) => CustomTransitionPage(
+        //     key: state.pageKey,
+        //     child: TransactionHistoryScreen(),
+        //     transitionsBuilder: _fadeTransition,
+        //   ),
+        // ),
+        // GoRoute(
+        //   name: RoutePath.scannedItemsScreen,
+        //   path: RoutePath.scannedItemsScreen.addBasePath,
+        //   pageBuilder: (context, state) {
+        //     final image = state.extra as File?;
+        //     return CustomTransitionPage(
+        //       key: state.pageKey,
+        //       child: ScannedItemsScreen(image: image),
+        //       transitionsBuilder: _fadeTransition,
+        //     );
+        //   },
+        // ),
+        // GoRoute(
+        //   name: RoutePath.report,
+        //   path: RoutePath.report.addBasePath,
+        //   pageBuilder: (context, state) => CustomTransitionPage(
+        //     key: state.pageKey,
+        //     child: ReportScreen(),
+        //     transitionsBuilder: _fadeTransition,
+        //   ),
+        // ),
         GoRoute(
           name: RoutePath.callReceivedScreen,
           path: RoutePath.callReceivedScreen.addBasePath,
