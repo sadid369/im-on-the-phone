@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:groc_shopy/core/routes/route_path.dart';
 import 'package:groc_shopy/helper/extension/base_extension.dart';
+import 'package:groc_shopy/presentation/screens/home/controller/home_controller.dart';
 import 'package:groc_shopy/utils/app_colors/app_colors.dart';
 import 'package:groc_shopy/utils/static_strings/static_strings.dart';
 
@@ -16,6 +17,7 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
+  final HomeController homeController = Get.find<HomeController>();
   final TextEditingController _searchController = TextEditingController();
 
   final List<Map<String, dynamic>> callers = [
@@ -136,7 +138,8 @@ class _SearchScreenState extends State<SearchScreen> {
                       tileColor: AppColors.backgroundColor,
                       leading: CircleAvatar(
                         radius: 30.r,
-                        backgroundColor: caller['color'],
+                        backgroundColor: homeController
+                            .selectedIconColor.value, // Use selected color
                         child: Text(
                           caller['initials'],
                           style: TextStyle(
