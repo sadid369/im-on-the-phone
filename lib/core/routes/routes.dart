@@ -80,6 +80,22 @@ class AppRouter {
             transitionsBuilder: _fadeTransition,
           ),
         ),
+        // GoRoute(
+        //   name: RoutePath.incomingCallScreen,
+        //   path: RoutePath.incomingCallScreen.addBasePath,
+        //   pageBuilder: (context, state) {
+        //     final args = state.extra as Map<String, dynamic>? ?? {};
+        //     return CustomTransitionPage(
+        //       key: state.pageKey,
+        //       child: IncomingCallScreen(
+        //         callerName: args['callerName'] ?? 'Unknown',
+        //         time: args['time'] ?? 'Now',
+        //         callDuration: args['callDuration'] ?? '15 sec',
+        //       ),
+        //       transitionsBuilder: _fadeTransition,
+        //     );
+        //   },
+        // ),
 
         ///======================= Error Route =======================
         GoRoute(
@@ -176,56 +192,7 @@ class AppRouter {
             transitionsBuilder: _fadeTransition,
           ),
         ),
-        // GoRoute(
-        //   name: RoutePath.paypal,
-        //   path: RoutePath.paypal.addBasePath,
-        //   pageBuilder: (context, state) {
-        //     final plan = state.extra as SubscriptionPlan?;
-        //     Widget child;
-        //     if (plan == null) {
-        //       child = const Scaffold(
-        //         body: Center(child: Text('No subscription plan provided')),
-        //       );
-        //     } else {
-        //       child = PaypalPage(plan: plan);
-        //     }
-        //     return CustomTransitionPage(
-        //       key: state.pageKey,
-        //       child: child,
-        //       transitionsBuilder: _fadeTransition,
-        //     );
-        //   },
-        // ),
-        // GoRoute(
-        //   name: RoutePath.transactionHistory,
-        //   path: RoutePath.transactionHistory.addBasePath,
-        //   pageBuilder: (context, state) => CustomTransitionPage(
-        //     key: state.pageKey,
-        //     child: TransactionHistoryScreen(),
-        //     transitionsBuilder: _fadeTransition,
-        //   ),
-        // ),
-        // GoRoute(
-        //   name: RoutePath.scannedItemsScreen,
-        //   path: RoutePath.scannedItemsScreen.addBasePath,
-        //   pageBuilder: (context, state) {
-        //     final image = state.extra as File?;
-        //     return CustomTransitionPage(
-        //       key: state.pageKey,
-        //       child: ScannedItemsScreen(image: image),
-        //       transitionsBuilder: _fadeTransition,
-        //     );
-        //   },
-        // ),
-        // GoRoute(
-        //   name: RoutePath.report,
-        //   path: RoutePath.report.addBasePath,
-        //   pageBuilder: (context, state) => CustomTransitionPage(
-        //     key: state.pageKey,
-        //     child: ReportScreen(),
-        //     transitionsBuilder: _fadeTransition,
-        //   ),
-        // ),
+
         GoRoute(
           name: RoutePath.callReceivedScreen,
           path: RoutePath.callReceivedScreen.addBasePath,

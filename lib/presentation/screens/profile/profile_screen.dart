@@ -8,10 +8,43 @@ import 'package:groc_shopy/core/routes/routes.dart';
 import 'package:groc_shopy/helper/extension/base_extension.dart';
 import 'package:groc_shopy/utils/static_strings/static_strings.dart';
 import 'package:groc_shopy/utils/text_style/text_style.dart';
+import 'package:photo_view/photo_view.dart';
 
 import '../../../core/custom_assets/assets.gen.dart';
 
 class ProfileScreen extends StatelessWidget {
+  
+  // Method to show photo viewer
+  void _showPhotoViewer(BuildContext context, String imagePath) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => Scaffold(
+          backgroundColor: Colors.black,
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            leading: IconButton(
+              icon: Icon(Icons.close, color: Colors.white),
+              onPressed: () => Navigator.pop(context),
+            ),
+            title: Text(
+              'Profile Photo',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+          body: PhotoView(
+            imageProvider: AssetImage(imagePath),
+            backgroundDecoration: BoxDecoration(color: Colors.black),
+            minScale: PhotoViewComputedScale.contained,
+            maxScale: PhotoViewComputedScale.covered * 2.0,
+            initialScale: PhotoViewComputedScale.contained,
+            heroAttributes: PhotoViewHeroAttributes(tag: "profile_photo"),
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,10 +91,16 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    CircleAvatar(
-                      radius: 30.r,
-                      backgroundImage:
-                          AssetImage(Assets.images.profileImage.path),
+                    GestureDetector(
+                      onTap: () => _showPhotoViewer(context, Assets.images.profileImage.path),
+                      child: Hero(
+                        tag: "profile_photo",
+                        child: CircleAvatar(
+                          radius: 30.r,
+                          backgroundImage:
+                              AssetImage(Assets.images.profileImage.path),
+                        ),
+                      ),
                     ),
                     Gap(19.w),
                     Column(

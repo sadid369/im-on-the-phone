@@ -36,6 +36,8 @@ class MyApp extends StatelessWidget {
               title: AppStrings.appName,
               theme: ThemeData(
                 scaffoldBackgroundColor: AppColors.backgroundColor,
+                primaryColor: AppColors.primary,
+                primarySwatch: AppColors.primarySwatch, // Replace with your desired MaterialColor
                 useMaterial3: true,
               ),
               translations: Language(), // your translations class

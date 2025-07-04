@@ -281,4 +281,86 @@ class AppStrings {
   static const String passwordResetLinkSent = "Password reset link sent to your email";
   static const String failedToSendResetLink = "Failed to send reset link. Please try again.";
   static const String sending = "Sending...";
+
+  static const String gallery = "Gallery";
+  static const String selectImageSource = "Select Image Source";
+  static const String profilePictureUpdated = "Profile picture updated successfully";
+  static const String failedToPickImage = "Failed to pick image. Please try again.";
+  static const String profileUpdatedSuccessfully = "Profile updated successfully";
+  static const String failedToUpdateProfile = "Failed to update profile. Please try again.";
+static const String currentPasswordRequired = "Current password is required";
+  static const String newPasswordRequired = "New password is required";
+  static const String newPasswordMustBeDifferent = "New password must be different from current password";
+  static const String passwordChangedSuccessfully = "Password changed successfully";
+  static const String failedToChangePassword = "Failed to change password. Please try again.";
+static const String updating = "Updating...";
+static const String changing = "Changing...";
+// static const String newContact = "New Contact";
+//   static const String cancel = "Cancel";
+//   static const String done = "Done";
+//   static const String addPhoto = "Add Photo";
+//   static const String firstName = "First Name";
+//   static const String lastName = "Last Name";
+//   static const String phoneNumber = "Phone Number";
+//   static const String message = "Message";
+//   static const String addVoice = "Add Voice";
+//   static const String addTheme = "Add Theme";
+//   static const String saveContact = "Save Contact";
+
+  // Validation strings
+  static const String firstNameRequired = "First name is required";
+  static const String firstNameMinLength = "First name must be at least 2 characters";
+  static const String lastNameRequired = "Last name is required";
+  static const String lastNameMinLength = "Last name must be at least 2 characters";
+  static const String phoneNumberRequired = "Phone number is required";
+  static const String invalidPhoneNumber = "Please enter a valid phone number";
+  static const String messageRequired = "Message is required";
+  static const String messageMinLength = "Message must be at least 10 characters";
+
+  // Success/Error messages
+  static const String profileImageSelected = "Profile image selected successfully";
+  static const String voiceFileSelected = "Voice file selected successfully";
+  static const String failedToPickVoiceFile = "Failed to pick voice file. Please try again.";
+  static const String contactSavedSuccessfully = "Contact saved successfully";
+  static const String failedToSaveContact = "Failed to save contact. Please try again.";
+  static const String contactUpdatedSuccessfully = "Contact updated successfully";
+  static const String failedToUpdateContact = "Failed to update contact. Please try again.";
+  static const String contactDeletedSuccessfully = "Contact deleted successfully";
+  static const String failedToDeleteContact = "Failed to delete contact. Please try again.";
+ static const String editContact = "Edit Contact";
+  static const String updateContact = "Update Contact";
+  static const String saving = "Saving...";
+  static const String contacts = "contacts";
+  static const String saved = "saved";
+  static const String noContactsYet = "No contacts yet";
+  static const String noResultsFound = "No results found";
+  static const String addFirstContact = "Add your first contact";
+  static const String delete = "Delete";
+  static const String deleteContact = "Delete Contact";
+  static const String deleteContactConfirmation = "Are you sure you want to delete {name}?";
+  static const String close = "Close";
+  static const String call = "Call";
+  static const String contactListUpdated = "Contact list updated";
+  static const String contactAddedSuccessfully = "Contact added successfully";
+  static const String failedToOpenNewContactScreen = "Failed to open new contact screen";
+  static const String failedToOpenEditScreen = "Failed to open edit screen";
+  static const String searchCleared = "Search cleared";
+  static const String showingAllContacts = "Showing all contacts";
+  static const String noResults = "No results";
+  static const String tryDifferentSearchTerm = "Try a different search term";
+  static const String details = "Details";
+  static const String share = "Share";
+  static const String createContact = "Create Contact";
+  static const String sharing = "Sharing";
+  static const String contactCreatedFromTemplate = "Contact created from template";
+  static const String failedToCreateContact = "Failed to create contact";
+    static const String templateEditedAndSaved = "Template edited and saved as contact";
+  static const String failedToEditTemplate = "Failed to edit template";
+  static const String deleteTemplate = "Delete Template";
+  static const String deleteTemplateConfirmation = "Are you sure you want to delete the {name} template?";
+  static const String cannotDeleteDefaultTemplate = "Cannot delete default templates";
+  static const String contactDuplicated = "Contact duplicated successfully";
+  static const String failedToDuplicateContact = "Failed to duplicate contact";
+
+
 }

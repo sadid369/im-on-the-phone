@@ -20,5 +20,20 @@ class AppColors {
   static const borderE1E1E1 = Color(0xFFE1E1E1);
   static const backgroundColor = Color(0xFFFCFCF7);
   static const subscriptionModalBackground = Color(0xFFF2F3F6);
+  static const MaterialColor primarySwatch = MaterialColor(
+    0xFF77E9D6,
+    <int, Color>{
+      50: Color(0xFFE0FCF7),
+      100: Color(0xFFB3F7EC),
+      200: Color(0xFF80F2E0),
+      300: Color(0xFF4DEDD4),
+      400: Color(0xFF26E9CB),
+      500: Color(0xFF77E9D6), // primary
+      600: Color(0xFF2CD6B6),
+      700: Color(0xFF22B99C),
+      800: Color(0xFF189C82),
+      900: Color(0xFF0C6B5A),
+    },
+  );
   // Add other colors as needed
 }
