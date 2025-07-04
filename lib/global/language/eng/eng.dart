@@ -18,6 +18,32 @@ Map<String, String> english = {
   AppStrings.admin: "Admin",
   AppStrings.successful: "Successful",
 
+  // New auth validation strings
+  AppStrings.fullNameRequired: "Full name is required",
+  AppStrings.fullNameMinLength: "Full name must be at least 2 characters",
+  AppStrings.emailRequired: "Email is required",
+  AppStrings.enterValidEmail: "Please enter a valid email address",
+  AppStrings.passwordRequired: "Password is required",
+  AppStrings.confirmPasswordRequired: "Confirm password is required",
+  AppStrings.passwordsDoNotMatch: "Passwords do not match",
+  AppStrings.validationError: "Validation Error!",
+  AppStrings.pleaseFixErrors: "Please fix the errors in the form",
+  AppStrings.success: "Success!",
+  AppStrings.accountCreatedSuccessfully: "Account created successfully!",
+  AppStrings.error: "Error!",
+  AppStrings.failedToCreateAccount: "Failed to create account. Please try again.",
+  AppStrings.warning: "Warning!",
+  AppStrings.pleaseEnterEmail: "Please enter email",
+  AppStrings.welcome_title: "Welcome!",
+  AppStrings.adminLoginSuccessful: "Admin login successful",
+  AppStrings.userLoginSuccessful: "User login successful",
+  AppStrings.invalidCredentials: "Invalid Credentials!",
+  AppStrings.enterAdminOrUser: "Please enter \"admin\" or \"user\" in email field",
+  AppStrings.info: "Info",
+  AppStrings.googleLoginNotImplemented: "Google login not implemented yet",
+  AppStrings.appleLoginNotImplemented: "Apple login not implemented yet",
+  AppStrings.creatingAccount: "Creating Account...",
+
   AppStrings.congratulations:
       "Congratulations! Your password has been changed. Click continue to login",
   AppStrings.emailText: 'contact@dscode...com',
@@ -130,4 +156,9 @@ Map<String, String> english = {
   AppStrings.unlockYearlyReport: 'Unlock Yearly Report',
   AppStrings.pricingInfo:
       'You will be charged \$9.99 (monthly plan) or \$60.99 (annual plan, saving 60% with the yearly plan—just \$0.83/month—through your paypal account. You can cancel at any time if you\'re not satisfied.',
+  AppStrings.pleaseEnterYourEmailToReset: "Please enter your email to reset the password",
+  AppStrings.youEmail: "Your Email",
+  AppStrings.passwordResetLinkSent: "Password reset link sent to your email",
+  AppStrings.failedToSendResetLink: "Failed to send reset link. Please try again.",
+  AppStrings.sending: "Sending...",
 };

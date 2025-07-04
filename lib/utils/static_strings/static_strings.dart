@@ -11,11 +11,36 @@ class AppStrings {
   static const String adminSignUp = "Admin Sign up";
   static const String or = "Or";
   static const String email = "Email";
-  // static const String screen = "screen";
   static const String fullName = "Full Name";
   static const String employee = "Employee";
   static const String admin = "Admin";
   static const String successful = "Successful";
+
+  // Added missing auth strings
+  static const String fullNameRequired = "Full name is required";
+  static const String fullNameMinLength = "Full name must be at least 2 characters";
+  static const String emailRequired = "Email is required";
+  static const String enterValidEmail = "Please enter a valid email address";
+  static const String passwordRequired = "Password is required";
+  static const String confirmPasswordRequired = "Confirm password is required";
+  static const String passwordsDoNotMatch = "Passwords do not match";
+  static const String validationError = "Validation Error!";
+  static const String pleaseFixErrors = "Please fix the errors in the form";
+  static const String success = "Success!";
+  static const String accountCreatedSuccessfully = "Account created successfully!";
+  static const String error = "Error!";
+  static const String failedToCreateAccount = "Failed to create account. Please try again.";
+  static const String warning = "Warning!";
+  static const String pleaseEnterEmail = "Please enter email";
+  static const String welcome_title = "Welcome!";
+  static const String adminLoginSuccessful = "Admin login successful";
+  static const String userLoginSuccessful = "User login successful";
+  static const String invalidCredentials = "Invalid Credentials!";
+  static const String enterAdminOrUser = "Please enter \"admin\" or \"user\" in email field";
+  static const String info = "Info";
+  static const String googleLoginNotImplemented = "Google login not implemented yet";
+  static const String appleLoginNotImplemented = "Apple login not implemented yet";
+  static const String creatingAccount = "Creating Account...";
 
   static const String congratulations =
       "Congratulations! Your password has been changed. Click continue to login";
@@ -48,7 +73,7 @@ class AppStrings {
       "Please enter your email to reset the password";
   static const String weSent = 'We sent a reset link to ';
   static const String checkYourEmail = 'Check your email';
-  static const String haveNotGotTheMail = "Haven’t got the email yet? ";
+  static const String haveNotGotTheMail = "Haven't got the email yet? ";
   static const String verifyCode = 'Verify Code';
   static const String enterYour5Digit =
       'Enter the 5-digit code mentioned in the email';
@@ -56,7 +81,7 @@ class AppStrings {
   static const String confirmPassword =
       'Your password has been successfully reset. click confirm to set a new password';
   static RegExp emailRegexp = RegExp(
-      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+$");
   static const String password = "Password";
   static const String currentPassword = "Current Password";
   static const String newPassword = "New Password";
@@ -64,15 +89,15 @@ class AppStrings {
   static const String passwordHint = "********";
   static const String passWordMustBeAtLeast =
       "Password must contain at least one uppercase letter, one lowercase letter, one number";
-  static RegExp passRegexp =
-      RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$');
+  static RegExp passwordRegex = RegExp(
+  r'^(?=.*[a-zA-Z])(?=.*\d)(?!^\d+$)(?!^[a-zA-Z]+$).{8,}$');
   static const fieldCantNotBeEmpty = "Field can't be empty";
   static const String passwordLengthAndContain =
       "Password must be at least 8 characters long and at least one uppercase letter, one lowercase letter, one number";
   static const String forgotPassword = "Forget password?";
   static const String doYouHaveAnAccount = "Do you have an account?";
   static const String rememberMe = "Remember me";
-  static const String dontHaveAAccount = "Don’t have a account? ";
+  static const String dontHaveAAccount = "Don't have a account? ";
 
   ///====================== SubsCription ========================
   static const String subscribe = "Subscribe";
@@ -252,4 +277,8 @@ class AppStrings {
 
   static const String subscriptionNote =
       "You will be charged \$9.99 (annual plan) through your iTunes account. You can cancel at any time if you're not satisfied.";
+
+  static const String passwordResetLinkSent = "Password reset link sent to your email";
+  static const String failedToSendResetLink = "Failed to send reset link. Please try again.";
+  static const String sending = "Sending...";
 }

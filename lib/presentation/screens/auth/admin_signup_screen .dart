@@ -11,7 +11,7 @@ import '../../../core/custom_assets/assets.gen.dart';
 import '../../../core/routes/route_path.dart';
 import '../../widgets/custom_bottons/custom_button/app_button.dart';
 import '../../widgets/custom_text_form_field/custom_text_form.dart';
-import 'package:http/http.dart' as http;
+import 'controller/auth_controller.dart';
 
 class AdminSignUpScreen extends StatefulWidget {
   const AdminSignUpScreen({super.key});
@@ -21,23 +21,7 @@ class AdminSignUpScreen extends StatefulWidget {
 }
 
 class AdminSignUpScreenState extends State<AdminSignUpScreen> {
-  bool isAdmin = true;
-  bool rememberMe = false;
-  bool passwordVisible = false;
-
-  final fullNameController = TextEditingController();
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  final confirmPasswordController = TextEditingController();
-
-  @override
-  void dispose() {
-    super.dispose();
-    emailController.dispose();
-    passwordController.dispose();
-    fullNameController.dispose();
-    confirmPasswordController.dispose();
-  }
+  final AuthController authController = Get.put(AuthController());
 
   @override
   Widget build(BuildContext context) {
@@ -47,181 +31,186 @@ class AdminSignUpScreenState extends State<AdminSignUpScreen> {
           child: SingleChildScrollView(
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 20.w),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Gap(16.h),
-                  Text(
-                    AppStrings.signUp.tr,
-                    style: AppStyle.kohSantepheap30w700C000000,
-                  ),
-                  Gap(30.h),
-                  CustomTextFormField(
-                    controller: fullNameController,
-                    labelText: AppStrings.fullName.tr,
-                    hintText: AppStrings.enterYourFullName.tr,
-                    suffixIcon: Icons.person_outline,
-                    obscureText: false,
-                    hintStyle: AppStyle.roboto14w500CB3B3B3,
-                    style: AppStyle.roboto16w500C545454,
-                    labelStyle: AppStyle.roboto14w500C000000,
-                    enabledBorderColor: AppColors.black30opacity4D000000,
-                    focusedBorderColor: AppColors.primary,
-                    fillColor: Colors.white,
-                    contentPadding: EdgeInsets.fromLTRB(16.w, 20.h, 16.w, 14.h),
-                  ),
-                  Gap(35.h),
-                  CustomTextFormField(
-                    controller: emailController,
-                    labelText: AppStrings.email.tr,
-                    hintText: AppStrings.enterYourEmailHint.tr,
-                    suffixIcon: Icons.email_outlined,
-                    obscureText: false,
-                    hintStyle: AppStyle.roboto14w500CB3B3B3,
-                    style: AppStyle.roboto16w500C545454,
-                    labelStyle: AppStyle.roboto14w500C000000,
-                    enabledBorderColor: AppColors.black30opacity4D000000,
-                    focusedBorderColor: AppColors.primary,
-                    fillColor: Colors.white,
-                    contentPadding: EdgeInsets.fromLTRB(16.w, 20.h, 16.w, 14.h),
-                  ),
-                  Gap(35.h),
-                  CustomTextFormField(
-                    controller: passwordController,
-                    labelText: AppStrings.password.tr,
-                    hintText: AppStrings.password.tr,
-                    suffixIcon: passwordVisible
-                        ? Icons.visibility_outlined
-                        : Icons.visibility_off_outlined,
-                    obscureText: !passwordVisible,
-                    onSuffixIconTap: () {
-                      setState(() {
-                        passwordVisible = !passwordVisible;
-                      });
-                    },
-                    hintStyle: AppStyle.roboto14w500CB3B3B3,
-                    style: AppStyle.roboto16w500C545454,
-                    labelStyle: AppStyle.roboto14w500C000000,
-                    enabledBorderColor: AppColors.black30opacity4D000000,
-                    focusedBorderColor: AppColors.primary,
-                    fillColor: Colors.white,
-                    contentPadding: EdgeInsets.fromLTRB(16.w, 20.h, 16.w, 14.h),
-                  ),
-                  Gap(35.h),
-                  CustomTextFormField(
-                    controller: confirmPasswordController,
-                    labelText: AppStrings.confirmPasswordHint.tr,
-                    hintText: AppStrings.confirmPasswordHint.tr,
-                    suffixIcon: passwordVisible
-                        ? Icons.visibility_outlined
-                        : Icons.visibility_off_outlined,
-                    obscureText: !passwordVisible,
-                    onSuffixIconTap: () {
-                      setState(() {
-                        passwordVisible = !passwordVisible;
-                      });
-                    },
-                    hintStyle: AppStyle.roboto14w500CB3B3B3,
-                    style: AppStyle.roboto16w500C545454,
-                    labelStyle: AppStyle.roboto14w500C000000,
-                    enabledBorderColor: AppColors.black30opacity4D000000,
-                    focusedBorderColor: AppColors.primary,
-                    fillColor: Colors.white,
-                    contentPadding: EdgeInsets.fromLTRB(16.w, 20.h, 16.w, 14.h),
-                  ),
-                  Gap(20.h),
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: rememberMe,
-                        onChanged: (val) {
-                          setState(() {
-                            rememberMe = val ?? false;
-                          });
-                        },
-                        activeColor: AppColors.primary,
-                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        visualDensity: VisualDensity.compact,
-                      ),
-                      Text(
-                        AppStrings.rememberMe.tr,
-                        style: AppStyle.roboto14w400C000000,
-                      ),
-                    ],
-                  ),
-                  Gap(33.h),
-                  AppButton(
-                    text: AppStrings.signUp.tr,
-                    onPressed: () async {
-                      // Handle sign in logic here
-                      final response = await http.get(Uri.parse(
-                          "http://10.0.70.145:8001/report/orders/recent/"));
-                      debugPrint(response.body);
-                    },
-                    width: double.infinity,
-                    height: 48.h,
-                    backgroundColor: AppColors.primary,
-                    borderRadius: 8.r,
-                    textStyle: AppStyle.inter16w700CFFFFFF,
-                  ),
-                  Gap(15.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        AppStrings.dontHaveAAccount.tr,
-                        style: AppStyle.roboto14w400C000000,
-                      ),
-                      Gap(4.w),
-                      GestureDetector(
-                        onTap: () {
-                          context.push(RoutePath.login.addBasePath);
-                        },
-                        child: Stack(
-                          alignment: Alignment.centerLeft,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(bottom: 2.h),
-                              child: Text(
-                                AppStrings.signIn.tr,
-                                style: AppStyle.inter14w500C7CE3D7,
-                              ),
-                            ),
-                            Positioned(
-                              bottom: 0,
-                              left: 0,
-                              right: 0,
-                              child: Container(
-                                height: 2.h,
-                                color: AppColors.primary,
-                              ),
-                            ),
-                          ],
+              child: Form(
+                key: authController.formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Gap(16.h),
+                    Text(
+                      AppStrings.signUp.tr,
+                      style: AppStyle.kohSantepheap30w700C000000,
+                    ),
+                    Gap(30.h),
+                    CustomTextFormField(
+                      controller: authController.fullNameController,
+                      validator: authController.validateFullName,
+                      labelText: AppStrings.fullName.tr,
+                      hintText: AppStrings.enterYourFullName.tr,
+                      suffixIcon: Icons.person_outline,
+                      obscureText: false,
+                      hintStyle: AppStyle.roboto14w500CB3B3B3,
+                      style: AppStyle.roboto16w500C545454,
+                      labelStyle: AppStyle.roboto14w500C000000,
+                      enabledBorderColor: AppColors.black30opacity4D000000,
+                      focusedBorderColor: AppColors.primary,
+                      errorBorderColor: Colors.red,
+                      focusedErrorBorderColor: Colors.red,
+                      fillColor: Colors.white,
+                      contentPadding: EdgeInsets.fromLTRB(16.w, 20.h, 16.w, 14.h),
+                    ),
+                    Gap(35.h),
+                    CustomTextFormField(
+                      controller: authController.emailController,
+                      validator: authController.validateEmail,
+                      labelText: AppStrings.email.tr,
+                      hintText: AppStrings.enterYourEmailHint.tr,
+                      suffixIcon: Icons.email_outlined,
+                      keyboardType: TextInputType.emailAddress,
+                      obscureText: false,
+                      hintStyle: AppStyle.roboto14w500CB3B3B3,
+                      style: AppStyle.roboto16w500C545454,
+                      labelStyle: AppStyle.roboto14w500C000000,
+                      enabledBorderColor: AppColors.black30opacity4D000000,
+                      focusedBorderColor: AppColors.primary,
+                      errorBorderColor: Colors.red,
+                      focusedErrorBorderColor: Colors.red,
+                      fillColor: Colors.white,
+                      contentPadding: EdgeInsets.fromLTRB(16.w, 20.h, 16.w, 14.h),
+                    ),
+                    Gap(35.h),
+                    Obx(() => CustomTextFormField(
+                      controller: authController.passwordController,
+                      validator: authController.validatePassword,
+                      labelText: AppStrings.password.tr,
+                      hintText: AppStrings.password.tr,
+                      suffixIcon: authController.passwordVisible.value
+                          ? Icons.visibility_outlined
+                          : Icons.visibility_off_outlined,
+                      obscureText: !authController.passwordVisible.value,
+                      onSuffixIconTap: authController.togglePasswordVisibility,
+                      hintStyle: AppStyle.roboto14w500CB3B3B3,
+                      style: AppStyle.roboto16w500C545454,
+                      labelStyle: AppStyle.roboto14w500C000000,
+                      enabledBorderColor: AppColors.black30opacity4D000000,
+                      focusedBorderColor: AppColors.primary,
+                      errorBorderColor: Colors.red,
+                      focusedErrorBorderColor: Colors.red,
+                      fillColor: Colors.white,
+                      contentPadding: EdgeInsets.fromLTRB(16.w, 20.h, 16.w, 14.h),
+                    )),
+                    Gap(35.h),
+                    Obx(() => CustomTextFormField(
+                      controller: authController.confirmPasswordController,
+                      validator: authController.validateConfirmPassword,
+                      labelText: AppStrings.confirmPasswordHint.tr,
+                      hintText: AppStrings.confirmPasswordHint.tr,
+                      suffixIcon: authController.passwordVisible.value
+                          ? Icons.visibility_outlined
+                          : Icons.visibility_off_outlined,
+                      obscureText: !authController.passwordVisible.value,
+                      onSuffixIconTap: authController.togglePasswordVisibility,
+                      hintStyle: AppStyle.roboto14w500CB3B3B3,
+                      style: AppStyle.roboto16w500C545454,
+                      labelStyle: AppStyle.roboto14w500C000000,
+                      enabledBorderColor: AppColors.black30opacity4D000000,
+                      focusedBorderColor: AppColors.primary,
+                      errorBorderColor: Colors.red,
+                      focusedErrorBorderColor: Colors.red,
+                      fillColor: Colors.white,
+                      contentPadding: EdgeInsets.fromLTRB(16.w, 20.h, 16.w, 14.h),
+                    )),
+                    Gap(20.h),
+                    Row(
+                      children: [
+                        Obx(() => Checkbox(
+                          value: authController.rememberMe.value,
+                          onChanged: authController.toggleRememberMe,
+                          activeColor: AppColors.primary,
+                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          visualDensity: VisualDensity.compact,
+                        )),
+                        Text(
+                          AppStrings.rememberMe.tr,
+                          style: AppStyle.roboto14w400C000000,
                         ),
-                      ),
-                    ],
-                  ),
-                  Gap(12.h),
-                  Text(
-                    AppStrings.or.tr,
-                    style: AppStyle.roboto14w500C80000000,
-                  ),
-                  Gap(12.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      _buildSocialIcon(
-                        iconPath: Assets.icons.appleSignin.path,
-                        onTap: () {},
-                      ),
-                      Gap(15.w),
-                      _buildSocialIcon(
-                        iconPath: Assets.icons.google.path,
-                        onTap: () {},
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ), 
+                    Gap(33.h),
+                    Obx(() => AppButton(
+                      text: authController.isLoading.value 
+                          ? AppStrings.creatingAccount.tr
+                          : AppStrings.signUp.tr,
+                      onPressed: authController.isLoading.value 
+                          ? null 
+                          : () => authController.signUp(context),
+                      width: double.infinity,
+                      height: 48.h,
+                      backgroundColor: authController.isLoading.value 
+                          ? AppColors.primary.withOpacity(0.6)
+                          : AppColors.primary,
+                      borderRadius: 8.r,
+                      textStyle: AppStyle.inter16w700CFFFFFF,
+                    )),
+                    Gap(15.h),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          AppStrings.dontHaveAAccount.tr,
+                          style: AppStyle.roboto14w400C000000,
+                        ),
+                        Gap(4.w),
+                        GestureDetector(
+                          onTap: () {
+                            context.push(RoutePath.login.addBasePath);
+                          },
+                          child: Stack(
+                            alignment: Alignment.centerLeft,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(bottom: 2.h),
+                                child: Text(
+                                  AppStrings.signIn.tr,
+                                  style: AppStyle.inter14w500C7CE3D7,
+                                ),
+                              ),
+                              Positioned(
+                                bottom: 0,
+                                left: 0,
+                                right: 0,
+                                child: Container(
+                                  height: 2.h,
+                                  color: AppColors.primary,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    Gap(12.h),
+                    Text(
+                      AppStrings.or.tr,
+                      style: AppStyle.roboto14w500C80000000,
+                    ),
+                    Gap(12.h),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _buildSocialIcon(
+                          iconPath: Assets.icons.appleSignin.path,
+                          onTap: authController.loginWithApple,
+                        ),
+                        Gap(15.w),
+                        _buildSocialIcon(
+                          iconPath: Assets.icons.google.path,
+                          onTap: authController.loginWithGoogle,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart'; // If you use SVG icons
+import 'package:flutter_svg/flutter_svg.dart';
 
 class CustomTextFormField extends StatefulWidget {
   final TextEditingController controller;
@@ -24,10 +24,13 @@ class CustomTextFormField extends StatefulWidget {
   final BorderRadius? borderRadius;
   final Color enabledBorderColor;
   final Color focusedBorderColor;
+  final Color errorBorderColor;
+  final Color focusedErrorBorderColor;
   final double enabledBorderWidth;
   final double focusedBorderWidth;
   final bool showCounter;
   final ValueChanged<String>? onChanged;
+  final String? Function(String?)? validator; // Added validator
 
   const CustomTextFormField({
     Key? key,
@@ -54,9 +57,12 @@ class CustomTextFormField extends StatefulWidget {
     this.borderRadius,
     this.enabledBorderColor = Colors.grey,
     this.focusedBorderColor = Colors.blue,
+    this.errorBorderColor = Colors.red,
+    this.focusedErrorBorderColor = Colors.red,
     this.enabledBorderWidth = 1.5,
     this.focusedBorderWidth = 1.8,
     this.showCounter = true,
+    this.validator, // Added validator parameter
   }) : super(key: key);
 
   @override
@@ -68,7 +74,6 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
     if (widget.onSuffixIconTap != null) {
       widget.onSuffixIconTap!();
     }
-    // Removed internal toggle, now fully controlled outside
   }
 
   @override
@@ -96,11 +101,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
       suffixIconWidget = GestureDetector(
         onTap: _toggleObscureText,
         child: Icon(
-          widget.obscureText
-              ? (widget.obscureText
-                  ? Icons.visibility_off
-                  : Icons.visibility) // always use widget.obscureText here
-              : widget.suffixIcon,
+          widget.suffixIcon,
           color: Colors.black.withOpacity(0.5),
           size: 17,
         ),
@@ -117,6 +118,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
       textAlignVertical: widget.textAlignVertical ?? TextAlignVertical.center,
       focusNode: widget.focusNode,
       style: widget.style,
+      validator: widget.validator, // Added validator
       decoration: InputDecoration(
         labelText: widget.labelText,
         floatingLabelBehavior: widget.labelText != null
@@ -158,6 +160,20 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
           borderRadius: borderRadius,
           borderSide: BorderSide(
             color: widget.focusedBorderColor,
+            width: widget.focusedBorderWidth,
+          ),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: borderRadius,
+          borderSide: BorderSide(
+            color: widget.errorBorderColor,
+            width: widget.enabledBorderWidth,
+          ),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: borderRadius,
+          borderSide: BorderSide(
+            color: widget.focusedErrorBorderColor,
             width: widget.focusedBorderWidth,
           ),
         ),
