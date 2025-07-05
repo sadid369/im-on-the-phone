@@ -25,6 +25,10 @@ class _SearchScreenState extends State<SearchScreen> {
   late final ContactController contactController;
   final TextEditingController _searchController = TextEditingController();
 
+  // Use RxList for reactive updates and make it removable
+  RxList<Map<String, dynamic>> activeDefaultCallers =
+      <Map<String, dynamic>>[].obs;
+
   // Default sample callers (these will be mixed with saved contacts)
   final List<Map<String, dynamic>> defaultCallers = [
     {
@@ -63,6 +67,9 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   void initState() {
     super.initState();
+    // Initialize active default callers
+    activeDefaultCallers.value = List.from(defaultCallers);
+
     // Get or create the ContactController
     contactController = Get.isRegistered<ContactController>()
         ? Get.find<ContactController>()
@@ -107,9 +114,9 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   void _initializeCallers() {
-    // Combine default callers and saved contacts
+    // Combine active default callers and saved contacts
     filteredCallers.value = [
-      ...defaultCallers,
+      ...activeDefaultCallers.value,
       ...contactController.contacts.value,
     ];
   }
@@ -119,15 +126,15 @@ class _SearchScreenState extends State<SearchScreen> {
 
     if (query.isEmpty) {
       filteredCallers.value = [
-        ...defaultCallers,
+        ...activeDefaultCallers.value,
         ...contactController.contacts.value,
       ];
       return;
     }
 
     filteredCallers.value = [
-      // Search in default callers
-      ...defaultCallers.where((caller) {
+      // Search in active default callers
+      ...activeDefaultCallers.where((caller) {
         final name = (caller['name'] ?? '').toString().toLowerCase();
         return name.contains(query);
       }),
@@ -486,11 +493,11 @@ class _SearchScreenState extends State<SearchScreen> {
   void _makeCall(Contact contact) {
     print('DEBUG: _makeCall called with contact: ${contact.fullName}'); // Debug
 
-    _showAwesomeSnackbar(
-      title: AppStrings.calling.tr,
-      message: '${AppStrings.calling.tr} ${contact.fullName}...',
-      contentType: ContentType.help,
-    );
+    // _showAwesomeSnackbar(
+    //   title: AppStrings.calling.tr,
+    //   message: '${AppStrings.calling.tr} ${contact.fullName}...',
+    //   contentType: ContentType.help,
+    // );
 
     // Navigate to incoming call screen
     Future.delayed(Duration(seconds: 1), () {
@@ -665,11 +672,11 @@ class _SearchScreenState extends State<SearchScreen> {
 
   // Add this new method to handle the call navigation
   void _makeDefaultCallFromDialog(String callerName) {
-    _showAwesomeSnackbar(
-      title: AppStrings.calling.tr,
-      message: '${AppStrings.calling.tr} $callerName...',
-      contentType: ContentType.help,
-    );
+    // _showAwesomeSnackbar(
+    //   title: AppStrings.calling.tr,
+    //   message: '${AppStrings.calling.tr} $callerName...',
+    //   contentType: ContentType.help,
+    // );
 
     // Navigate to incoming call screen with a slight delay
     Future.delayed(const Duration(milliseconds: 500), () {
@@ -837,7 +844,7 @@ class _SearchScreenState extends State<SearchScreen> {
             Icon(Icons.warning, color: Colors.orange, size: 24.r),
             Gap(8.w),
             Text(
-              AppStrings.deleteTemplate.tr,
+              "Template Removal",
               style: TextStyle(
                 color: AppColors.primary,
                 fontWeight: FontWeight.bold,
@@ -846,7 +853,7 @@ class _SearchScreenState extends State<SearchScreen> {
           ],
         ),
         content: Text(
-          AppStrings.deleteTemplateConfirmation.tr
+          "Are you sure you want to remove the template ?"
               .replaceAll('{name}', caller['name'].toString()),
           style: TextStyle(fontSize: 16.sp, color: Colors.black87),
         ),
@@ -870,7 +877,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 borderRadius: BorderRadius.circular(8.r),
               ),
             ),
-            child: Text(AppStrings.delete.tr),
+            child: Text("Remove Template"),
           ),
         ],
       ),
@@ -878,11 +885,28 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   void _performDeleteDefaultCaller(Map<String, dynamic> caller) {
-    // Since default callers are hardcoded, we'll just show a message
+    // Remove from active default callers
+    activeDefaultCallers.removeWhere((item) => item['name'] == caller['name']);
+
+    // Update filtered callers
+    _initializeCallers();
+
     _showAwesomeSnackbar(
-      title: AppStrings.info.tr,
-      message: AppStrings.cannotDeleteDefaultTemplate.tr,
-      contentType: ContentType.warning,
+      title: AppStrings.success.tr,
+      // message: AppStrings.templateRemoved.tr,
+      message: "Template Removed: ${caller['name']}",
+      contentType: ContentType.success,
+    );
+  }
+
+  // Add method to restore removed templates
+  void _restoreAllTemplates() {
+    activeDefaultCallers.value = List.from(defaultCallers);
+    _initializeCallers();
+    _showAwesomeSnackbar(
+      title: AppStrings.success.tr,
+      message: "Templates restored successfully",
+      contentType: ContentType.success,
     );
   }
 
@@ -960,27 +984,39 @@ ${contact.message.isNotEmpty ? 'Message: ${contact.message}' : ''}
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  IconButton(
-                    icon: Icon(Icons.add, color: Colors.black, size: 24.r),
-                    onPressed: () async {
-                      try {
-                        final result = await context
-                            .push(RoutePath.newContactScreen.addBasePath);
-                        if (result == true) {
-                          _showAwesomeSnackbar(
-                            title: AppStrings.success.tr,
-                            message: AppStrings.contactAddedSuccessfully.tr,
-                            contentType: ContentType.success,
-                          );
-                        }
-                      } catch (e) {
-                        _showAwesomeSnackbar(
-                          title: AppStrings.error.tr,
-                          message: AppStrings.failedToOpenNewContactScreen.tr,
-                          contentType: ContentType.failure,
-                        );
-                      }
-                    },
+                  Row(
+                    children: [
+                      if (activeDefaultCallers.length < defaultCallers.length)
+                        IconButton(
+                          icon: Icon(Icons.restore,
+                              color: Colors.orange, size: 24.r),
+                          onPressed: _restoreAllTemplates,
+                          tooltip: "Restore Templates",
+                        ),
+                      IconButton(
+                        icon: Icon(Icons.add, color: Colors.black, size: 24.r),
+                        onPressed: () async {
+                          try {
+                            final result = await context
+                                .push(RoutePath.newContactScreen.addBasePath);
+                            if (result == true) {
+                              _showAwesomeSnackbar(
+                                title: AppStrings.success.tr,
+                                message: AppStrings.contactAddedSuccessfully.tr,
+                                contentType: ContentType.success,
+                              );
+                            }
+                          } catch (e) {
+                            _showAwesomeSnackbar(
+                              title: AppStrings.error.tr,
+                              message:
+                                  AppStrings.failedToOpenNewContactScreen.tr,
+                              contentType: ContentType.failure,
+                            );
+                          }
+                        },
+                      ),
+                    ],
                   ),
                 ],
               ),

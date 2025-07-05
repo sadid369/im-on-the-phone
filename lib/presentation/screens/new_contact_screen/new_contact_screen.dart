@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:groc_shopy/utils/app_colors/app_colors.dart';
 import 'package:groc_shopy/utils/static_strings/static_strings.dart';
 import 'dart:io';
 
@@ -23,7 +24,7 @@ class NewContactScreen extends StatefulWidget {
 class _NewContactScreenState extends State<NewContactScreen> {
   late final ContactController contactController;
   Contact? editContact;
-  
+
   // Consistent border style for all text fields
   final _borderRadius = BorderRadius.circular(12.r);
   final _borderColor = Colors.grey.shade300;
@@ -31,10 +32,10 @@ class _NewContactScreenState extends State<NewContactScreen> {
   @override
   void initState() {
     super.initState();
-    contactController = Get.isRegistered<ContactController>() 
+    contactController = Get.isRegistered<ContactController>()
         ? Get.find<ContactController>()
         : Get.put(ContactController());
-    
+
     // If editing, load contact data
     if (widget.editContact != null) {
       contactController.loadContactForEditing(widget.editContact!);
@@ -44,10 +45,10 @@ class _NewContactScreenState extends State<NewContactScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    
+
     // Get the extra parameter from GoRouter
     final extra = GoRouterState.of(context).extra;
-    
+
     if (extra is Contact) {
       editContact = extra;
       contactController.loadContactForEditing(editContact!);
@@ -132,14 +133,15 @@ class _NewContactScreenState extends State<NewContactScreen> {
                           padding: EdgeInsets.symmetric(horizontal: 16.w),
                           child: Text(
                             AppStrings.cancel.tr,
-                            style: TextStyle(color: Colors.teal, fontSize: 16.sp),
+                            style: TextStyle(
+                                color: AppColors.primary, fontSize: 16.sp),
                           ),
                         ),
                       ),
                       Expanded(
                         child: Center(
                           child: Text(
-                            editContact != null 
+                            editContact != null
                                 ? AppStrings.editContact.tr
                                 : AppStrings.newContact.tr,
                             style: TextStyle(
@@ -151,84 +153,97 @@ class _NewContactScreenState extends State<NewContactScreen> {
                         ),
                       ),
                       Obx(() => TextButton(
-                        onPressed: contactController.isSaving.value ? null : _onSave,
-                        style: TextButton.styleFrom(
-                          padding: EdgeInsets.symmetric(horizontal: 16.w),
-                          minimumSize: Size.zero,
-                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        ),
-                        child: contactController.isSaving.value
-                            ? SizedBox(
-                                width: 16.w,
-                                height: 16.h,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  color: Colors.black,
-                                ),
-                              )
-                            : Text(
-                                AppStrings.done.tr,
-                                style: TextStyle(color: Colors.black, fontSize: 16.sp),
-                              ),
-                      )),
+                            onPressed: contactController.isSaving.value
+                                ? null
+                                : _onSave,
+                            style: TextButton.styleFrom(
+                              padding: EdgeInsets.symmetric(horizontal: 16.w),
+                              minimumSize: Size.zero,
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ),
+                            child: contactController.isSaving.value
+                                ? SizedBox(
+                                    width: 16.w,
+                                    height: 16.h,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: Colors.black,
+                                    ),
+                                  )
+                                : Text(
+                                    AppStrings.done.tr,
+                                    style: TextStyle(
+                                        color: AppColors.primary,
+                                        fontSize: 16.sp),
+                                  ),
+                          )),
                     ],
                   ),
                 ),
               ),
-              
+
               // Avatar + Add Photo
               Column(
                 children: [
                   Obx(() => GestureDetector(
-                    onTap: () => contactController.showImagePickerBottomSheet(context),
-                    child: Stack(
-                      children: [
-                        CircleAvatar(
-                          radius: 40.r,
-                          backgroundColor: Colors.grey.shade300,
-                          backgroundImage: contactController.profileImage.value != null
-                              ? FileImage(contactController.profileImage.value!)
-                              : null,
-                          child: contactController.profileImage.value == null
-                              ? Icon(Icons.person, size: 40.r, color: Colors.white70)
-                              : null,
-                        ),
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: Container(
-                            width: 24.w,
-                            height: 24.h,
-                            decoration: BoxDecoration(
-                              color: Colors.teal,
-                              shape: BoxShape.circle,
-                              border: Border.all(color: Colors.white, width: 2.w),
+                        onTap: () => contactController
+                            .showImagePickerBottomSheet(context),
+                        child: Stack(
+                          children: [
+                            CircleAvatar(
+                              radius: 40.r,
+                              backgroundColor: Colors.grey.shade300,
+                              backgroundImage:
+                                  contactController.profileImage.value != null
+                                      ? FileImage(
+                                          contactController.profileImage.value!)
+                                      : null,
+                              child:
+                                  contactController.profileImage.value == null
+                                      ? Icon(Icons.person,
+                                          size: 40.r, color: Colors.white70)
+                                      : null,
                             ),
-                            child: Icon(
-                              Icons.camera_alt,
-                              size: 12.r,
-                              color: Colors.white,
+                            Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: Container(
+                                width: 24.w,
+                                height: 24.h,
+                                decoration: BoxDecoration(
+                                  color: AppColors.primary,
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                      color: Colors.white, width: 2.w),
+                                ),
+                                child: Icon(
+                                  Icons.camera_alt,
+                                  size: 12.r,
+                                  color: Colors.white,
+                                ),
+                              ),
                             ),
-                          ),
+                          ],
                         ),
-                      ],
-                    ),
-                  )),
+                      )),
                   Obx(() => TextButton(
-                    onPressed: contactController.isPickingImage.value 
-                        ? null 
-                        : () => contactController.showImagePickerBottomSheet(context),
-                    child: contactController.isPickingImage.value
-                        ? SizedBox(
-                            width: 16.w,
-                            height: 16.h,
-                            child: CircularProgressIndicator(strokeWidth: 2),
-                          )
-                        : Text(
-                            AppStrings.addPhoto.tr,
-                            style: TextStyle(color: Colors.grey, fontSize: 14.sp),
-                          ),
-                  )),
+                        onPressed: contactController.isPickingImage.value
+                            ? null
+                            : () => contactController
+                                .showImagePickerBottomSheet(context),
+                        child: contactController.isPickingImage.value
+                            ? SizedBox(
+                                width: 16.w,
+                                height: 16.h,
+                                child:
+                                    CircularProgressIndicator(strokeWidth: 2),
+                              )
+                            : Text(
+                                AppStrings.addPhoto.tr,
+                                style: TextStyle(
+                                    color: Colors.grey, fontSize: 14.sp),
+                              ),
+                      )),
                 ],
               ),
               Gap(10.h),
@@ -245,7 +260,8 @@ class _NewContactScreenState extends State<NewContactScreen> {
                 focusedErrorBorderColor: Colors.red,
                 focusedBorderWidth: 1.2.w,
                 enabledBorderWidth: 1.2.w,
-                prefix: Icon(Icons.person_outline, color: Colors.grey, size: 20.r),
+                prefix:
+                    Icon(Icons.person_outline, color: Colors.grey, size: 20.r),
               ),
               Gap(12.h),
 
@@ -261,7 +277,8 @@ class _NewContactScreenState extends State<NewContactScreen> {
                 focusedErrorBorderColor: Colors.red,
                 focusedBorderWidth: 1.2.w,
                 enabledBorderWidth: 1.2.w,
-                prefix: Icon(Icons.person_outline, color: Colors.grey, size: 20.r),
+                prefix:
+                    Icon(Icons.person_outline, color: Colors.grey, size: 20.r),
               ),
               Gap(12.h),
 
@@ -288,7 +305,6 @@ class _NewContactScreenState extends State<NewContactScreen> {
                 validator: contactController.validateMessage,
                 hintText: AppStrings.message.tr,
                 maxLength: 200,
-               
                 keyboardType: TextInputType.multiline,
                 contentPadding:
                     EdgeInsets.symmetric(vertical: 16.h, horizontal: 12.w),
@@ -301,34 +317,36 @@ class _NewContactScreenState extends State<NewContactScreen> {
                 enabledBorderWidth: 1.2.w,
                 prefix: Padding(
                   padding: EdgeInsets.only(top: 16.h),
-                  child: Icon(Icons.message_outlined, color: Colors.blue, size: 20.r),
+                  child: Icon(Icons.message_outlined,
+                      color: Colors.blue, size: 20.r),
                 ),
               ),
               Gap(16.h),
 
               // Add Voice section
               Obx(() => _buildSectionTile(
-                leading: Icon(Icons.add_circle, color: Colors.green, size: 24.r),
-                title: Text(
-                  contactController.selectedVoiceFile.value != null
-                      ? contactController.voiceFileName.value
-                      : AppStrings.addVoice.tr,
-                  style: TextStyle(fontSize: 15.sp),
-                ),
-                trailing: contactController.isPickingFile.value
-                    ? SizedBox(
-                        width: 24.w,
-                        height: 24.h,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    : Icon(
-                        Icons.graphic_eq,
-                        color: Colors.grey,
-                        size: 24.r,
-                      ),
-                onTap: () => contactController.pickVoiceFile(context),
-                enabled: !contactController.isPickingFile.value,
-              )),
+                    leading:
+                        Icon(Icons.add_circle, color: Colors.green, size: 24.r),
+                    title: Text(
+                      contactController.selectedVoiceFile.value != null
+                          ? contactController.voiceFileName.value
+                          : AppStrings.addVoice.tr,
+                      style: TextStyle(fontSize: 15.sp),
+                    ),
+                    trailing: contactController.isPickingFile.value
+                        ? SizedBox(
+                            width: 24.w,
+                            height: 24.h,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : Icon(
+                            Icons.graphic_eq,
+                            color: Colors.grey,
+                            size: 24.r,
+                          ),
+                    onTap: () => contactController.pickVoiceFile(context),
+                    enabled: !contactController.isPickingFile.value,
+                  )),
 
               // Show selected voice file info
               Obx(() => contactController.selectedVoiceFile.value != null
@@ -342,7 +360,8 @@ class _NewContactScreenState extends State<NewContactScreen> {
                       ),
                       child: Row(
                         children: [
-                          Icon(Icons.audiotrack, color: Colors.green, size: 20.r),
+                          Icon(Icons.audiotrack,
+                              color: Colors.green, size: 20.r),
                           Gap(8.w),
                           Expanded(
                             child: Column(
@@ -370,7 +389,8 @@ class _NewContactScreenState extends State<NewContactScreen> {
                               contactController.selectedVoiceFile.value = null;
                               contactController.voiceFileName.value = '';
                             },
-                            icon: Icon(Icons.close, color: Colors.red, size: 20.r),
+                            icon: Icon(Icons.close,
+                                color: Colors.red, size: 20.r),
                           ),
                         ],
                       ),
@@ -381,23 +401,22 @@ class _NewContactScreenState extends State<NewContactScreen> {
 
               // Save button
               Obx(() => AppButton(
-                text: contactController.isSaving.value 
-                    ? AppStrings.saving.tr
-                    : (editContact != null 
-                        ? AppStrings.updateContact.tr 
-                        : AppStrings.saveContact.tr),
-                onPressed: contactController.isSaving.value ? null : _onSave,
-                textStyle: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w600,
-                ),
-                backgroundColor: contactController.isSaving.value
-                    ? Colors.grey.shade400
-                    : Colors.teal,
-                borderRadius: 12.r,
-                height: 50.h,
-              )),
+                    text: contactController.isSaving.value
+                        ? AppStrings.saving.tr
+                        : (editContact != null
+                            ? AppStrings.updateContact.tr
+                            : AppStrings.saveContact.tr),
+                    onPressed:
+                        contactController.isSaving.value ? null : _onSave,
+                    textStyle: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    backgroundColor: AppColors.primary,
+                    borderRadius: 12.r,
+                    height: 50.h,
+                  )),
 
               Gap(20.h),
             ],
