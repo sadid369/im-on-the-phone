@@ -57,7 +57,8 @@ class AdminSignUpScreenState extends State<AdminSignUpScreen> {
                       errorBorderColor: Colors.red,
                       focusedErrorBorderColor: Colors.red,
                       fillColor: Colors.white,
-                      contentPadding: EdgeInsets.fromLTRB(16.w, 20.h, 16.w, 14.h),
+                      contentPadding:
+                          EdgeInsets.fromLTRB(16.w, 20.h, 16.w, 14.h),
                     ),
                     Gap(35.h),
                     CustomTextFormField(
@@ -76,82 +77,88 @@ class AdminSignUpScreenState extends State<AdminSignUpScreen> {
                       errorBorderColor: Colors.red,
                       focusedErrorBorderColor: Colors.red,
                       fillColor: Colors.white,
-                      contentPadding: EdgeInsets.fromLTRB(16.w, 20.h, 16.w, 14.h),
+                      contentPadding:
+                          EdgeInsets.fromLTRB(16.w, 20.h, 16.w, 14.h),
                     ),
                     Gap(35.h),
                     Obx(() => CustomTextFormField(
-                      controller: authController.passwordController,
-                      validator: authController.validatePassword,
-                      labelText: AppStrings.password.tr,
-                      hintText: AppStrings.password.tr,
-                      suffixIcon: authController.passwordVisible.value
-                          ? Icons.visibility_outlined
-                          : Icons.visibility_off_outlined,
-                      obscureText: !authController.passwordVisible.value,
-                      onSuffixIconTap: authController.togglePasswordVisibility,
-                      hintStyle: AppStyle.roboto14w500CB3B3B3,
-                      style: AppStyle.roboto16w500C545454,
-                      labelStyle: AppStyle.roboto14w500C000000,
-                      enabledBorderColor: AppColors.black30opacity4D000000,
-                      focusedBorderColor: AppColors.primary,
-                      errorBorderColor: Colors.red,
-                      focusedErrorBorderColor: Colors.red,
-                      fillColor: Colors.white,
-                      contentPadding: EdgeInsets.fromLTRB(16.w, 20.h, 16.w, 14.h),
-                    )),
+                          controller: authController.passwordController,
+                          validator: authController.validatePassword,
+                          labelText: AppStrings.password.tr,
+                          hintText: AppStrings.password.tr,
+                          suffixIcon: authController.passwordVisible.value
+                              ? Icons.visibility_outlined
+                              : Icons.visibility_off_outlined,
+                          obscureText: !authController.passwordVisible.value,
+                          onSuffixIconTap:
+                              authController.togglePasswordVisibility,
+                          hintStyle: AppStyle.roboto14w500CB3B3B3,
+                          style: AppStyle.roboto16w500C545454,
+                          labelStyle: AppStyle.roboto14w500C000000,
+                          enabledBorderColor: AppColors.black30opacity4D000000,
+                          focusedBorderColor: AppColors.primary,
+                          errorBorderColor: Colors.red,
+                          focusedErrorBorderColor: Colors.red,
+                          fillColor: Colors.white,
+                          contentPadding:
+                              EdgeInsets.fromLTRB(16.w, 20.h, 16.w, 14.h),
+                        )),
                     Gap(35.h),
                     Obx(() => CustomTextFormField(
-                      controller: authController.confirmPasswordController,
-                      validator: authController.validateConfirmPassword,
-                      labelText: AppStrings.confirmPasswordHint.tr,
-                      hintText: AppStrings.confirmPasswordHint.tr,
-                      suffixIcon: authController.passwordVisible.value
-                          ? Icons.visibility_outlined
-                          : Icons.visibility_off_outlined,
-                      obscureText: !authController.passwordVisible.value,
-                      onSuffixIconTap: authController.togglePasswordVisibility,
-                      hintStyle: AppStyle.roboto14w500CB3B3B3,
-                      style: AppStyle.roboto16w500C545454,
-                      labelStyle: AppStyle.roboto14w500C000000,
-                      enabledBorderColor: AppColors.black30opacity4D000000,
-                      focusedBorderColor: AppColors.primary,
-                      errorBorderColor: Colors.red,
-                      focusedErrorBorderColor: Colors.red,
-                      fillColor: Colors.white,
-                      contentPadding: EdgeInsets.fromLTRB(16.w, 20.h, 16.w, 14.h),
-                    )),
+                          controller: authController.confirmPasswordController,
+                          validator: authController.validateConfirmPassword,
+                          labelText: AppStrings.confirmPasswordHint.tr,
+                          hintText: AppStrings.confirmPasswordHint.tr,
+                          suffixIcon: authController.passwordVisible.value
+                              ? Icons.visibility_outlined
+                              : Icons.visibility_off_outlined,
+                          obscureText: !authController.passwordVisible.value,
+                          onSuffixIconTap:
+                              authController.togglePasswordVisibility,
+                          hintStyle: AppStyle.roboto14w500CB3B3B3,
+                          style: AppStyle.roboto16w500C545454,
+                          labelStyle: AppStyle.roboto14w500C000000,
+                          enabledBorderColor: AppColors.black30opacity4D000000,
+                          focusedBorderColor: AppColors.primary,
+                          errorBorderColor: Colors.red,
+                          focusedErrorBorderColor: Colors.red,
+                          fillColor: Colors.white,
+                          contentPadding:
+                              EdgeInsets.fromLTRB(16.w, 20.h, 16.w, 14.h),
+                        )),
                     Gap(20.h),
                     Row(
                       children: [
                         Obx(() => Checkbox(
-                          value: authController.rememberMe.value,
-                          onChanged: authController.toggleRememberMe,
-                          activeColor: AppColors.primary,
-                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          visualDensity: VisualDensity.compact,
-                        )),
+                              value: authController.rememberMe.value,
+                              onChanged: authController.toggleRememberMe,
+                              activeColor: AppColors.primary,
+                              materialTapTargetSize:
+                                  MaterialTapTargetSize.shrinkWrap,
+                              visualDensity: VisualDensity.compact,
+                            )),
                         Text(
                           AppStrings.rememberMe.tr,
                           style: AppStyle.roboto14w400C000000,
                         ),
                       ],
-                    ), 
+                    ),
                     Gap(33.h),
                     Obx(() => AppButton(
-                      text: authController.isLoading.value 
-                          ? AppStrings.creatingAccount.tr
-                          : AppStrings.signUp.tr,
-                      onPressed: authController.isLoading.value 
-                          ? null 
-                          : () => authController.signUp(context),
-                      width: double.infinity,
-                      height: 48.h,
-                      backgroundColor: authController.isLoading.value 
-                          ? AppColors.primary.withOpacity(0.6)
-                          : AppColors.primary,
-                      borderRadius: 8.r,
-                      textStyle: AppStyle.inter16w700CFFFFFF,
-                    )),
+                          text: authController.isLoading.value
+                              ? AppStrings.creatingAccount.tr
+                              : AppStrings.signUp.tr,
+                          onPressed: authController.isLoading.value
+                              ? null
+                              : () => authController.signUp(context),
+                          width: double.infinity,
+                          height: 48.h,
+                          backgroundColor: authController.isLoading.value
+                              ? AppColors.primary.withOpacity(0.6)
+                              : AppColors.primary,
+                          borderRadius: 8.r,
+                          textStyle: AppStyle.inter16w700CFFFFFF,
+                        )),
                     Gap(15.h),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -200,7 +207,7 @@ class AdminSignUpScreenState extends State<AdminSignUpScreen> {
                       children: [
                         _buildSocialIcon(
                           iconPath: Assets.icons.appleSignin.path,
-                          onTap: authController.loginWithApple,
+                          onTap: () => authController.loginWithApple(context),
                         ),
                         Gap(15.w),
                         _buildSocialIcon(

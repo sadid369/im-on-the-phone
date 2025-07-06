@@ -5,6 +5,7 @@ import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import '../../../../core/routes/route_path.dart';
 import '../../../../helper/extension/base_extension.dart';
 import '../../../../utils/static_strings/static_strings.dart';
+import 'package:http/http.dart' as http;
 
 class AuthController extends GetxController {
   // Observable variables
@@ -18,7 +19,7 @@ class AuthController extends GetxController {
   final emailController = TextEditingController(text: 'user');
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
-  
+
   // Text controller for forgot password
   final forgotPasswordEmailController = TextEditingController();
 
@@ -29,11 +30,12 @@ class AuthController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    
+
     // Listen to forgot password email changes
     forgotPasswordEmailController.addListener(() {
       final isValid = forgotPasswordEmailController.text.isNotEmpty &&
-          AppStrings.emailRegexp.hasMatch(forgotPasswordEmailController.text.trim());
+          AppStrings.emailRegexp
+              .hasMatch(forgotPasswordEmailController.text.trim());
       isResetButtonEnabled.value = isValid;
     });
   }
@@ -100,7 +102,8 @@ class AuthController extends GetxController {
   }
 
   // Show awesome snackbar
-  void _showAwesomeSnackbar(BuildContext context, {
+  void _showAwesomeSnackbar(
+    BuildContext context, {
     required String title,
     required String message,
     required ContentType contentType,
@@ -140,7 +143,7 @@ class AuthController extends GetxController {
     try {
       // Simulate API call
       await Future.delayed(const Duration(seconds: 2));
-      
+
       // Simulate success
       _showAwesomeSnackbar(
         context,
@@ -153,7 +156,6 @@ class AuthController extends GetxController {
       Future.delayed(const Duration(seconds: 1), () {
         context.go(RoutePath.login.addBasePath);
       });
-
     } catch (e) {
       _showAwesomeSnackbar(
         context,
@@ -236,7 +238,7 @@ class AuthController extends GetxController {
     try {
       // Simulate API call for password reset
       await Future.delayed(const Duration(seconds: 2));
-      
+
       // Simulate success
       _showAwesomeSnackbar(
         context,
@@ -249,7 +251,6 @@ class AuthController extends GetxController {
       Future.delayed(const Duration(seconds: 1), () {
         context.push(RoutePath.verification.addBasePath);
       });
-
     } catch (e) {
       _showAwesomeSnackbar(
         context,
@@ -277,7 +278,62 @@ class AuthController extends GetxController {
     Get.snackbar(AppStrings.info.tr, AppStrings.googleLoginNotImplemented.tr);
   }
 
-  void loginWithApple() {
-    Get.snackbar(AppStrings.info.tr, AppStrings.appleLoginNotImplemented.tr);
+  void loginWithApple(BuildContext context) async {
+    if (isLoading.value) return;
+
+    isLoading.value = true;
+
+    try {
+      // For USB connected device, use the server IP that works in your browser (10.10.7.84)
+      final res = await http.get(
+        Uri.parse('http://10.10.7.84:8000/'),
+        headers: {'Content-Type': 'application/json'},
+      ).timeout(
+        const Duration(seconds: 10),
+        onTimeout: () {
+          throw Exception('Connection timeout');
+        },
+      );
+
+      if (res.statusCode == 200) {
+        _showAwesomeSnackbar(
+          context,
+          title: AppStrings.success.tr,
+          message: 'Apple login server responded: ${res.body}',
+          contentType: ContentType.success,
+        );
+        print('Response status: ${res.statusCode}');
+        print('Response body: ${res.body}');
+      } else {
+        _showAwesomeSnackbar(
+          context,
+          title: AppStrings.warning.tr,
+          message: 'Server returned status: ${res.statusCode}',
+          contentType: ContentType.warning,
+        );
+      }
+    } catch (e) {
+      String errorMessage;
+      if (e.toString().contains('Connection failed') ||
+          e.toString().contains('Network is unreachable')) {
+        errorMessage = 'Cannot connect to server at 10.10.7.84:8000\n'
+            'USB connected device should use PC\'s network.';
+      } else if (e.toString().contains('timeout')) {
+        errorMessage = 'Connection timeout. Server may be busy.';
+      } else {
+        errorMessage = 'Apple login error: ${e.toString()}';
+      }
+
+      _showAwesomeSnackbar(
+        context,
+        title: AppStrings.error.tr,
+        message: errorMessage,
+        contentType: ContentType.failure,
+      );
+
+      print('Apple login error: $e');
+    } finally {
+      isLoading.value = false;
+    }
   }
 }

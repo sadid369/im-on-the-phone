@@ -158,7 +158,7 @@ class LoginScreen extends StatelessWidget {
                     children: [
                       _buildSocialIcon(
                         iconPath: Assets.icons.appleSignin.path,
-                        onTap: authController.loginWithApple,
+                        onTap: () => authController.loginWithApple(context),
                       ),
                       Gap(15.w),
                       _buildSocialIcon(
