@@ -229,114 +229,114 @@ class _SettingsScreenState extends State<SettingsScreen> {
               Gap(16.h),
 
               // Ringtone Picker
-              Container(
-                padding: EdgeInsets.all(10.w),
-                height: 120.w,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.r),
-                  color: Colors.white,
-                  border: Border.all(
-                    color: Colors.black.withOpacity(0.1),
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        SvgPicture.asset(Assets.icons.ringtone.path),
-                        Gap(10.w),
-                        Text(AppStrings.ringtone.tr, // <-- Added .tr
-                            style: AppStyle.roboto14w400C000000),
-                      ],
-                    ),
-                    Gap(8.h),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: [
-                          Gap(20.w),
-                          AppButton(
-                            text:
-                                AppStrings.defaultRingtone.tr, // <-- Added .tr
-                            onPressed: () {
-                              setState(() {
-                                selectedRingtone = AppStrings.defaultRingtone;
-                              });
-                            },
-                            width: 120.w,
-                            height: 29.h,
-                            borderRadius: 50.r,
-                            backgroundColor:
-                                selectedRingtone == AppStrings.defaultRingtone
-                                    ? AppColors.primary
-                                    : const Color(0xffF2F2F2),
-                            textStyle:
-                                selectedRingtone == AppStrings.defaultRingtone
-                                    ? AppStyle.roboto12w500CFFFFFF
-                                    : AppStyle.roboto12w400C000000,
-                          ),
-                          Gap(8.w),
-                          AppButton(
-                            text: AppStrings.quad.tr, // <-- Added .tr
-                            onPressed: () {
-                              setState(() {
-                                selectedRingtone = AppStrings.quad;
-                              });
-                            },
-                            width: 120.w,
-                            height: 29.h,
-                            borderRadius: 50.r,
-                            backgroundColor: selectedRingtone == AppStrings.quad
-                                ? AppColors.primary
-                                : const Color(0xffF2F2F2),
-                            textStyle: selectedRingtone == AppStrings.quad
-                                ? AppStyle.roboto12w500CFFFFFF
-                                : AppStyle.roboto12w400C000000,
-                          ),
-                          Gap(8.w),
-                          AppButton(
-                            text: AppStrings.radial.tr, // <-- Added .tr
-                            onPressed: () {
-                              setState(() {
-                                selectedRingtone = AppStrings.radial;
-                              });
-                            },
-                            width: 100.w,
-                            height: 29.h,
-                            borderRadius: 50.r,
-                            backgroundColor:
-                                selectedRingtone == AppStrings.radial
-                                    ? AppColors.primary
-                                    : const Color(0xffF2F2F2),
-                            textStyle: selectedRingtone == AppStrings.radial
-                                ? AppStyle.roboto12w500CFFFFFF
-                                : AppStyle.roboto12w400C000000,
-                          ),
-                          Gap(8.w),
-                          IconButton(
-                            padding: EdgeInsets.zero,
-                            icon: Icon(
-                              Icons.add,
-                              size: 25.r,
-                              color: Colors.black,
-                            ),
-                            onPressed: () {
-                              context.push(RoutePath
-                                  .ringtoneSelectionScreen.addBasePath);
-                            },
-                            style: IconButton.styleFrom(
-                              padding: EdgeInsets.zero,
-                              backgroundColor: const Color(0xffF2F2F2),
-                              shape: const OvalBorder(),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              // Container(
+              //   padding: EdgeInsets.all(10.w),
+              //   height: 120.w,
+              //   width: double.infinity,
+              //   decoration: BoxDecoration(
+              //     borderRadius: BorderRadius.circular(10.r),
+              //     color: Colors.white,
+              //     border: Border.all(
+              //       color: Colors.black.withOpacity(0.1),
+              //     ),
+              //   ),
+              //   child: Column(
+              //     children: [
+              //       Row(
+              //         children: [
+              //           SvgPicture.asset(Assets.icons.ringtone.path),
+              //           Gap(10.w),
+              //           Text(AppStrings.ringtone.tr, // <-- Added .tr
+              //               style: AppStyle.roboto14w400C000000),
+              //         ],
+              //       ),
+              //       Gap(8.h),
+              //       SingleChildScrollView(
+              //         scrollDirection: Axis.horizontal,
+              //         child: Row(
+              //           children: [
+              //             Gap(20.w),
+              //             AppButton(
+              //               text:
+              //                   AppStrings.defaultRingtone.tr, // <-- Added .tr
+              //               onPressed: () {
+              //                 setState(() {
+              //                   selectedRingtone = AppStrings.defaultRingtone;
+              //                 });
+              //               },
+              //               width: 120.w,
+              //               height: 29.h,
+              //               borderRadius: 50.r,
+              //               backgroundColor:
+              //                   selectedRingtone == AppStrings.defaultRingtone
+              //                       ? AppColors.primary
+              //                       : const Color(0xffF2F2F2),
+              //               textStyle:
+              //                   selectedRingtone == AppStrings.defaultRingtone
+              //                       ? AppStyle.roboto12w500CFFFFFF
+              //                       : AppStyle.roboto12w400C000000,
+              //             ),
+              //             Gap(8.w),
+              //             AppButton(
+              //               text: AppStrings.quad.tr, // <-- Added .tr
+              //               onPressed: () {
+              //                 setState(() {
+              //                   selectedRingtone = AppStrings.quad;
+              //                 });
+              //               },
+              //               width: 120.w,
+              //               height: 29.h,
+              //               borderRadius: 50.r,
+              //               backgroundColor: selectedRingtone == AppStrings.quad
+              //                   ? AppColors.primary
+              //                   : const Color(0xffF2F2F2),
+              //               textStyle: selectedRingtone == AppStrings.quad
+              //                   ? AppStyle.roboto12w500CFFFFFF
+              //                   : AppStyle.roboto12w400C000000,
+              //             ),
+              //             Gap(8.w),
+              //             AppButton(
+              //               text: AppStrings.radial.tr, // <-- Added .tr
+              //               onPressed: () {
+              //                 setState(() {
+              //                   selectedRingtone = AppStrings.radial;
+              //                 });
+              //               },
+              //               width: 100.w,
+              //               height: 29.h,
+              //               borderRadius: 50.r,
+              //               backgroundColor:
+              //                   selectedRingtone == AppStrings.radial
+              //                       ? AppColors.primary
+              //                       : const Color(0xffF2F2F2),
+              //               textStyle: selectedRingtone == AppStrings.radial
+              //                   ? AppStyle.roboto12w500CFFFFFF
+              //                   : AppStyle.roboto12w400C000000,
+              //             ),
+              //             Gap(8.w),
+              //             IconButton(
+              //               padding: EdgeInsets.zero,
+              //               icon: Icon(
+              //                 Icons.add,
+              //                 size: 25.r,
+              //                 color: Colors.black,
+              //               ),
+              //               onPressed: () {
+              //                 context.push(RoutePath
+              //                     .ringtoneSelectionScreen.addBasePath);
+              //               },
+              //               style: IconButton.styleFrom(
+              //                 padding: EdgeInsets.zero,
+              //                 backgroundColor: const Color(0xffF2F2F2),
+              //                 shape: const OvalBorder(),
+              //               ),
+              //             ),
+              //           ],
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
               Gap(40.h),
 
               // Buttons

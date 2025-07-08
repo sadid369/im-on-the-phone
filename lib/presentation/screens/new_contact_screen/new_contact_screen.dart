@@ -8,6 +8,7 @@ import 'package:groc_shopy/utils/static_strings/static_strings.dart';
 import 'dart:io';
 
 import '../../../global/model/contact.dart';
+
 import '../../widgets/custom_bottons/custom_button/app_button.dart';
 import '../../widgets/custom_text_form_field/custom_text_form.dart';
 import 'controller/contact_controller.dart';
@@ -52,19 +53,26 @@ class _NewContactScreenState extends State<NewContactScreen> {
     if (extra is Contact) {
       editContact = extra;
       contactController.loadContactForEditing(editContact!);
-    } else if (extra is Map<String, dynamic> && extra['prefill'] == true) {
-      // Handle prefill from default caller
-      contactController.firstNameController.text = extra['name'] ?? '';
-      contactController.messageController.text = extra['message'] ?? '';
+    } else if (extra is Map<String, dynamic>) {
+      if (extra['apiContact'] != null && extra['isApiContact'] == true) {
+        // Handle API contact editing
+        final apiContact =
+            extra['apiContact'] as Contact; // Now it's the same type
+        contactController.loadContactForEditing(apiContact);
+      } else if (extra['prefill'] == true) {
+        // Handle prefill from default caller
+        contactController.firstNameController.text = extra['name'] ?? '';
+        contactController.messageController.text = extra['message'] ?? '';
+      }
     }
   }
 
   void _onSave() {
     if (editContact != null) {
-      // Update existing contact
+      // Update existing local contact
       contactController.updateContact(context, editContact!);
     } else {
-      // Save new contact
+      // Save new contact (will be sent to API)
       contactController.saveContact(context);
     }
   }
@@ -140,16 +148,17 @@ class _NewContactScreenState extends State<NewContactScreen> {
                       ),
                       Expanded(
                         child: Center(
-                          child: Text(
-                            editContact != null
-                                ? AppStrings.editContact.tr
-                                : AppStrings.newContact.tr,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
+                          child: Obx(() => Text(
+                                contactController.isEditingApiContact.value ||
+                                        editContact != null
+                                    ? AppStrings.editContact.tr
+                                    : AppStrings.newContact.tr,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 18.sp,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              )),
                         ),
                       ),
                       Obx(() => TextButton(
@@ -167,7 +176,7 @@ class _NewContactScreenState extends State<NewContactScreen> {
                                     height: 16.h,
                                     child: CircularProgressIndicator(
                                       strokeWidth: 2,
-                                      color: Colors.black,
+                                      color: AppColors.primary,
                                     ),
                                   )
                                 : Text(
@@ -181,6 +190,34 @@ class _NewContactScreenState extends State<NewContactScreen> {
                   ),
                 ),
               ),
+
+              // Show API contact indicator
+              Obx(() => contactController.isEditingApiContact.value
+                  ? Container(
+                      margin: EdgeInsets.only(bottom: 16.h),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+                      decoration: BoxDecoration(
+                        color: Colors.blue.withOpacity(0.1),
+                        borderRadius: _borderRadius,
+                        border: Border.all(color: Colors.blue.withOpacity(0.3)),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(Icons.cloud, color: Colors.blue, size: 16.r),
+                          Gap(8.w),
+                          Text(
+                            'Editing server contact',
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              color: Colors.blue[700],
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  : SizedBox.shrink()),
 
               // Avatar + Add Photo
               Column(
@@ -325,13 +362,25 @@ class _NewContactScreenState extends State<NewContactScreen> {
 
               // Add Voice section
               Obx(() => _buildSectionTile(
-                    leading:
-                        Icon(Icons.add_circle, color: Colors.green, size: 24.r),
+                    leading: Icon(
+                      contactController.selectedVoiceFile.value != null
+                          ? Icons.audiotrack
+                          : Icons.add_circle,
+                      color: contactController.selectedVoiceFile.value != null
+                          ? Colors.green
+                          : Colors.grey,
+                      size: 24.r,
+                    ),
                     title: Text(
                       contactController.selectedVoiceFile.value != null
                           ? contactController.voiceFileName.value
                           : AppStrings.addVoice.tr,
-                      style: TextStyle(fontSize: 15.sp),
+                      style: TextStyle(
+                        fontSize: 15.sp,
+                        color: contactController.selectedVoiceFile.value != null
+                            ? Colors.black
+                            : Colors.grey[600],
+                      ),
                     ),
                     trailing: contactController.isPickingFile.value
                         ? SizedBox(
@@ -340,8 +389,13 @@ class _NewContactScreenState extends State<NewContactScreen> {
                             child: CircularProgressIndicator(strokeWidth: 2),
                           )
                         : Icon(
-                            Icons.graphic_eq,
-                            color: Colors.grey,
+                            contactController.selectedVoiceFile.value != null
+                                ? Icons.check_circle
+                                : Icons.graphic_eq,
+                            color: contactController.selectedVoiceFile.value !=
+                                    null
+                                ? Colors.green
+                                : Colors.grey,
                             size: 24.r,
                           ),
                     onTap: () => contactController.pickVoiceFile(context),
@@ -373,9 +427,11 @@ class _NewContactScreenState extends State<NewContactScreen> {
                                     fontSize: 14.sp,
                                     fontWeight: FontWeight.w500,
                                   ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                                 Text(
-                                  AppStrings.voiceFileSelected.tr,
+                                  'Voice file selected',
                                   style: TextStyle(
                                     fontSize: 12.sp,
                                     color: Colors.green.shade600,
@@ -402,8 +458,9 @@ class _NewContactScreenState extends State<NewContactScreen> {
               // Save button
               Obx(() => AppButton(
                     text: contactController.isSaving.value
-                        ? AppStrings.saving.tr
-                        : (editContact != null
+                        ? 'Saving...'
+                        : (contactController.isEditingApiContact.value ||
+                                editContact != null
                             ? AppStrings.updateContact.tr
                             : AppStrings.saveContact.tr),
                     onPressed:
@@ -413,7 +470,9 @@ class _NewContactScreenState extends State<NewContactScreen> {
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w600,
                     ),
-                    backgroundColor: AppColors.primary,
+                    backgroundColor: contactController.isSaving.value
+                        ? Colors.grey
+                        : AppColors.primary,
                     borderRadius: 12.r,
                     height: 50.h,
                   )),

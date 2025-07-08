@@ -36,7 +36,9 @@ Future<Map<String, String>> bearerHeaderInfo() async {
   return {
     HttpHeaders.acceptHeader: "application/json",
     HttpHeaders.contentTypeHeader: "application/json",
-    HttpHeaders.authorizationHeader: "Bearer $token",
+    // HttpHeaders.authorizationHeader: "Bearer $token",
+    HttpHeaders.authorizationHeader:
+        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUxOTYxMDY3LCJpYXQiOjE3NTE5Mjc3NjcsImp0aSI6IjhlZjQ4MDAwMDE1YTQyNDE5NTk2MjVkNTdmZmM1ZjYwIiwidXNlcl9pZCI6NX0.HAr4MtpCnVJmXfmey_xOTGawffJVebLGLyRTwPYj794",
   };
 }
 
@@ -55,9 +57,9 @@ class ApiClient {
       BuildContext? context}) async {
     /// ======================- Check Internet ===================
 
-    if (!await (connectionChecker.isConnected)) {
-      return Response(statusCode: 503, statusText: noInternetConnection);
-    }
+    // if (!await (connectionChecker.isConnected)) {
+    //   return Response(statusCode: 503, statusText: noInternetConnection);
+    // }
 
     if (showResult) {
       log.i(
@@ -141,9 +143,9 @@ class ApiClient {
     try {
       /// ======================- Check Internet ===================
 
-      if (!await (connectionChecker.isConnected)) {
-        return Response(statusCode: 503, statusText: noInternetConnection);
-      }
+      // if (!await (connectionChecker.isConnected)) {
+      //   return Response(statusCode: 503, statusText: noInternetConnection);
+      // }
 
       if (showResult) {
         log.i(
@@ -228,9 +230,9 @@ class ApiClient {
     try {
       /// ======================- Check Internet ===================
 
-      if (!await (connectionChecker.isConnected)) {
-        return Response(statusCode: 503, statusText: noInternetConnection);
-      }
+      // if (!await (connectionChecker.isConnected)) {
+      //   return Response(statusCode: 503, statusText: noInternetConnection);
+      // }
 
       if (showResult) {
         log.i(
@@ -395,9 +397,9 @@ class ApiClient {
     try {
       /// ======================- Check Internet ===================
 
-      if (!await (connectionChecker.isConnected)) {
-        return Response(statusCode: 503, statusText: noInternetConnection);
-      }
+      // if (!await (connectionChecker.isConnected)) {
+      //   return Response(statusCode: 503, statusText: noInternetConnection);
+      // }
       if (showResult) {
         log.i(
             '|📍📍📍|-----------------[[ MULTIPART $reqType]] method details start -----------------|📍📍📍|');

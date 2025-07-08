@@ -1,13 +1,13 @@
 class ApiUrl {
-  static const baseUrl = "http://10.0.70.145:8001"; // LOCAL
+  static const baseUrl = "http://10.10.7.84:8000"; // LOCAL
   static const imageBaseUrl = '$baseUrl/';
   static socketUrl({String userID = ""}) => '$baseUrl?id=$userID';
 
   /// ============================ Auth ==============================
 
+  static const getAllContact = "/api/core/contacts/";
   static const signUpClient = "/user/api/v1/register/";
   static const signUpWorker = "/worker/auth/register";
-
   static const activeClient = "/client/auth/activate-user";
   static const activeWorker = "/worker/auth/activate-user";
 

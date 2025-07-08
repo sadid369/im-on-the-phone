@@ -6,12 +6,12 @@ Future<void> initDependencies() async {
   // _initSplash();
   // _initLogin();
 
-  serviceLocator.registerFactory(() => InternetConnection());
+  // serviceLocator.registerFactory(() => InternetConnection());
 
-  /// core
-  serviceLocator.registerFactory<ConnectionChecker>(() => ConnectionCheckerImpl(
-        serviceLocator(),
-      ));
+  // /// core
+  // serviceLocator.registerFactory<ConnectionChecker>(() => ConnectionCheckerImpl(
+  //       serviceLocator(),
+  // ));
 
   /// ================= Api client ================
   serviceLocator.registerFactory<ApiClient>(

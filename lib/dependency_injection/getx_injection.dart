@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:groc_shopy/presentation/screens/home/controller/home_controller.dart';
+import 'package:groc_shopy/presentation/screens/new_contact_screen/controller/contact_controller.dart';
 
 import '../presentation/screens/auth/controller/auth_controller.dart';
 
@@ -12,6 +13,8 @@ void initGetx() {
   // Get.lazyPut(() => AuthController(), fenix: true);
 
   Get.lazyPut(() => HomeController(), fenix: true);
+  Get.lazyPut(() => ContactController(), fenix: true);
+  // Get.lazyPut(() => SearchController(), fenix: true);
 
   // Get.lazyPut(() => ScannedItemsController(), fenix: true);
 
