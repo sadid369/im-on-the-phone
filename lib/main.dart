@@ -31,25 +31,27 @@ class MyApp extends StatelessWidget {
     return ScreenUtilInit(
       designSize: const Size(393, 852),
       builder: (_, __) {
-        return Obx(() => GetMaterialApp.router(
-              debugShowCheckedModeBanner: false,
-              title: AppStrings.appName,
-              theme: ThemeData(
-                scaffoldBackgroundColor: AppColors.backgroundColor,
-                primaryColor: AppColors.primary,
-                primarySwatch: AppColors.primarySwatch, // Replace with your desired MaterialColor
-                useMaterial3: true,
-              ),
-              translations: Language(), // your translations class
-              locale: languageController.selectedLanguage.value == "Spanish"
-                  ? const Locale('es', 'ES')
-                  : const Locale('en', 'US'),
-              fallbackLocale: const Locale('en', 'US'),
-              routeInformationParser: AppRouter.route.routeInformationParser,
-              routerDelegate: AppRouter.route.routerDelegate,
-              routeInformationProvider:
-                  AppRouter.route.routeInformationProvider,
-            ));
+        return Obx(
+          () => GetMaterialApp.router(
+            debugShowCheckedModeBanner: false,
+            title: AppStrings.appName,
+            theme: ThemeData(
+              scaffoldBackgroundColor: AppColors.backgroundColor,
+              primaryColor: AppColors.primary,
+              primarySwatch: AppColors
+                  .primarySwatch, // Replace with your desired MaterialColor
+              useMaterial3: true,
+            ),
+            translations: Language(), // your translations class
+            locale: languageController.selectedLanguage.value == "Spanish"
+                ? const Locale('es', 'ES')
+                : const Locale('en', 'US'),
+            fallbackLocale: const Locale('en', 'US'),
+            routeInformationParser: AppRouter.route.routeInformationParser,
+            routerDelegate: AppRouter.route.routerDelegate,
+            routeInformationProvider: AppRouter.route.routeInformationProvider,
+          ),
+        );
       },
     );
   }

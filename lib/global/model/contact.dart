@@ -108,8 +108,7 @@ class Contact {
 
   String get initials {
     String first = firstName.isNotEmpty ? firstName[0].toUpperCase() : '';
-    String last = lastName.isNotEmpty ? lastName[0].toUpperCase() : '';
-    return '$first$last'.isNotEmpty ? '$first$last' : 'C';
+    return '$first'.isNotEmpty ? '$first' : 'C';
   }
 
   // Get the contact's unique identifier

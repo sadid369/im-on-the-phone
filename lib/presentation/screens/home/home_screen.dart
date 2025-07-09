@@ -13,6 +13,9 @@ import '../../../helper/local_db/local_db.dart';
 import '../../../utils/static_strings/static_strings.dart';
 import '../../widgets/custom_bottons/custom_button/app_button.dart';
 import '../../widgets/subscription_modal/subscription_modal.dart';
+import '../../../global/model/contact.dart';
+import '../../../service/contact_api_service.dart';
+import '../new_contact_screen/controller/contact_controller.dart';
 import 'controller/home_controller.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -22,7 +25,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String? selectedCallTime; // Store the key, e.g., AppStrings.fifteenSec
-  String? selectedCaller; // Store the key, e.g., AppStrings.mom
+  Contact? selectedCaller; // Changed to Contact type
   int? customMinutes;
   int? customSeconds;
   Timer? _countdownTimer;
@@ -30,12 +33,49 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _isCountdownActive = false;
   final HomeController homeController = Get.find<HomeController>();
 
+  // Add these variables for API contacts
+  List<Contact> apiContacts = [];
+  bool isLoadingContacts = false;
+
+  late final ContactController contactController;
+
   @override
   void initState() {
     super.initState();
+    _loadApiContacts(); // Load contacts from API
+
+    // Get the ContactController
+    contactController = Get.find<ContactController>();
+
+    // Listen for contact changes
+    ever(contactController.contactsChanged, (_) {
+      _loadApiContacts(); // Refresh when contacts change
+    });
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _showSubscriptionModal();
     });
+  }
+
+  // Add this method to load contacts from API
+  Future<void> _loadApiContacts() async {
+    setState(() {
+      isLoadingContacts = true;
+    });
+
+    try {
+      final contacts = await ContactApiService.getContacts(context);
+      setState(() {
+        apiContacts = contacts;
+        isLoadingContacts = false;
+      });
+    } catch (e) {
+      setState(() {
+        isLoadingContacts = false;
+      });
+      print('Error loading contacts: $e');
+      // You can show a snackbar or error message here
+    }
   }
 
   void _showSubscriptionModal() {
@@ -68,6 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // ...existing header code...
               InkWell(
                 onTap: () {
                   context.pushNamed(RoutePath.profile);
@@ -88,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           style: AppStyle.robotoMono10w500C030303,
                         ),
                         Text(
-                          'Angel Mthembu', // You may want to use a variable here
+                          'Angel Mthembu',
                           style: AppStyle.robotoMono12w500C030303,
                         ),
                       ],
@@ -97,7 +138,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               Gap(20.h),
-              // Banner
+
+              // ...existing banner code...
               Stack(
                 clipBehavior: Clip.none,
                 children: [
@@ -135,7 +177,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               Gap(20.h),
 
-              // Call time options
+              // Call time options (keep existing code)
               Text(
                 AppStrings.setUpFakeCall.tr,
                 style: AppStyle.kohSantepheap18w700C030303,
@@ -155,7 +197,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               Gap(20.h),
 
-              // Caller options
+              // Caller options - Updated to show API contacts
               Text(
                 AppStrings.caller.tr,
                 style: TextStyle(
@@ -165,20 +207,38 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               Gap(10.h),
-              Column(
-                children: [
-                  Gap(10.h),
-                  callerOption(AppStrings.mom),
-                  Gap(10.h),
-                  callerOption(AppStrings.love),
-                  Gap(10.h),
-                  callerOption(AppStrings.dad),
-                ],
+
+              // Show loading or contacts
+              Expanded(
+                child: isLoadingContacts
+                    ? Center(
+                        child: CircularProgressIndicator(
+                          color: AppColors.primary,
+                        ),
+                      )
+                    : apiContacts.isEmpty
+                        ? Center(
+                            child: Text(
+                              'No contacts available',
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          )
+                        : ListView.separated(
+                            itemCount: apiContacts.length,
+                            separatorBuilder: (context, index) => Gap(10.h),
+                            itemBuilder: (context, index) {
+                              return callerOptionFromContact(
+                                  apiContacts[index]);
+                            },
+                          ),
               ),
 
-              const Spacer(),
+              Gap(20.h),
 
-              // Start call button
+              // Start call button (update validation)
               AppButton(
                 text: AppStrings.startCall.tr,
                 onPressed: () {
@@ -593,96 +653,39 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     return GestureDetector(
-      onTap: () {
-        if (timeKey == AppStrings.custom) {
-          _showCustomTimePicker();
-        } else {
-          setState(() {
-            selectedCallTime = timeKey;
-          });
-          // Do NOT start the call here!
-        }
-      },
-      child: Container(
-        alignment: Alignment.center,
-        width: 79.w,
-        height: 35.h,
-        decoration: BoxDecoration(
-          color: selectedCallTime == timeKey
-              ? AppColors.primary
-              : const Color(0xffF2F2F2),
-          borderRadius: BorderRadius.circular(20.r),
-        ),
-        child: Text(
-          displayText,
-          style: selectedCallTime == timeKey
-              ? AppStyle.roboto16w600CFFFFFF
-              : AppStyle.roboto16w500C030303,
-        ),
-      ),
-    );
-  }
-
-  Widget callerOption(String callerKey) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          selectedCaller = callerKey;
-        });
-        // Do NOT start the call here!
-      },
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
-        decoration: BoxDecoration(
-          color: selectedCaller == callerKey ? AppColors.primary : Colors.white,
-          border: Border.all(color: Colors.black.withOpacity(0.1)),
-          borderRadius: BorderRadius.circular(10.r),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                Gap(16.w),
-                Obx(() => Container(
-                      alignment: Alignment.center,
-                      width: 48.w,
-                      height: 48.h,
-                      decoration: BoxDecoration(
-                        color: homeController.selectedIconColor.value,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Text(
-                        callerKey.tr[0],
-                        style: AppStyle.roboto32w600CFFFFFF,
-                      ),
-                    )),
-                Gap(16.w),
-                Text(
-                  callerKey.tr,
-                  style: selectedCaller == callerKey
-                      ? AppStyle.roboto16w800CFFFFFF
-                      : AppStyle.roboto16w500C000000,
-                ),
-              ],
-            ),
-            Icon(
-              Icons.arrow_forward_ios,
-              color: selectedCaller == callerKey
-                  ? AppColors.whiteFFFFFF
-                  : Colors.black,
-              size: 16.r,
-            ),
-          ],
-        ),
-      ),
-    );
+        onTap: () {
+          if (timeKey == AppStrings.custom) {
+            _showCustomTimePicker();
+          } else {
+            setState(() {
+              selectedCallTime = timeKey;
+            });
+            // Do NOT start the call here!
+          }
+        },
+        child: Container(
+          alignment: Alignment.center,
+          width: 79.w,
+          height: 35.h,
+          decoration: BoxDecoration(
+            color: selectedCallTime == timeKey
+                ? AppColors.primary
+                : const Color(0xffF2F2F2),
+            borderRadius: BorderRadius.circular(20.r),
+          ),
+          child: Text(
+            displayText,
+            style: selectedCallTime == timeKey
+                ? AppStyle.roboto16w600CFFFFFF
+                : AppStyle.roboto16w500C030303,
+          ),
+        ));
   }
 
   // New helper for immediate call
   void _startImmediateCall() {
     context.pushNamed(RoutePath.incomingCallScreen, extra: {
-      'callerName': selectedCaller!,
+      'callerName': selectedCaller!.fullName,
       'time': _getFormattedTime(),
       'callDuration': '0',
     });
@@ -714,12 +717,87 @@ class _HomeScreenState extends State<HomeScreen> {
     Timer(Duration(seconds: delaySeconds), () {
       if (mounted) {
         context.pushNamed(RoutePath.incomingCallScreen, extra: {
-          'callerName': selectedCaller!,
+          'callerName': selectedCaller!.fullName,
           'time': _getFormattedTime(),
           'callDuration': selectedCallTime!,
         });
       }
     });
+  }
+
+  // New method to create caller option from Contact
+  Widget callerOptionFromContact(Contact contact) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          selectedCaller = contact; // This works correctly now
+        });
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
+        decoration: BoxDecoration(
+          color: selectedCaller?.apiId == contact.apiId
+              ? AppColors.primary
+              : Colors.white,
+          border: Border.all(color: Colors.black.withOpacity(0.1)),
+          borderRadius: BorderRadius.circular(10.r),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                Gap(16.w),
+                Obx(
+                  () => CircleAvatar(
+                    radius: 24.r,
+                    backgroundColor: homeController.selectedIconColor.value,
+                    backgroundImage: contact.photo != null
+                        ? NetworkImage(contact.photo!)
+                        : null,
+                    child: contact.photo == null
+                        ? Text(
+                            contact.initials,
+                            style: AppStyle.roboto32w600CFFFFFF,
+                          )
+                        : null,
+                  ),
+                ),
+                Gap(16.w),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      contact.fullName,
+                      style: selectedCaller?.apiId == contact.apiId
+                          ? AppStyle.roboto16w800CFFFFFF
+                          : AppStyle.roboto16w500C000000,
+                    ),
+                    // if (contact.phoneNumber.isNotEmpty)
+                    //   Text(
+                    //     contact.phoneNumber,
+                    //     style: TextStyle(
+                    //       fontSize: 12.sp,
+                    //       color: selectedCaller?.apiId == contact.apiId
+                    //           ? Colors.white70
+                    //           : Colors.grey,
+                    //     ),
+                    //   ),
+                  ],
+                ),
+              ],
+            ),
+            Icon(
+              Icons.arrow_forward_ios,
+              color: selectedCaller?.apiId == contact.apiId
+                  ? AppColors.whiteFFFFFF
+                  : Colors.black,
+              size: 16.r,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 

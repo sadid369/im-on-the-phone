@@ -11,7 +11,8 @@ import 'package:groc_shopy/helper/extension/base_extension.dart';
 import '../../../core/routes/route_path.dart';
 import '../../../global/model/contact.dart';
 // Remove this line: import '../../../global/model/api_contact.dart';
-import '../../../services/contact_api_service.dart';
+import '../../../service/contact_api_service.dart';
+
 import '../../../utils/app_colors/app_colors.dart';
 import '../../../utils/static_strings/static_strings.dart';
 
@@ -69,24 +70,32 @@ class _SearchScreenState extends State<SearchScreen> {
       final contacts = await ContactApiService.getContacts(context);
       apiContacts.value = contacts;
 
-      // Convert API contacts to default caller format
-      activeDefaultCallers.value =
-          contacts.map((contact) => contact.toDefaultCallerFormat()).toList();
+      // Convert API contacts to default caller format with proper references
+      activeDefaultCallers.value = contacts.map((contact) {
+        final callerData = contact.toDefaultCallerFormat();
+        callerData['apiContact'] =
+            contact; // Store the original contact reference
+        return callerData;
+      }).toList();
 
       _initializeCallers();
 
-      _showAwesomeSnackbar(
-        title: AppStrings.success.tr,
-        message: 'Loaded ${contacts.length} contacts from server',
-        contentType: ContentType.success,
-      );
+      if (mounted) {
+        _showAwesomeSnackbar(
+          title: AppStrings.success.tr,
+          message: 'Loaded ${contacts.length} contacts from server',
+          contentType: ContentType.success,
+        );
+      }
     } catch (e) {
       print('Error loading contacts: $e');
-      _showAwesomeSnackbar(
-        title: AppStrings.error.tr,
-        message: 'Failed to load contacts: $e',
-        contentType: ContentType.failure,
-      );
+      if (mounted) {
+        _showAwesomeSnackbar(
+          title: AppStrings.error.tr,
+          message: 'Failed to load contacts: $e',
+          contentType: ContentType.failure,
+        );
+      }
 
       // Fallback to empty list
       activeDefaultCallers.value = [];
@@ -97,7 +106,6 @@ class _SearchScreenState extends State<SearchScreen> {
 
   void _editDefaultCaller(Map<String, dynamic> caller) async {
     try {
-      // Change ApiContact to Contact
       final apiContact = caller['apiContact'] as Contact?;
       if (apiContact != null) {
         final result = await context.push(
@@ -110,6 +118,10 @@ class _SearchScreenState extends State<SearchScreen> {
 
         if (result == true) {
           _loadApiContacts();
+
+          // Notify other screens that contacts have changed
+          Get.find<ContactController>().notifyContactsChanged();
+
           _showAwesomeSnackbar(
             title: AppStrings.success.tr,
             message: 'Contact updated successfully',
@@ -157,10 +169,16 @@ class _SearchScreenState extends State<SearchScreen> {
           final success = await ContactApiService.deleteContact(
               apiContact.apiId ?? 0, context);
           if (success) {
-            activeDefaultCallers
-                .removeWhere((item) => item['id'] == caller['id']);
+            // Remove from all lists using the correct identifier
             apiContacts.removeWhere((item) => item.apiId == apiContact.apiId);
+            activeDefaultCallers.removeWhere((item) =>
+                (item['apiContact'] as Contact?)?.apiId == apiContact.apiId);
+
+            // Force refresh the filtered list
             _initializeCallers();
+
+            // Force UI update
+            setState(() {});
 
             _showAwesomeSnackbar(
               title: AppStrings.success.tr,
@@ -168,11 +186,12 @@ class _SearchScreenState extends State<SearchScreen> {
               contentType: ContentType.success,
             );
           } else {
-            throw Exception('Failed to delete contact');
+            throw Exception('Failed to delete contact from server');
           }
         }
       }
     } catch (e) {
+      print('Delete error: $e'); // Add this for debugging
       _showAwesomeSnackbar(
         title: AppStrings.error.tr,
         message: 'Failed to delete contact: $e',
@@ -184,16 +203,22 @@ class _SearchScreenState extends State<SearchScreen> {
   void _makeDefaultCall(Map<String, dynamic> caller) {
     try {
       final name = caller['name'] ?? 'Unknown';
-      final message = caller['message'] ?? '';
 
-      // Navigate to calling screen or perform call action
-      print('Making call to: $name with message: $message');
-
-      _showAwesomeSnackbar(
-        title: 'Calling...',
-        message: 'Calling $name',
-        contentType: ContentType.success,
+      // Navigate to incoming call screen
+      context.pushNamed(
+        RoutePath.incomingCallScreen,
+        extra: {
+          'callerName': name,
+          'time': 'Now',
+          'callDuration': '15 sec',
+        },
       );
+
+      // _showAwesomeSnackbar(
+      //   title: 'Calling...',
+      //   message: 'Calling $name',
+      //   contentType: ContentType.success,
+      // );
     } catch (e) {
       _showAwesomeSnackbar(
         title: AppStrings.error.tr,
@@ -207,14 +232,21 @@ class _SearchScreenState extends State<SearchScreen> {
     try {
       final name = contact.fullName;
 
-      // Navigate to calling screen or perform call action
-      print('Making call to: $name');
-
-      _showAwesomeSnackbar(
-        title: 'Calling...',
-        message: 'Calling $name',
-        contentType: ContentType.success,
+      // Navigate to incoming call screen
+      context.pushNamed(
+        RoutePath.incomingCallScreen,
+        extra: {
+          'callerName': name,
+          'time': 'Now',
+          'callDuration': '15 sec',
+        },
       );
+
+      // _showAwesomeSnackbar(
+      //   title: 'Calling...',
+      //   message: 'Calling $name',
+      //   contentType: ContentType.success,
+      // );
     } catch (e) {
       _showAwesomeSnackbar(
         title: AppStrings.error.tr,
@@ -330,18 +362,18 @@ class _SearchScreenState extends State<SearchScreen> {
       elevation: 0,
       child: ListTile(
         tileColor: AppColors.backgroundColor,
-        leading: CircleAvatar(
-          radius: 30.r,
-          backgroundColor: caller['color'] ?? Colors.blue[200],
-          child: Text(
-            caller['initials'] ?? 'C',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16.sp,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
+        leading: Obx(() => CircleAvatar(
+              radius: 30.r,
+              backgroundColor: homeController.selectedIconColor.value,
+              child: Text(
+                caller['initials'] ?? 'C',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            )),
         title: Text(
           caller['name'] ?? 'Unknown',
           style: TextStyle(
@@ -402,16 +434,6 @@ class _SearchScreenState extends State<SearchScreen> {
                     ],
                   ),
                 ),
-                PopupMenuItem<String>(
-                  value: 'create_contact',
-                  child: Row(
-                    children: [
-                      Icon(Icons.person_add, size: 16.r),
-                      Gap(8.w),
-                      Text('Create Local Contact'),
-                    ],
-                  ),
-                ),
               ],
             ),
           ],
@@ -432,24 +454,24 @@ class _SearchScreenState extends State<SearchScreen> {
       elevation: 0,
       child: ListTile(
         tileColor: AppColors.backgroundColor,
-        leading: CircleAvatar(
-          radius: 30.r,
-          backgroundColor: Colors.teal[200],
-          backgroundImage:
-              contact.profileImageSource != null && !contact.isApiContact
-                  ? FileImage(File(contact.profileImageSource!))
+        leading: Obx(() => CircleAvatar(
+              radius: 30.r,
+              backgroundColor: homeController.selectedIconColor.value,
+              backgroundImage:
+                  contact.profileImageSource != null && !contact.isApiContact
+                      ? FileImage(File(contact.profileImageSource!))
+                      : null,
+              child: contact.profileImageSource == null
+                  ? Text(
+                      contact.initials,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
                   : null,
-          child: contact.profileImageSource == null
-              ? Text(
-                  contact.initials,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
-                )
-              : null,
-        ),
+            )),
         title: Text(
           contact.fullName,
           style: TextStyle(
@@ -538,6 +560,13 @@ class _SearchScreenState extends State<SearchScreen> {
       );
 
       if (result == true) {
+        if (contact.isApiContact) {
+          _loadApiContacts(); // Refresh if it was an API contact
+
+          // Notify other screens that contacts have changed
+          Get.find<ContactController>().notifyContactsChanged();
+        }
+
         _showAwesomeSnackbar(
           title: AppStrings.success.tr,
           message: 'Contact updated successfully',
@@ -578,28 +607,40 @@ class _SearchScreenState extends State<SearchScreen> {
       );
 
       if (confirmed == true) {
+        bool success = false;
+
         if (contact.isApiContact) {
           // Delete API contact
-          final success = await ContactApiService.deleteContact(
+          success = await ContactApiService.deleteContact(
               contact.apiId ?? 0, context);
           if (success) {
+            // Remove from API lists
             apiContacts.removeWhere((item) => item.apiId == contact.apiId);
-            activeDefaultCallers
-                .removeWhere((item) => item['id'] == contact.uniqueId);
+            activeDefaultCallers.removeWhere((item) =>
+                (item['apiContact'] as Contact?)?.apiId == contact.apiId);
           }
         } else {
           // Delete local contact
           contactController.contacts
               .removeWhere((item) => item.uniqueId == contact.uniqueId);
+          success = true;
         }
 
-        _initializeCallers();
+        if (success) {
+          // Force refresh the filtered list
+          _initializeCallers();
 
-        _showAwesomeSnackbar(
-          title: AppStrings.success.tr,
-          message: 'Contact deleted successfully',
-          contentType: ContentType.success,
-        );
+          // Force UI update
+          setState(() {});
+
+          _showAwesomeSnackbar(
+            title: AppStrings.success.tr,
+            message: 'Contact deleted successfully',
+            contentType: ContentType.success,
+          );
+        } else {
+          throw Exception('Failed to delete contact');
+        }
       }
     } catch (e) {
       _showAwesomeSnackbar(
@@ -653,7 +694,12 @@ class _SearchScreenState extends State<SearchScreen> {
                             final result = await context
                                 .push(RoutePath.newContactScreen.addBasePath);
                             if (result == true) {
-                              _loadApiContacts(); // Refresh API contacts
+                              _loadApiContacts(); // Refresh API contacts in search screen
+
+                              // Notify other screens that contacts have changed
+                              Get.find<ContactController>()
+                                  .notifyContactsChanged();
+
                               _showAwesomeSnackbar(
                                 title: AppStrings.success.tr,
                                 message: AppStrings.contactAddedSuccessfully.tr,

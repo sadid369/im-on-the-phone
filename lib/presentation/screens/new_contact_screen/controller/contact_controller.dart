@@ -5,7 +5,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import '../../../../global/model/contact.dart';
-import '../../../../services/contact_api_service.dart';
+import '../../../../service/contact_api_service.dart';
+
 import '../../../../utils/static_strings/static_strings.dart';
 
 class ContactController extends GetxController {
@@ -36,6 +37,9 @@ class ContactController extends GetxController {
   // Image picker instance
   final ImagePicker _imagePicker = ImagePicker();
 
+  // Add this observable to notify when contacts change
+  var contactsChanged = false.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -56,10 +60,19 @@ class ContactController extends GetxController {
     selectedContact.value = contact;
     isEditingApiContact.value = contact.isApiContact;
 
-    firstNameController.text = contact.firstName;
-    lastNameController.text = contact.lastName;
-    phoneController.text = contact.phoneNumber;
-    messageController.text = contact.message;
+    // Only update controllers if they're empty or different
+    if (firstNameController.text != contact.firstName) {
+      firstNameController.text = contact.firstName;
+    }
+    if (lastNameController.text != contact.lastName) {
+      lastNameController.text = contact.lastName;
+    }
+    if (phoneController.text != contact.phoneNumber) {
+      phoneController.text = contact.phoneNumber;
+    }
+    if (messageController.text != contact.message) {
+      messageController.text = contact.message;
+    }
 
     // Handle image
     if (contact.isApiContact) {
@@ -90,6 +103,12 @@ class ContactController extends GetxController {
   @Deprecated('Use loadContactForEditing instead')
   void loadApiContactForEditing(Contact contact) {
     loadContactForEditing(contact);
+  }
+
+  // Add this method to notify about contact changes
+  void notifyContactsChanged() {
+    contactsChanged.value =
+        !contactsChanged.value; // Toggle to trigger reactivity
   }
 
   // Save contact (API or local)
@@ -123,6 +142,9 @@ class ContactController extends GetxController {
           context: context,
         );
 
+        // Notify that contacts have changed
+        notifyContactsChanged();
+
         _showAwesomeSnackbar(
           context,
           title: AppStrings.success.tr,
@@ -132,15 +154,17 @@ class ContactController extends GetxController {
       } else {
         // Create new contact via API
         final newContact = await ContactApiService.createContact(
-          name:
-              '${firstNameController.text.trim()} ${lastNameController.text.trim()}'
-                  .trim(),
+          firstName: firstNameController.text.trim(),
+          lastName: lastNameController.text.trim(),
           phoneNumber: phoneController.text.trim(),
           message: messageController.text.trim(),
           voiceFile: selectedVoiceFile.value,
           photoFile: profileImage.value,
           context: context,
         );
+
+        // Notify that contacts have changed
+        notifyContactsChanged();
 
         _showAwesomeSnackbar(
           context,
@@ -196,6 +220,9 @@ class ContactController extends GetxController {
           photoFile: profileImage.value,
           context: context,
         );
+
+        // Notify that contacts have changed
+        notifyContactsChanged();
 
         _showAwesomeSnackbar(
           context,
@@ -488,5 +515,11 @@ class ContactController extends GetxController {
         ],
       ),
     );
+  }
+
+  // Add this method to preserve form state
+  void preserveFormState() {
+    // This method helps maintain form state during rebuilds
+    // The actual preservation is handled by not clearing the controllers
   }
 }

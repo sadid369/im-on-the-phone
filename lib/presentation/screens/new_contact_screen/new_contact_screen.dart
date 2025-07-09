@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:groc_shopy/utils/app_colors/app_colors.dart';
 import 'package:groc_shopy/utils/static_strings/static_strings.dart';
-import 'dart:io';
 
 import '../../../global/model/contact.dart';
 
@@ -25,6 +24,7 @@ class NewContactScreen extends StatefulWidget {
 class _NewContactScreenState extends State<NewContactScreen> {
   late final ContactController contactController;
   Contact? editContact;
+  bool _hasLoadedContact = false; // Add this flag
 
   // Consistent border style for all text fields
   final _borderRadius = BorderRadius.circular(12.r);
@@ -40,6 +40,7 @@ class _NewContactScreenState extends State<NewContactScreen> {
     // If editing, load contact data
     if (widget.editContact != null) {
       contactController.loadContactForEditing(widget.editContact!);
+      _hasLoadedContact = true; // Set flag to true
     }
   }
 
@@ -47,22 +48,27 @@ class _NewContactScreenState extends State<NewContactScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    // Get the extra parameter from GoRouter
-    final extra = GoRouterState.of(context).extra;
+    // Only load contact data if not already loaded
+    if (!_hasLoadedContact) {
+      // Get the extra parameter from GoRouter
+      final extra = GoRouterState.of(context).extra;
 
-    if (extra is Contact) {
-      editContact = extra;
-      contactController.loadContactForEditing(editContact!);
-    } else if (extra is Map<String, dynamic>) {
-      if (extra['apiContact'] != null && extra['isApiContact'] == true) {
-        // Handle API contact editing
-        final apiContact =
-            extra['apiContact'] as Contact; // Now it's the same type
-        contactController.loadContactForEditing(apiContact);
-      } else if (extra['prefill'] == true) {
-        // Handle prefill from default caller
-        contactController.firstNameController.text = extra['name'] ?? '';
-        contactController.messageController.text = extra['message'] ?? '';
+      if (extra is Contact) {
+        editContact = extra;
+        contactController.loadContactForEditing(editContact!);
+        _hasLoadedContact = true; // Set flag to true
+      } else if (extra is Map<String, dynamic>) {
+        if (extra['apiContact'] != null && extra['isApiContact'] == true) {
+          // Handle API contact editing
+          final apiContact = extra['apiContact'] as Contact;
+          contactController.loadContactForEditing(apiContact);
+          _hasLoadedContact = true; // Set flag to true
+        } else if (extra['prefill'] == true) {
+          // Handle prefill from default caller
+          contactController.firstNameController.text = extra['name'] ?? '';
+          contactController.messageController.text = extra['message'] ?? '';
+          _hasLoadedContact = true; // Set flag to true
+        }
       }
     }
   }

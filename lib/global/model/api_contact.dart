@@ -56,7 +56,8 @@ class ApiContact {
   // For create API (different field name)
   Map<String, String> toCreateFormData() {
     return {
-      if (fullName.isNotEmpty) 'name': fullName, // API expects 'name' for create
+      if (fullName.isNotEmpty)
+        'name': fullName, // API expects 'name' for create
       if (phoneNumber.isNotEmpty) 'phone_number': phoneNumber,
       if (message.isNotEmpty) 'message': message,
       if (ringtone != null) 'ringtone': ringtone!,
@@ -85,8 +86,7 @@ class ApiContact {
 
   String get initials {
     String first = firstName.isNotEmpty ? firstName[0].toUpperCase() : '';
-    String last = lastName.isNotEmpty ? lastName[0].toUpperCase() : '';
-    return '$first$last'.isNotEmpty ? '$first$last' : 'C';
+    return '$first'.isNotEmpty ? '$first' : 'C';
   }
 
   // Convert to the format used in defaultCallers
