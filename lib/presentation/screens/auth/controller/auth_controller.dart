@@ -2,10 +2,14 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:groc_shopy/service/api_url.dart';
 import '../../../../core/routes/route_path.dart';
 import '../../../../helper/extension/base_extension.dart';
 import '../../../../utils/static_strings/static_strings.dart';
 import 'package:http/http.dart' as http;
+import '../../../../service/api_service.dart';
+import '../../../../helper/local_db/local_db.dart';
+import '../../../../utils/app_const/app_const.dart';
 
 class AuthController extends GetxController {
   // Observable variables
@@ -15,10 +19,11 @@ class AuthController extends GetxController {
   var isResetButtonEnabled = false.obs;
 
   // Text controllers for signup
-  final fullNameController = TextEditingController();
-  final emailController = TextEditingController(text: 'user');
-  final passwordController = TextEditingController();
-  final confirmPasswordController = TextEditingController();
+  final fullNameController = TextEditingController(text: 'Abdullah Muhtasim');
+  final emailController =
+      TextEditingController(text: 'abdullah.muhtasim@gmail.com');
+  final passwordController = TextEditingController(text: '123456Er');
+  final confirmPasswordController = TextEditingController(text: '123456Er');
 
   // Text controller for forgot password
   final forgotPasswordEmailController = TextEditingController();
@@ -26,6 +31,8 @@ class AuthController extends GetxController {
   // Form keys for validation
   final formKey = GlobalKey<FormState>();
   final forgotPasswordFormKey = GlobalKey<FormState>();
+
+  String? lastRegisteredEmail; // To store email for OTP verification
 
   @override
   void onInit() {
@@ -141,21 +148,41 @@ class AuthController extends GetxController {
     isLoading.value = true;
 
     try {
-      // Simulate API call
-      await Future.delayed(const Duration(seconds: 2));
-
-      // Simulate success
-      _showAwesomeSnackbar(
-        context,
-        title: AppStrings.success.tr,
-        message: AppStrings.accountCreatedSuccessfully.tr,
-        contentType: ContentType.success,
+      final apiClient = ApiClient();
+      final response = await apiClient.post(
+        url: ApiUrl.register.addBaseUrl,
+        isBasic: true,
+        body: {
+          "email": emailController.text.trim(),
+          "name": fullNameController.text.trim(),
+          "password": passwordController.text,
+          "password2": confirmPasswordController.text,
+        },
+        context: context,
       );
 
-      // Navigate to login or dashboard
-      Future.delayed(const Duration(seconds: 1), () {
-        context.go(RoutePath.login.addBasePath);
-      });
+      if (response.statusCode == 201) {
+        lastRegisteredEmail = emailController.text.trim();
+        _showAwesomeSnackbar(
+          context,
+          title: AppStrings.success.tr,
+          message: "Registration Successful. Please check your email for OTP.",
+          contentType: ContentType.success,
+        );
+        // Navigate to OTP verification screen
+        Future.delayed(const Duration(seconds: 1), () {
+          context.go(RoutePath.verification.addBasePath, extra: {
+            "email": lastRegisteredEmail,
+          });
+        });
+      } else {
+        _showAwesomeSnackbar(
+          context,
+          title: AppStrings.error.tr,
+          message: response.body['msg']?.toString() ?? "Registration failed",
+          contentType: ContentType.failure,
+        );
+      }
     } catch (e) {
       _showAwesomeSnackbar(
         context,
@@ -168,11 +195,60 @@ class AuthController extends GetxController {
     }
   }
 
+  // OTP Verification method
+  Future<void> verifyOtp(BuildContext context, String otp,
+      {String? email}) async {
+    if (isLoading.value) return;
+    isLoading.value = true;
+
+    try {
+      final apiClient = ApiClient();
+      final response = await apiClient.post(
+        url: ApiUrl.verifyOtp.addBaseUrl,
+        isBasic: true,
+        body: {
+          "email": email ?? lastRegisteredEmail,
+          "otp": otp,
+        },
+        context: context,
+      );
+
+      if (response.statusCode == 200) {
+        _showAwesomeSnackbar(
+          context,
+          title: AppStrings.success.tr,
+          message: "Account verified successfully!",
+          contentType: ContentType.success,
+        );
+        Future.delayed(const Duration(seconds: 1), () {
+          context.go(RoutePath.login.addBasePath);
+        });
+      } else {
+        _showAwesomeSnackbar(
+          context,
+          title: AppStrings.error.tr,
+          message:
+              response.body['msg']?.toString() ?? "OTP verification failed",
+          contentType: ContentType.failure,
+        );
+      }
+    } catch (e) {
+      _showAwesomeSnackbar(
+        context,
+        title: AppStrings.error.tr,
+        message: "OTP verification failed",
+        contentType: ContentType.failure,
+      );
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
   // Login method
-  void login(BuildContext context) {
+  void login(BuildContext context) async {
     if (isLoading.value) return;
 
-    String email = emailController.text.trim().toLowerCase();
+    String email = emailController.text.trim();
     String password = passwordController.text.trim();
 
     // Basic validation
@@ -185,38 +261,67 @@ class AuthController extends GetxController {
       );
       return;
     }
+    if (password.isEmpty) {
+      _showAwesomeSnackbar(
+        context,
+        title: AppStrings.warning.tr,
+        message: AppStrings.passwordRequired.tr,
+        contentType: ContentType.warning,
+      );
+      return;
+    }
 
     isLoading.value = true;
 
-    // Simulate login process
-    Future.delayed(const Duration(milliseconds: 500), () {
-      isLoading.value = false;
+    try {
+      final apiClient = ApiClient();
+      final response = await apiClient.post(
+        url: ApiUrl.login.addBaseUrl,
+        isBasic: true,
+        body: {
+          "email": email,
+          "password": password,
+        },
+        context: context,
+      );
 
-      if (email == 'admin') {
+      if (response.statusCode == 200) {
+        // Save tokens to localdb
+        final token = response.body['token'];
+        if (token != null) {
+          await SharedPrefsHelper.setString(
+              AppConstants.token, token['access'] ?? "");
+          await SharedPrefsHelper.setString(
+              AppConstants.refreshToken, token['refresh'] ?? "");
+        }
+
         _showAwesomeSnackbar(
           context,
-          title: AppStrings.welcome_title.tr,
-          message: AppStrings.adminLoginSuccessful.tr,
+          title: AppStrings.success.tr,
+          message: response.body['msg']?.toString() ?? "Login Success",
           contentType: ContentType.success,
         );
-        context.go(RoutePath.adminDashboard.addBasePath);
-      } else if (email == 'user') {
-        _showAwesomeSnackbar(
-          context,
-          title: AppStrings.welcome_title.tr,
-          message: AppStrings.userLoginSuccessful.tr,
-          contentType: ContentType.success,
-        );
-        context.go(RoutePath.home.addBasePath);
+        Future.delayed(const Duration(seconds: 1), () {
+          context.go(RoutePath.home.addBasePath);
+        });
       } else {
         _showAwesomeSnackbar(
           context,
           title: AppStrings.invalidCredentials.tr,
-          message: AppStrings.enterAdminOrUser.tr,
+          message: response.body['msg']?.toString() ?? "Invalid credentials",
           contentType: ContentType.failure,
         );
       }
-    });
+    } catch (e) {
+      _showAwesomeSnackbar(
+        context,
+        title: AppStrings.error.tr,
+        message: "Login failed",
+        contentType: ContentType.failure,
+      );
+    } finally {
+      isLoading.value = false;
+    }
   }
 
   // Forgot Password method

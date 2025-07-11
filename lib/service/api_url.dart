@@ -10,6 +10,9 @@ class ApiUrl {
   static const signUpWorker = "/worker/auth/register";
   static const activeClient = "/client/auth/activate-user";
   static const activeWorker = "/worker/auth/activate-user";
+  static const login = "/api/user/login/";
+  static const register = "/api/user/register/";
+  static const verifyOtp = "/api/user/verify-otp/";
 
   static const resendOTpWorker = "/worker/auth/resend-activation-code";
   static const resendOTpClient = "/client/auth/resend-activation-code";

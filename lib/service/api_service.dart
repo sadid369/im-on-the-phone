@@ -36,9 +36,9 @@ Future<Map<String, String>> bearerHeaderInfo() async {
   return {
     HttpHeaders.acceptHeader: "application/json",
     HttpHeaders.contentTypeHeader: "application/json",
-    // HttpHeaders.authorizationHeader: "Bearer $token",
-    HttpHeaders.authorizationHeader:
-        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUyMzI2MTc1LCJpYXQiOjE3NTE5OTI4NzUsImp0aSI6IjBhOTQxNjE3Yjc4ZjQ2OTJiZjZkOTE5Y2Q4MjQzMzAxIiwidXNlcl9pZCI6NX0.y7DQYlvkE20MOsc2fGOxNM-h6TrntIFBQYBu-6zHpK0",
+    HttpHeaders.authorizationHeader: "Bearer $token",
+    // HttpHeaders.authorizationHeader:
+    //     "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUyMzI2MTc1LCJpYXQiOjE3NTE5OTI4NzUsImp0aSI6IjBhOTQxNjE3Yjc4ZjQ2OTJiZjZkOTE5Y2Q4MjQzMzAxIiwidXNlcl9pZCI6NX0.y7DQYlvkE20MOsc2fGOxNM-h6TrntIFBQYBu-6zHpK0",
   };
 }
 

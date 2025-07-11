@@ -11,6 +11,7 @@ class AppConstants {
   static var userRole = "userRole";
 
   static var token = "token";
+  static const String refreshToken = "refreshToken";
   static const String language = 'isEnglish';
 
   static String onlineImage =
