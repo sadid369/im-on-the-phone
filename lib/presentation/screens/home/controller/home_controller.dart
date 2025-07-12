@@ -1,12 +1,16 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import '../../../../helper/local_db/local_db.dart';
+import '../../../../global/model/user_profile.dart';
+import '../../../../service/user_profile_service.dart';
 
 class HomeController extends GetxController {
   static const String iconColorKey = 'selected_icon_color';
   static const Color defaultColor = Color(0xffC9867B);
 
   Rx<Color> selectedIconColor = defaultColor.obs;
+  Rx<UserProfile?> userProfile = Rx<UserProfile?>(null);
+  RxBool isLoadingProfile = false.obs;
 
   @override
   void onInit() {
@@ -36,6 +40,18 @@ class HomeController extends GetxController {
       }
     } else {
       selectedIconColor.value = defaultColor;
+    }
+  }
+
+  Future<void> loadUserProfile(BuildContext context) async {
+    isLoadingProfile.value = true;
+    try {
+      final profile = await UserProfileService.getUserProfile(context);
+      userProfile.value = profile;
+    } catch (e) {
+      print('Error loading user profile: $e');
+    } finally {
+      isLoadingProfile.value = false;
     }
   }
 }

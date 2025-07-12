@@ -44,6 +44,9 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     _loadApiContacts(); // Load contacts from API
 
+    // Load user profile
+    homeController.loadUserProfile(context);
+
     // Get the ContactController
     contactController = Get.find<ContactController>();
 
@@ -108,35 +111,40 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // ...existing header code...
-              InkWell(
-                onTap: () {
-                  context.pushNamed(RoutePath.profile);
-                },
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 20.r,
-                      backgroundImage:
-                          AssetImage(Assets.images.profileImage.path),
-                    ),
-                    Gap(10.w),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+              // Updated header code with user profile
+              Obx(() => InkWell(
+                    onTap: () {
+                      context.pushNamed(RoutePath.profile);
+                    },
+                    child: Row(
                       children: [
-                        Text(
-                          AppStrings.welcome.tr,
-                          style: AppStyle.robotoMono10w500C030303,
+                        CircleAvatar(
+                          radius: 20.r,
+                          backgroundImage: homeController.userProfile.value
+                                      ?.fullImageUrl.isNotEmpty ==
+                                  true
+                              ? NetworkImage(homeController
+                                  .userProfile.value!.fullImageUrl)
+                              : AssetImage(Assets.images.profileImage.path)
+                                  as ImageProvider,
                         ),
-                        Text(
-                          'Angel Mthembu',
-                          style: AppStyle.robotoMono12w500C030303,
+                        Gap(10.w),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              AppStrings.welcome.tr,
+                              style: AppStyle.robotoMono10w500C030303,
+                            ),
+                            Text(
+                              homeController.userProfile.value?.name ?? 'User',
+                              style: AppStyle.robotoMono12w500C030303,
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                  ],
-                ),
-              ),
+                  )),
               Gap(20.h),
 
               // ...existing banner code...
@@ -593,40 +601,6 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  // void _startDelayedCall() {
-  //   int delaySeconds = _getDelayInSeconds();
-
-  //   if (delaySeconds == 0) {
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(
-  //         content: Text(AppStrings.pleaseSetValidTime.tr),
-  //         behavior: SnackBarBehavior.floating,
-  //       ),
-  //     );
-  //     return;
-  //   }
-
-  //   // Show success message
-  //   ScaffoldMessenger.of(context).showSnackBar(
-  //     SnackBar(
-  //       content:
-  //           Text('${AppStrings.fakeCallWillStartIn.tr} ${selectedCallTime}'),
-  //       behavior: SnackBarBehavior.floating,
-  //       duration: Duration(seconds: 2),
-  //     ),
-  //   );
-
-  //   Timer(Duration(seconds: delaySeconds), () {
-  //     if (mounted) {
-  //       context.pushNamed(RoutePath.incomingCallScreen, extra: {
-  //         'callerName': selectedCaller!,
-  //         'time': _getFormattedTime(),
-  //         'callDuration': selectedCallTime!,
-  //       });
-  //     }
-  //   });
-  // }
-
   void _cancelCountdown() {
     _countdownTimer?.cancel();
     setState(() {
@@ -743,49 +717,34 @@ class _HomeScreenState extends State<HomeScreen> {
           borderRadius: BorderRadius.circular(10.r),
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              children: [
-                Gap(16.w),
-                Obx(
-                  () => CircleAvatar(
-                    radius: 24.r,
-                    backgroundColor: homeController.selectedIconColor.value,
-                    backgroundImage: contact.photo != null
-                        ? NetworkImage(contact.photo!)
-                        : null,
-                    child: contact.photo == null
-                        ? Text(
-                            contact.initials,
-                            style: AppStyle.roboto32w600CFFFFFF,
-                          )
-                        : null,
+            Obx(
+              () => CircleAvatar(
+                radius: 24.r,
+                backgroundColor: homeController.selectedIconColor.value,
+                backgroundImage:
+                    contact.photo != null ? NetworkImage(contact.photo!) : null,
+                child: contact.photo == null
+                    ? Text(
+                        contact.initials,
+                        style: AppStyle.roboto32w600CFFFFFF,
+                      )
+                    : null,
+              ),
+            ),
+            Gap(16.w),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    contact.fullName,
+                    style: selectedCaller?.apiId == contact.apiId
+                        ? AppStyle.roboto16w800CFFFFFF
+                        : AppStyle.roboto16w500C000000,
                   ),
-                ),
-                Gap(16.w),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      contact.fullName,
-                      style: selectedCaller?.apiId == contact.apiId
-                          ? AppStyle.roboto16w800CFFFFFF
-                          : AppStyle.roboto16w500C000000,
-                    ),
-                    // if (contact.phoneNumber.isNotEmpty)
-                    //   Text(
-                    //     contact.phoneNumber,
-                    //     style: TextStyle(
-                    //       fontSize: 12.sp,
-                    //       color: selectedCaller?.apiId == contact.apiId
-                    //           ? Colors.white70
-                    //           : Colors.grey,
-                    //     ),
-                    //   ),
-                  ],
-                ),
-              ],
+                ],
+              ),
             ),
             Icon(
               Icons.arrow_forward_ios,
@@ -800,32 +759,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
-// class HomeController extends GetxController {
-//   static const String iconColorKey = 'selected_icon_color';
-//   Rx<Color> selectedIconColor = const Color(0xffC9867B).obs;
-
-//   @override
-//   void onInit() {
-//     super.onInit();
-//     loadIconColor();
-//   }
-
-//   void setIconColor(Color color) async {
-//     selectedIconColor.value = color;
-//     // Save as hex string
-//     await SharedPrefsHelper.setString(
-//         iconColorKey, color.value.toRadixString(16));
-//   }
-
-//   void loadIconColor() async {
-//     String colorString = await SharedPrefsHelper.getString(iconColorKey);
-//     if (colorString.isNotEmpty) {
-//       try {
-//         selectedIconColor.value = Color(int.parse(colorString, radix: 16));
-//       } catch (_) {
-//         selectedIconColor.value = const Color(0xffC9867B);
-//       }
-//     }
-//   }
-// }

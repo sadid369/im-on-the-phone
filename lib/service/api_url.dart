@@ -6,6 +6,7 @@ class ApiUrl {
   /// ============================ Auth ==============================
   static const setNewPassword = "/api/user/set-new-password/";
   static const resetPasswordOtp = "/api/user/reset-password-otp/";
+  static const userProfile = "/api/user/profile/";
   static const getAllContact = "/api/core/contacts/";
   static const signUpClient = "/user/api/v1/register/";
   static const signUpWorker = "/worker/auth/register";
