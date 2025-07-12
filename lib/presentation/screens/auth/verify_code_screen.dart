@@ -25,6 +25,7 @@ class _CodeVerificationScreenState extends State<CodeVerificationScreen> {
   final List<TextEditingController> controllers = [];
   final List<FocusNode> focusNodes = [];
   String? email;
+  bool isResetPassword = false; // Flag to identify the flow
   late final AuthController authController;
 
   bool get isCodeComplete =>
@@ -38,12 +39,13 @@ class _CodeVerificationScreenState extends State<CodeVerificationScreen> {
       focusNodes.add(FocusNode());
     }
     authController = Get.find<AuthController>();
-    // Get email from GoRouter extra after build
+    // Get email and flow type from GoRouter extra after build
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final extra = GoRouterState.of(context).extra;
-      if (extra is Map && extra['email'] != null) {
+      if (extra is Map) {
         setState(() {
           email = extra['email'];
+          isResetPassword = extra['isResetPassword'] ?? false;
         });
       }
     });
@@ -75,7 +77,13 @@ class _CodeVerificationScreenState extends State<CodeVerificationScreen> {
   void _verifyCode() {
     final code = controllers.map((c) => c.text).join();
     if (isCodeComplete && email != null) {
-      authController.verifyOtp(context, code, email: email);
+      if (isResetPassword) {
+        // For forgot password flow
+        authController.verifyResetPasswordOtp(context, code, email: email);
+      } else {
+        // For signup flow
+        authController.verifyOtp(context, code, email: email);
+      }
     }
   }
 
@@ -120,7 +128,9 @@ class _CodeVerificationScreenState extends State<CodeVerificationScreen> {
                                 style: AppStyle.roboto14w600C989898,
                               ),
                               Text(
-                                AppStrings.emailText.tr,
+                                isResetPassword
+                                    ? "password reset code"
+                                    : AppStrings.emailText.tr,
                                 style: AppStyle.roboto14w600C545454,
                               ),
                             ],
@@ -194,6 +204,13 @@ class _CodeVerificationScreenState extends State<CodeVerificationScreen> {
                     GestureDetector(
                       onTap: () {
                         // TODO: Add resend email logic here
+                        if (isResetPassword) {
+                          // Resend forgot password OTP
+                          authController.forgotPassword(context);
+                        } else {
+                          // Resend signup OTP
+                          authController.signUp(context);
+                        }
                       },
                       child: Stack(
                         alignment: Alignment.centerLeft,

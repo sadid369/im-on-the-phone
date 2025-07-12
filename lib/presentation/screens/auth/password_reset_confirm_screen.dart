@@ -12,8 +12,43 @@ import 'package:groc_shopy/utils/text_style/text_style.dart';
 import '../../../core/custom_assets/assets.gen.dart';
 import '../../widgets/custom_bottons/custom_button/app_button.dart';
 
-class PasswordResetConfirmScreen extends StatelessWidget {
+class PasswordResetConfirmScreen extends StatefulWidget {
   const PasswordResetConfirmScreen({super.key});
+
+  @override
+  State<PasswordResetConfirmScreen> createState() =>
+      _PasswordResetConfirmScreenState();
+}
+
+class _PasswordResetConfirmScreenState
+    extends State<PasswordResetConfirmScreen> {
+  String? resetToken;
+
+  @override
+  void initState() {
+    super.initState();
+    // Get the passed data from verification screen
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final extra = GoRouterState.of(context).extra;
+      print('PasswordResetConfirmScreen - Raw extra data: $extra');
+      print('PasswordResetConfirmScreen - Extra type: ${extra.runtimeType}');
+
+      if (extra is Map<String, dynamic>) {
+        setState(() {
+          resetToken = extra['reset_token'];
+        });
+        print('PasswordResetConfirmScreen - Reset token received: $resetToken');
+      } else if (extra is Map) {
+        setState(() {
+          resetToken = extra['reset_token'];
+        });
+        print(
+            'PasswordResetConfirmScreen - Reset token received (Map): $resetToken');
+      } else {
+        print('PasswordResetConfirmScreen - No valid extra data received');
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,14 +82,22 @@ class PasswordResetConfirmScreen extends StatelessWidget {
               Gap(32.h),
               AppButton(
                 text: AppStrings.confirm.tr,
-                onPressed: () {
-                  context.push(RoutePath.resetPass.addBasePath);
-                },
+                onPressed: resetToken != null
+                    ? () {
+                        print(
+                            'PasswordResetConfirmScreen - Navigating with token: $resetToken');
+                        // Pass the reset_token to the set password screen
+                        context.go(RoutePath.resetPass.addBasePath, extra: {
+                          "reset_token": resetToken,
+                        });
+                      }
+                    : null,
                 width: double.infinity,
                 height: 48.h,
                 backgroundColor: AppColors.primary,
                 borderRadius: 8.r,
                 textStyle: AppStyle.inter16w700CFFFFFF,
+                enabled: resetToken != null,
               ),
             ],
           ),

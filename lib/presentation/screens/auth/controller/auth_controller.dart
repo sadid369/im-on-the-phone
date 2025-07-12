@@ -341,26 +341,47 @@ class AuthController extends GetxController {
     isLoading.value = true;
 
     try {
-      // Simulate API call for password reset
-      await Future.delayed(const Duration(seconds: 2));
-
-      // Simulate success
-      _showAwesomeSnackbar(
-        context,
-        title: AppStrings.success.tr,
-        message: AppStrings.passwordResetLinkSent.tr,
-        contentType: ContentType.success,
+      final apiClient = ApiClient();
+      final response = await apiClient.post(
+        url: ApiUrl.forgotPassword.addBaseUrl,
+        isBasic: true,
+        body: {
+          "email": forgotPasswordEmailController.text.trim(),
+        },
+        context: context,
       );
 
-      // Navigate to verification screen
-      Future.delayed(const Duration(seconds: 1), () {
-        context.push(RoutePath.verification.addBasePath);
-      });
+      if (response.statusCode == 200) {
+        _showAwesomeSnackbar(
+          context,
+          title: AppStrings.success.tr,
+          message: response.body['msg']?.toString() ??
+              "OTP sent. Please check your email",
+          contentType: ContentType.success,
+        );
+
+        // Navigate to verification screen with email
+        Future.delayed(const Duration(seconds: 1), () {
+          context.go(RoutePath.verification.addBasePath, extra: {
+            "email": forgotPasswordEmailController.text.trim(),
+            "isResetPassword":
+                true, // Flag to identify this is for password reset
+          });
+        });
+      } else {
+        _showAwesomeSnackbar(
+          context,
+          title: AppStrings.error.tr,
+          message:
+              response.body['msg']?.toString() ?? "Failed to send reset email",
+          contentType: ContentType.failure,
+        );
+      }
     } catch (e) {
       _showAwesomeSnackbar(
         context,
         title: AppStrings.error.tr,
-        message: AppStrings.failedToSendResetLink.tr,
+        message: "Failed to send reset email",
         contentType: ContentType.failure,
       );
     } finally {
@@ -437,6 +458,123 @@ class AuthController extends GetxController {
       );
 
       print('Apple login error: $e');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  // Password Reset OTP Verification method
+  Future<void> verifyResetPasswordOtp(BuildContext context, String otp,
+      {String? email}) async {
+    if (isLoading.value) return;
+    isLoading.value = true;
+
+    try {
+      final apiClient = ApiClient();
+      final response = await apiClient.post(
+        url: ApiUrl.resetPasswordOtp.addBaseUrl, // Use the correct endpoint
+        isBasic: true,
+        body: {
+          "email": email ?? forgotPasswordEmailController.text.trim(),
+          "otp": otp,
+        },
+        context: context,
+      );
+
+      if (response.statusCode == 200) {
+        // Extract reset_token from response
+        final resetToken = response.body['reset_token'];
+
+        if (resetToken != null) {
+          _showAwesomeSnackbar(
+            context,
+            title: AppStrings.success.tr,
+            message: "OTP verified successfully!",
+            contentType: ContentType.success,
+          );
+
+          // Navigate to Password Reset Confirm Screen with reset_token
+          Future.delayed(const Duration(seconds: 1), () {
+            context.go(RoutePath.resetPassConfirm.addBasePath, extra: {
+              "reset_token": resetToken,
+            });
+          });
+        } else {
+          _showAwesomeSnackbar(
+            context,
+            title: AppStrings.error.tr,
+            message: "Reset token not received",
+            contentType: ContentType.failure,
+          );
+        }
+      } else {
+        _showAwesomeSnackbar(
+          context,
+          title: AppStrings.error.tr,
+          message:
+              response.body['msg']?.toString() ?? "OTP verification failed",
+          contentType: ContentType.failure,
+        );
+      }
+    } catch (e) {
+      _showAwesomeSnackbar(
+        context,
+        title: AppStrings.error.tr,
+        message: "OTP verification failed",
+        contentType: ContentType.failure,
+      );
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  // Add new method for setting new password
+  Future<void> setNewPassword(BuildContext context, String newPassword,
+      String confirmPassword, String resetToken) async {
+    if (isLoading.value) return;
+    isLoading.value = true;
+
+    try {
+      final apiClient = ApiClient();
+      final response = await apiClient.post(
+        url: ApiUrl.setNewPassword.addBaseUrl,
+        isBasic: true,
+        body: {
+          "reset_token": resetToken,
+          "new_password": newPassword,
+          "new_password2": confirmPassword,
+        },
+        context: context,
+      );
+
+      if (response.statusCode == 200) {
+        _showAwesomeSnackbar(
+          context,
+          title: AppStrings.success.tr,
+          message: "Password updated successfully!",
+          contentType: ContentType.success,
+        );
+
+        // Navigate to success screen
+        Future.delayed(const Duration(seconds: 1), () {
+          context.go(RoutePath.resetPasswordSuccess.addBasePath);
+        });
+      } else {
+        _showAwesomeSnackbar(
+          context,
+          title: AppStrings.error.tr,
+          message:
+              response.body['msg']?.toString() ?? "Failed to update password",
+          contentType: ContentType.failure,
+        );
+      }
+    } catch (e) {
+      _showAwesomeSnackbar(
+        context,
+        title: AppStrings.error.tr,
+        message: "Failed to update password",
+        contentType: ContentType.failure,
+      );
     } finally {
       isLoading.value = false;
     }

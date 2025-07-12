@@ -4,7 +4,8 @@ class ApiUrl {
   static socketUrl({String userID = ""}) => '$baseUrl?id=$userID';
 
   /// ============================ Auth ==============================
-
+  static const setNewPassword = "/api/user/set-new-password/";
+  static const resetPasswordOtp = "/api/user/reset-password-otp/";
   static const getAllContact = "/api/core/contacts/";
   static const signUpClient = "/user/api/v1/register/";
   static const signUpWorker = "/worker/auth/register";
@@ -13,6 +14,7 @@ class ApiUrl {
   static const login = "/api/user/login/";
   static const register = "/api/user/register/";
   static const verifyOtp = "/api/user/verify-otp/";
+  static const forgotPassword = "/api/user/send-reset-password-email/";
 
   static const resendOTpWorker = "/worker/auth/resend-activation-code";
   static const resendOTpClient = "/client/auth/resend-activation-code";
