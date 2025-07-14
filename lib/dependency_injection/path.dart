@@ -3,5 +3,4 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
 
 import '../core/network/connection_checker.dart';
 import '../service/api_service.dart';
-
 part 'get_it_injection.dart';

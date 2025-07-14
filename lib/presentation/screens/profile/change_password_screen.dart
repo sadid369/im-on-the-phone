@@ -21,7 +21,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   @override
   void initState() {
     super.initState();
-    profileController = Get.isRegistered<ProfileController>() 
+    profileController = Get.isRegistered<ProfileController>()
         ? Get.find<ProfileController>()
         : Get.put(ProfileController());
   }
@@ -42,7 +42,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   height: kToolbarHeight.h,
                   decoration: BoxDecoration(
                     border: Border(
-                      bottom: BorderSide(color: Colors.grey.shade300, width: 1.w),
+                      bottom:
+                          BorderSide(color: Colors.grey.shade300, width: 1.w),
                     ),
                   ),
                   child: Row(
@@ -62,106 +63,109 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   ),
                 ),
                 Gap(18.h),
-                
+
                 Text(
                   AppStrings.currentPassword.tr,
                   style: AppStyle.roboto16w600C2A2A2A,
                 ),
                 Gap(8.h),
                 Obx(() => CustomTextFormField(
-                  controller: profileController.currentPasswordController,
-                  validator: profileController.validateCurrentPassword,
-                  hintText: AppStrings.enterYourCurrentPassword.tr,
-                  obscureText: !profileController.passwordVisible.value,
-                  suffixIcon: profileController.passwordVisible.value
-                      ? Icons.visibility_outlined
-                      : Icons.visibility_off_outlined,
-                  onSuffixIconTap: profileController.togglePasswordVisibility,
-                  style: AppStyle.roboto16w500C545454,
-                  hintStyle: AppStyle.roboto14w500CB3B3B3,
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-                  enabledBorderColor: AppColors.black30opacity4D000000,
-                  focusedBorderColor: AppColors.primary,
-                  errorBorderColor: Colors.red,
-                  focusedErrorBorderColor: Colors.red,
-                  enabledBorderWidth: 1.5.w,
-                  focusedBorderWidth: 1.8.w,
-                  borderRadius: BorderRadius.circular(12.r),
-                )),
+                      controller: profileController.currentPasswordController,
+                      validator: profileController.validateCurrentPassword,
+                      hintText: AppStrings.enterYourCurrentPassword.tr,
+                      obscureText: !profileController.passwordVisible.value,
+                      suffixIcon: profileController.passwordVisible.value
+                          ? Icons.visibility_outlined
+                          : Icons.visibility_off_outlined,
+                      onSuffixIconTap:
+                          profileController.togglePasswordVisibility,
+                      style: AppStyle.roboto16w500C545454,
+                      hintStyle: AppStyle.roboto14w500CB3B3B3,
+                      contentPadding: EdgeInsets.symmetric(
+                          horizontal: 16.w, vertical: 12.h),
+                      enabledBorderColor: AppColors.black30opacity4D000000,
+                      focusedBorderColor: AppColors.primary,
+                      errorBorderColor: Colors.red,
+                      focusedErrorBorderColor: Colors.red,
+                      enabledBorderWidth: 1.5.w,
+                      focusedBorderWidth: 1.8.w,
+                      borderRadius: BorderRadius.circular(12.r),
+                    )),
                 Gap(18.h),
-                
+
                 Text(
                   AppStrings.newPassword.tr,
                   style: AppStyle.roboto16w600C2A2A2A,
                 ),
                 Gap(8.h),
                 Obx(() => CustomTextFormField(
-                  controller: profileController.newPasswordController,
-                  validator: profileController.validateNewPassword,
-                  hintText: AppStrings.enterYourNewPassword.tr,
-                  obscureText: !profileController.passwordVisible.value,
-                  suffixIcon: profileController.passwordVisible.value
-                      ? Icons.visibility_outlined
-                      : Icons.visibility_off_outlined,
-                  onSuffixIconTap: profileController.togglePasswordVisibility,
-                  style: AppStyle.roboto16w500C545454,
-                  hintStyle: AppStyle.roboto14w500CB3B3B3,
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-                  enabledBorderColor: AppColors.black30opacity4D000000,
-                  focusedBorderColor: AppColors.primary,
-                  errorBorderColor: Colors.red,
-                  focusedErrorBorderColor: Colors.red,
-                  enabledBorderWidth: 1.5.w,
-                  focusedBorderWidth: 1.8.w,
-                  borderRadius: BorderRadius.circular(12.r),
-                )),
+                      controller: profileController.newPasswordController,
+                      validator: profileController.validateNewPassword,
+                      hintText: AppStrings.enterYourNewPassword.tr,
+                      obscureText: !profileController.passwordVisible.value,
+                      suffixIcon: profileController.passwordVisible.value
+                          ? Icons.visibility_outlined
+                          : Icons.visibility_off_outlined,
+                      onSuffixIconTap:
+                          profileController.togglePasswordVisibility,
+                      style: AppStyle.roboto16w500C545454,
+                      hintStyle: AppStyle.roboto14w500CB3B3B3,
+                      contentPadding: EdgeInsets.symmetric(
+                          horizontal: 16.w, vertical: 12.h),
+                      enabledBorderColor: AppColors.black30opacity4D000000,
+                      focusedBorderColor: AppColors.primary,
+                      errorBorderColor: Colors.red,
+                      focusedErrorBorderColor: Colors.red,
+                      enabledBorderWidth: 1.5.w,
+                      focusedBorderWidth: 1.8.w,
+                      borderRadius: BorderRadius.circular(12.r),
+                    )),
                 Gap(18.h),
-                
+
                 Text(
                   AppStrings.confirmNewPassword.tr,
                   style: AppStyle.roboto16w600C2A2A2A,
                 ),
                 Gap(8.h),
                 Obx(() => CustomTextFormField(
-                  controller: profileController.confirmPasswordController,
-                  validator: profileController.validateConfirmPassword,
-                  hintText: AppStrings.confirmYourNewPassword.tr,
-                  obscureText: !profileController.passwordVisible.value,
-                  suffixIcon: profileController.passwordVisible.value
-                      ? Icons.visibility_outlined
-                      : Icons.visibility_off_outlined,
-                  onSuffixIconTap: profileController.togglePasswordVisibility,
-                  style: AppStyle.roboto16w500C545454,
-                  hintStyle: AppStyle.roboto14w500CB3B3B3,
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-                  enabledBorderColor: AppColors.black30opacity4D000000,
-                  focusedBorderColor: AppColors.primary,
-                  errorBorderColor: Colors.red,
-                  focusedErrorBorderColor: Colors.red,
-                  enabledBorderWidth: 1.5.w,
-                  focusedBorderWidth: 1.8.w,
-                  borderRadius: BorderRadius.circular(12.r),
-                )),
+                      controller: profileController.confirmPasswordController,
+                      validator: profileController.validateConfirmPassword,
+                      hintText: AppStrings.confirmYourNewPassword.tr,
+                      obscureText: !profileController.passwordVisible.value,
+                      suffixIcon: profileController.passwordVisible.value
+                          ? Icons.visibility_outlined
+                          : Icons.visibility_off_outlined,
+                      onSuffixIconTap:
+                          profileController.togglePasswordVisibility,
+                      style: AppStyle.roboto16w500C545454,
+                      hintStyle: AppStyle.roboto14w500CB3B3B3,
+                      contentPadding: EdgeInsets.symmetric(
+                          horizontal: 16.w, vertical: 12.h),
+                      enabledBorderColor: AppColors.black30opacity4D000000,
+                      focusedBorderColor: AppColors.primary,
+                      errorBorderColor: Colors.red,
+                      focusedErrorBorderColor: Colors.red,
+                      enabledBorderWidth: 1.5.w,
+                      focusedBorderWidth: 1.8.w,
+                      borderRadius: BorderRadius.circular(12.r),
+                    )),
                 Gap(26.h),
-                
+
                 // Change Password button
                 Obx(() => AppButton(
-                  text: profileController.isLoading.value 
-                      ? AppStrings.changing.tr
-                      : AppStrings.changePassword.tr,
-                  onPressed: profileController.isLoading.value
-                      ? null
-                      : () => profileController.changePassword(context),
-                  height: 35.h,
-                  backgroundColor: profileController.isLoading.value
-                      ? const Color(0xFF77E9D6).withOpacity(0.6)
-                      : const Color(0xFF77E9D6),
-                  borderRadius: 5.r,
-                  textStyle: AppStyle.inter12w700CFFFFFF,
-                )),
+                      text: profileController.isLoading.value
+                          ? AppStrings.changing.tr
+                          : AppStrings.changePassword.tr,
+                      onPressed: profileController.isLoading.value
+                          ? null
+                          : () => profileController.changePassword(context),
+                      height: 35.h,
+                      backgroundColor: profileController.isLoading.value
+                          ? const Color(0xFF77E9D6).withOpacity(0.6)
+                          : const Color(0xFF77E9D6),
+                      borderRadius: 5.r,
+                      textStyle: AppStyle.inter12w700CFFFFFF,
+                    )),
               ],
             ),
           ),

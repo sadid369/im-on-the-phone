@@ -18,13 +18,10 @@ class AdminUpdateProfileScreen extends StatefulWidget {
 class _AdminUpdateProfileScreenState extends State<AdminUpdateProfileScreen> {
   final TextEditingController _nameController =
       TextEditingController(text: 'Angel Mthembu');
-  final TextEditingController _emailController =
-      TextEditingController(text: 'admin@example.com');
 
   @override
   void dispose() {
     _nameController.dispose();
-    _emailController.dispose();
     super.dispose();
   }
 
@@ -292,54 +289,8 @@ class _AdminUpdateProfileScreenState extends State<AdminUpdateProfileScreen> {
                 ),
               ),
               Gap(25.h),
-              Container(
-                alignment: Alignment.center,
-                width: double.infinity,
-                height: 100.w,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.grey.shade300,
-                    width: 1.w,
-                  ),
-                  borderRadius: BorderRadius.circular(10.r),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(left: 16.w, top: 8.h),
-                          child: Text(
-                            AppStrings.email.tr, // <-- Added .tr
-                            style: AppStyle.roboto14w400C808080,
-                          ),
-                        ),
-                      ],
-                    ),
-                    CustomTextFormField(
-                      prefix: Icon(Icons.email_outlined,
-                          color: Colors.black.withOpacity(0.5), size: 20.r),
-                      controller: _emailController,
-                      style: AppStyle.robotoMono16w500C030303,
-                      filled: false,
-                      enabledBorderColor: Colors.transparent,
-                      focusedBorderColor: Colors.transparent,
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 0.h, horizontal: 0.w),
-                      borderRadius: BorderRadius.circular(0),
-                      showCounter: false,
-                      onChanged: (value) {
-                        // Handle name change
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              Gap(57.h),
+
+              Gap(40.h),
               // Save Changes button
               AppButton(
                 text: AppStrings.saveChanges.tr, // <-- Added .tr

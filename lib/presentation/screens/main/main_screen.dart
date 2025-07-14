@@ -9,7 +9,7 @@ class MainScreenWithBottomNav extends StatelessWidget {
   const MainScreenWithBottomNav({
     super.key,
     required this.navigationShell,
-    this.isAdmin = false, // <-- Default to false
+    this.isAdmin = true, // <-- Default to false
   });
 
   @override

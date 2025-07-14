@@ -43,15 +43,13 @@ class HomeController extends GetxController {
     }
   }
 
+  // Make this method public so ProfileController can call it
   Future<void> loadUserProfile(BuildContext context) async {
-    isLoadingProfile.value = true;
     try {
       final profile = await UserProfileService.getUserProfile(context);
       userProfile.value = profile;
     } catch (e) {
       print('Error loading user profile: $e');
-    } finally {
-      isLoadingProfile.value = false;
     }
   }
 }

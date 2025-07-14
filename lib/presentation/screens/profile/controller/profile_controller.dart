@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import '../../../../utils/static_strings/static_strings.dart';
+import '../../../../service/user_profile_update_service.dart';
+import '../../../../service/user_profile_service.dart';
+import '../../../../service/change_password_service.dart';
+import '../../home/controller/home_controller.dart';
 
 class ProfileController extends GetxController {
   // Observable variables
@@ -36,6 +40,24 @@ class ProfileController extends GetxController {
     newPasswordController.dispose();
     confirmPasswordController.dispose();
     super.onClose();
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+    // Initialize with current user data
+    _initializeUserData();
+  }
+
+  // Initialize with current user profile data
+  void _initializeUserData() {
+    final homeController = Get.find<HomeController>();
+    final userProfile = homeController.userProfile.value;
+    
+    if (userProfile != null) {
+      nameController.text = userProfile.name ?? '';
+      emailController.text = userProfile.email ?? '';
+    }
   }
 
   // Toggle password visibility
@@ -178,7 +200,7 @@ class ProfileController extends GetxController {
     }
   }
 
-  // Update profile
+  // Update profile - Modified to use real API
   Future<void> updateProfile(BuildContext context) async {
     if (isLoading.value) return;
 
@@ -195,22 +217,37 @@ class ProfileController extends GetxController {
     isLoading.value = true;
 
     try {
-      // Simulate API call
-      await Future.delayed(const Duration(seconds: 2));
-      
-      // Simulate success
-      _showAwesomeSnackbar(
+      // Call the API to update profile
+      final success = await UserProfileUpdateService.updateUserProfile(
         context,
-        title: AppStrings.success.tr,
-        message: AppStrings.profileUpdatedSuccessfully.tr,
-        contentType: ContentType.success,
+        name: nameController.text.trim(),
+        profileImage: profileImage.value,
       );
 
-      // Navigate back or stay on page
-      Future.delayed(const Duration(seconds: 1), () {
-        Navigator.pop(context);
-      });
+      if (success) {
+        // Refresh user profile data in HomeController
+        final homeController = Get.find<HomeController>();
+        await homeController.loadUserProfile(context);
+        
+        _showAwesomeSnackbar(
+          context,
+          title: AppStrings.success.tr,
+          message: AppStrings.profileUpdatedSuccessfully.tr,
+          contentType: ContentType.success,
+        );
 
+        // Navigate back after success
+        Future.delayed(const Duration(seconds: 1), () {
+          Navigator.pop(context);
+        });
+      } else {
+        _showAwesomeSnackbar(
+          context,
+          title: AppStrings.error.tr,
+          message: AppStrings.failedToUpdateProfile.tr,
+          contentType: ContentType.failure,
+        );
+      }
     } catch (e) {
       _showAwesomeSnackbar(
         context,
@@ -223,7 +260,7 @@ class ProfileController extends GetxController {
     }
   }
 
-  // Change password
+  // Change password - Updated to use real API
   Future<void> changePassword(BuildContext context) async {
     if (isLoading.value) return;
 
@@ -240,27 +277,39 @@ class ProfileController extends GetxController {
     isLoading.value = true;
 
     try {
-      // Simulate API call
-      await Future.delayed(const Duration(seconds: 2));
-      
-      // Simulate success
-      _showAwesomeSnackbar(
+      // Call the API to change password
+      final success = await ChangePasswordService.changePassword(
         context,
-        title: AppStrings.success.tr,
-        message: AppStrings.passwordChangedSuccessfully.tr,
-        contentType: ContentType.success,
+        currentPassword: currentPasswordController.text.trim(),
+        newPassword: newPasswordController.text.trim(),
+        confirmNewPassword: confirmPasswordController.text.trim(),
       );
 
-      // Clear password fields
-      currentPasswordController.clear();
-      newPasswordController.clear();
-      confirmPasswordController.clear();
+      if (success) {
+        _showAwesomeSnackbar(
+          context,
+          title: AppStrings.success.tr,
+          message: AppStrings.passwordChangedSuccessfully.tr,
+          contentType: ContentType.success,
+        );
 
-      // Navigate back
-      Future.delayed(const Duration(seconds: 1), () {
-        Navigator.pop(context);
-      });
+        // Clear password fields
+        currentPasswordController.clear();
+        newPasswordController.clear();
+        confirmPasswordController.clear();
 
+        // Navigate back after success
+        Future.delayed(const Duration(seconds: 1), () {
+          Navigator.pop(context);
+        });
+      } else {
+        _showAwesomeSnackbar(
+          context,
+          title: AppStrings.error.tr,
+          message: AppStrings.failedToChangePassword.tr,
+          contentType: ContentType.failure,
+        );
+      }
     } catch (e) {
       _showAwesomeSnackbar(
         context,

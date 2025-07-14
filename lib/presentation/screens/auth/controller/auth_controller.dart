@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:groc_shopy/service/api_url.dart';
+import 'package:groc_shopy/service/user_profile_service.dart'
+    show UserProfileService;
 import '../../../../core/routes/route_path.dart';
 import '../../../../helper/extension/base_extension.dart';
 import '../../../../utils/static_strings/static_strings.dart';
@@ -301,9 +303,9 @@ class AuthController extends GetxController {
           message: response.body['msg']?.toString() ?? "Login Success",
           contentType: ContentType.success,
         );
-        Future.delayed(const Duration(seconds: 1), () {
-          context.go(RoutePath.home.addBasePath);
-        });
+
+        // Fetch user profile to check admin status
+        await _checkUserRoleAndNavigate(context);
       } else {
         _showAwesomeSnackbar(
           context,
@@ -321,6 +323,36 @@ class AuthController extends GetxController {
       );
     } finally {
       isLoading.value = false;
+    }
+  }
+
+  // Add this new method to check user role and navigate
+  Future<void> _checkUserRoleAndNavigate(BuildContext context) async {
+    try {
+      // Import UserProfileService
+      final userProfile = await UserProfileService.getUserProfile(context);
+
+      if (userProfile != null) {
+        // Navigate based on admin status
+        Future.delayed(const Duration(seconds: 1), () {
+          if (userProfile.isAdmin) {
+            context.go(RoutePath.adminDashboard.addBasePath);
+          } else {
+            context.go(RoutePath.home.addBasePath);
+          }
+        });
+      } else {
+        // If profile fetch fails, default to home
+        Future.delayed(const Duration(seconds: 1), () {
+          context.go(RoutePath.home.addBasePath);
+        });
+      }
+    } catch (e) {
+      print('Error fetching user profile: $e');
+      // Default to home on error
+      Future.delayed(const Duration(seconds: 1), () {
+        context.go(RoutePath.home.addBasePath);
+      });
     }
   }
 

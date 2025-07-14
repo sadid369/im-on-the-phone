@@ -14,7 +14,9 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Initialize LanguageController and load saved language
-  final LanguageController languageController = Get.put(LanguageController());
+  final LanguageController languageController = Get.put(
+    LanguageController(),
+  );
   await languageController.getLanguageType();
 
   runApp(const MyApp());

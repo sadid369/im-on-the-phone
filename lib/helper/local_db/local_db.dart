@@ -8,7 +8,9 @@ class SharedPrefsHelper {
 
   static Future<bool?> getBool(String key) async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(key);
+    return prefs.getBool(
+      key,
+    );
   }
   //===========================Get Data From Shared Preference===================
 

@@ -27,7 +27,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   void initState() {
     super.initState();
     // Get existing controller or create new one
-    authController = Get.isRegistered<AuthController>() 
+    authController = Get.isRegistered<AuthController>()
         ? Get.find<AuthController>()
         : Get.put(AuthController());
   }
@@ -97,23 +97,26 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 ),
                 Gap(30.h),
                 Obx(() => AppButton(
-                  text: authController.isLoading.value 
-                      ? "Sending..." 
-                      : AppStrings.passwordReset.tr,
-                  onPressed: authController.isLoading.value
-                      ? null
-                      : authController.isResetButtonEnabled.value
-                          ? () => authController.forgotPassword(context)
-                          : null,
-                  width: double.infinity,
-                  height: 48.h,
-                  backgroundColor: authController.isResetButtonEnabled.value && !authController.isLoading.value
-                      ? AppColors.primary
-                      : AppColors.primary.withOpacity(0.4),
-                  borderRadius: 10.r,
-                  textStyle: AppStyle.inter16w700CFFFFFF,
-                  enabled: authController.isResetButtonEnabled.value && !authController.isLoading.value,
-                )),
+                      text: authController.isLoading.value
+                          ? "Sending..."
+                          : AppStrings.passwordReset.tr,
+                      onPressed: authController.isLoading.value
+                          ? null
+                          : authController.isResetButtonEnabled.value
+                              ? () => authController.forgotPassword(context)
+                              : null,
+                      width: double.infinity,
+                      height: 48.h,
+                      backgroundColor:
+                          authController.isResetButtonEnabled.value &&
+                                  !authController.isLoading.value
+                              ? AppColors.primary
+                              : AppColors.primary.withOpacity(0.4),
+                      borderRadius: 10.r,
+                      textStyle: AppStyle.inter16w700CFFFFFF,
+                      enabled: authController.isResetButtonEnabled.value &&
+                          !authController.isLoading.value,
+                    )),
               ],
             ),
           ),

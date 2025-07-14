@@ -6,6 +6,8 @@ import 'package:go_router/go_router.dart';
 import 'package:groc_shopy/core/routes/route_path.dart';
 import 'package:groc_shopy/core/routes/routes.dart';
 import 'package:groc_shopy/helper/extension/base_extension.dart';
+import 'package:groc_shopy/presentation/screens/home/controller/home_controller.dart'
+    show HomeController;
 import 'package:groc_shopy/utils/static_strings/static_strings.dart';
 import 'package:groc_shopy/utils/text_style/text_style.dart';
 import 'package:photo_view/photo_view.dart';
@@ -13,9 +15,12 @@ import 'package:photo_view/photo_view.dart';
 import '../../../core/custom_assets/assets.gen.dart';
 
 class ProfileScreen extends StatelessWidget {
-  
   // Method to show photo viewer
   void _showPhotoViewer(BuildContext context, String imagePath) {
+    // Determine if the image is a network URL or local asset
+    final bool isNetworkImage =
+        imagePath.startsWith('http') || imagePath.startsWith('https');
+
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => Scaffold(
@@ -33,17 +38,36 @@ class ProfileScreen extends StatelessWidget {
             ),
           ),
           body: PhotoView(
-            imageProvider: AssetImage(imagePath),
+            imageProvider: isNetworkImage
+                ? NetworkImage(imagePath) as ImageProvider
+                : AssetImage(imagePath) as ImageProvider,
             backgroundDecoration: BoxDecoration(color: Colors.black),
             minScale: PhotoViewComputedScale.contained,
             maxScale: PhotoViewComputedScale.covered * 2.0,
             initialScale: PhotoViewComputedScale.contained,
             heroAttributes: PhotoViewHeroAttributes(tag: "profile_photo"),
+            errorBuilder: (context, error, stackTrace) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.error, color: Colors.white, size: 50),
+                    SizedBox(height: 16),
+                    Text(
+                      'Failed to load image',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
         ),
       ),
     );
   }
+
+  final homeController = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {
@@ -92,31 +116,50 @@ class ProfileScreen extends StatelessWidget {
                 child: Row(
                   children: [
                     GestureDetector(
-                      onTap: () => _showPhotoViewer(context, Assets.images.profileImage.path),
+                      onTap: () => _showPhotoViewer(
+                          context,
+                          homeController.userProfile.value?.image!.addBaseUrl ??
+                              Assets.images.profileImage.path),
                       child: Hero(
                         tag: "profile_photo",
-                        child: CircleAvatar(
-                          radius: 30.r,
-                          backgroundImage:
-                              AssetImage(Assets.images.profileImage.path),
-                        ),
+                        child: Obx(() {
+                          final profile = homeController.userProfile.value;
+                          final profileImageUrl = profile?.image!.addBaseUrl;
+
+                          return CircleAvatar(
+                            radius: 30.r,
+                            backgroundImage: profileImageUrl != null &&
+                                    profileImageUrl.isNotEmpty
+                                ? NetworkImage(profileImageUrl)
+                                : AssetImage(Assets.images.profileImage.path)
+                                    as ImageProvider,
+                            onBackgroundImageError: profileImageUrl != null
+                                ? (exception, stackTrace) {
+                                    // Fallback to default image on error
+                                  }
+                                : null,
+                          );
+                        }),
                       ),
                     ),
                     Gap(19.w),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Angel Mthembu',
-                          style: AppStyle.robotoMono18w500C030303,
-                        ),
-                        Text(
-                          'angelmthembu@example.com',
-                          style: AppStyle.roboto14w400C808080,
-                        ),
-                      ],
-                    ),
+                    Obx(() {
+                      final profile = homeController.userProfile.value;
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            profile?.name ?? 'User',
+                            style: AppStyle.robotoMono18w500C030303,
+                          ),
+                          Text(
+                            profile?.email ?? '',
+                            style: AppStyle.roboto14w400C808080,
+                          ),
+                        ],
+                      );
+                    }),
                   ],
                 ),
               ),

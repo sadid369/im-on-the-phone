@@ -123,8 +123,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           backgroundImage: homeController.userProfile.value
                                       ?.fullImageUrl.isNotEmpty ==
                                   true
-                              ? NetworkImage(homeController
-                                  .userProfile.value!.fullImageUrl)
+                              ? NetworkImage(
+                                  homeController
+                                      .userProfile.value!.fullImageUrl,
+                                )
                               : AssetImage(Assets.images.profileImage.path)
                                   as ImageProvider,
                         ),
