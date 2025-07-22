@@ -12,10 +12,18 @@ import 'package:groc_shopy/utils/text_style/text_style.dart';
 
 import '../../../../core/custom_assets/assets.gen.dart';
 import '../../../widgets/custom_bottons/custom_button/app_button.dart';
+import 'controller/admin_settings_controller.dart';
 
 class AdminSettingsScreen extends StatelessWidget {
+  final adminController = Get.find<AdminSettingsController>();
+  final _loaded = false.obs;
+
   @override
   Widget build(BuildContext context) {
+    if (!_loaded.value) {
+      adminController.loadUserProfile(context);
+      _loaded.value = true;
+    }
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -54,26 +62,37 @@ class AdminSettingsScreen extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    CircleAvatar(
-                      radius: 30.r,
-                      backgroundImage:
-                          AssetImage(Assets.images.profileImage.path),
-                    ),
+                    Obx(() {
+                      final profile = adminController.userProfile.value;
+                      final imageUrl = profile?.image!
+                          .addBaseUrl; // Adjust this if your model uses a different field name
+
+                      return CircleAvatar(
+                        radius: 30.r,
+                        backgroundImage: imageUrl != null && imageUrl.isNotEmpty
+                            ? NetworkImage(imageUrl)
+                            : AssetImage(Assets.images.profileImage.path)
+                                as ImageProvider,
+                      );
+                    }),
                     Gap(19.w),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          AppStrings.admin.tr,
-                          style: AppStyle.robotoMono18w500C030303,
-                        ),
-                        Text(
-                          AppStrings.adminEmail.tr,
-                          style: AppStyle.roboto14w400C808080,
-                        ),
-                      ],
-                    ),
+                    Obx(() {
+                      final profile = adminController.userProfile.value;
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            profile?.name ?? AppStrings.admin.tr,
+                            style: AppStyle.robotoMono18w500C030303,
+                          ),
+                          Text(
+                            profile?.email ?? AppStrings.adminEmail.tr,
+                            style: AppStyle.roboto14w400C808080,
+                          ),
+                        ],
+                      );
+                    }),
                   ],
                 ),
               ),

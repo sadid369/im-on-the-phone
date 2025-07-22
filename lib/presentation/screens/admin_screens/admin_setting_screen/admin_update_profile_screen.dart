@@ -1,13 +1,18 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:groc_shopy/core/custom_assets/assets.gen.dart';
+import 'package:groc_shopy/helper/extension/base_extension.dart';
 import 'package:groc_shopy/utils/static_strings/static_strings.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../utils/text_style/text_style.dart';
 import '../../../widgets/custom_bottons/custom_button/app_button.dart';
 import '../../../widgets/custom_text_form_field/custom_text_form.dart';
+import '../admin_setting_screen/controller/admin_settings_controller.dart';
 
 class AdminUpdateProfileScreen extends StatefulWidget {
   @override
@@ -16,8 +21,35 @@ class AdminUpdateProfileScreen extends StatefulWidget {
 }
 
 class _AdminUpdateProfileScreenState extends State<AdminUpdateProfileScreen> {
-  final TextEditingController _nameController =
-      TextEditingController(text: 'Angel Mthembu');
+  final adminController = Get.find<AdminSettingsController>();
+  late TextEditingController _nameController;
+  File? _pickedImage;
+
+  @override
+  void initState() {
+    super.initState();
+    // Use the current name from the profile if available, else fallback
+    _nameController = TextEditingController(
+      text: adminController.userProfile.value?.name ?? '',
+    );
+    // Listen for profile changes and update the controller if needed
+    ever(adminController.userProfile, (profile) {
+      if (profile != null) {
+        _nameController.text = profile.name ?? '';
+      }
+    });
+  }
+
+  Future<void> _pickImage(ImageSource source) async {
+    final picker = ImagePicker();
+    final picked = await picker.pickImage(source: source, imageQuality: 80);
+    if (picked != null) {
+      setState(() {
+        _pickedImage = File(picked.path);
+      });
+    }
+    Navigator.pop(context);
+  }
 
   @override
   void dispose() {
@@ -78,12 +110,29 @@ class _AdminUpdateProfileScreenState extends State<AdminUpdateProfileScreen> {
                       shape: OvalBorder(),
                     ),
                     child: ClipOval(
-                      child: Image.asset(
-                        Assets.images.profileImage.path,
-                        fit: BoxFit.cover,
-                        width: 100.w,
-                        height: 100.w,
-                      ),
+                      child: _pickedImage != null
+                          ? Image.file(
+                              _pickedImage!,
+                              fit: BoxFit.cover,
+                              width: 100.w,
+                              height: 100.w,
+                            )
+                          : (adminController.userProfile.value?.image != null &&
+                                  adminController
+                                      .userProfile.value!.image!.isNotEmpty)
+                              ? Image.network(
+                                  adminController
+                                      .userProfile.value!.image!.addBaseUrl,
+                                  fit: BoxFit.cover,
+                                  width: 100.w,
+                                  height: 100.w,
+                                )
+                              : Image.asset(
+                                  Assets.images.profileImage.path,
+                                  fit: BoxFit.cover,
+                                  width: 100.w,
+                                  height: 100.w,
+                                ),
                     ),
                   ),
                   // Camera icon overlay (bottom right)
@@ -120,106 +169,38 @@ class _AdminUpdateProfileScreenState extends State<AdminUpdateProfileScreen> {
                                     borderRadius: BorderRadius.circular(20.r),
                                   ),
                                 ),
-                                child: Column(
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    Gap(5.h), // top spacing
-                                    Align(
-                                      alignment: Alignment.center,
-                                      child: Container(
-                                        width: 30.w,
-                                        height: 4.h,
-                                        decoration: ShapeDecoration(
-                                          color: const Color(0xFFCACACA),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(50.r),
-                                          ),
+                                    Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        IconButton(
+                                          icon: Icon(Icons.camera_alt,
+                                              color: Colors.black, size: 24.r),
+                                          onPressed: () =>
+                                              _pickImage(ImageSource.camera),
                                         ),
-                                      ),
+                                        Text(AppStrings.camera.tr,
+                                            style:
+                                                AppStyle.roboto14w400C808080),
+                                      ],
                                     ),
-                                    Gap(10.h), // spacing
-                                    // Add more widgets here if needed
-                                    Container(
-                                      margin: EdgeInsets.symmetric(
-                                          vertical: 20.h, horizontal: 20.w),
-                                      child: Row(
-                                        children: [
-                                          Column(
-                                            children: [
-                                              Container(
-                                                width: 50.w,
-                                                height: 50.w,
-                                                decoration: ShapeDecoration(
-                                                  color: Colors.white,
-                                                  shape: OvalBorder(),
-                                                  shadows: [
-                                                    BoxShadow(
-                                                      color: Color(0x3F000000),
-                                                      blurRadius: 4.r,
-                                                      offset: Offset(1, 2),
-                                                      spreadRadius: 0,
-                                                    )
-                                                  ],
-                                                ),
-                                                child: IconButton(
-                                                  icon: Icon(Icons.camera_alt,
-                                                      color: Colors.black,
-                                                      size: 24.r),
-                                                  onPressed: () {
-                                                    // Handle camera upload
-                                                    Navigator.pop(context);
-                                                  },
-                                                ),
-                                              ),
-                                              Gap(8.h), // spacing
-                                              Text(
-                                                AppStrings
-                                                    .camera.tr, // <-- Added .tr
-                                                style: AppStyle
-                                                    .roboto14w400C808080,
-                                              ),
-                                            ],
-                                          ),
-                                          Gap(20.w), // spacing
-                                          Column(
-                                            children: [
-                                              Container(
-                                                width: 50.w,
-                                                height: 50.w,
-                                                decoration: ShapeDecoration(
-                                                  color: Colors.white,
-                                                  shape: OvalBorder(),
-                                                  shadows: [
-                                                    BoxShadow(
-                                                      color: Color(0x3F000000),
-                                                      blurRadius: 4.r,
-                                                      offset: Offset(1, 2),
-                                                      spreadRadius: 0,
-                                                    )
-                                                  ],
-                                                ),
-                                                child: IconButton(
-                                                  icon: Icon(Icons.attach_file,
-                                                      color: Colors.black,
-                                                      size: 24.r),
-                                                  onPressed: () {
-                                                    // Handle camera upload
-                                                    Navigator.pop(context);
-                                                  },
-                                                ),
-                                              ),
-                                              Gap(8.h), // spacing
-                                              Text(
-                                                AppStrings
-                                                    .upload.tr, // <-- Added .tr
-                                                style: AppStyle
-                                                    .roboto14w400C808080,
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    )
+                                    Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        IconButton(
+                                          icon: Icon(Icons.attach_file,
+                                              color: Colors.black, size: 24.r),
+                                          onPressed: () =>
+                                              _pickImage(ImageSource.gallery),
+                                        ),
+                                        Text(AppStrings.upload.tr,
+                                            style:
+                                                AppStyle.roboto14w400C808080),
+                                      ],
+                                    ),
                                   ],
                                 ),
                               );
@@ -293,9 +274,13 @@ class _AdminUpdateProfileScreenState extends State<AdminUpdateProfileScreen> {
               Gap(40.h),
               // Save Changes button
               AppButton(
-                text: AppStrings.saveChanges.tr, // <-- Added .tr
+                text: AppStrings.saveChanges.tr,
                 onPressed: () {
-                  // Handle save changes action
+                  adminController.saveProfile(
+                    context,
+                    _nameController.text,
+                    _pickedImage,
+                  );
                 },
                 height: 35.h,
                 backgroundColor: const Color(0xFF77E9D6),

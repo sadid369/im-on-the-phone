@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,16 +8,22 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:groc_shopy/core/custom_assets/assets.gen.dart';
+import 'package:groc_shopy/helper/extension/base_extension.dart';
 import 'package:groc_shopy/utils/app_colors/app_colors.dart';
 
 import '../../../../core/routes/route_path.dart';
 import '../../../../utils/static_strings/static_strings.dart';
 import '../../../../utils/text_style/text_style.dart';
 import '../../../widgets/custom_bottons/custom_button/app_button.dart';
+import '../admin_setting_screen/controller/admin_settings_controller.dart';
 
 class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final adminController = Get.find<AdminSettingsController>();
+    if (adminController.userProfile.value == null) {
+      adminController.loadUserProfile(context);
+    }
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.backgroundColor,
@@ -24,12 +32,22 @@ class DashboardScreen extends StatelessWidget {
         actions: [
           Container(
             margin: EdgeInsets.only(right: 25.w),
-            child: CircleAvatar(
-              radius: 20,
-              backgroundImage: AssetImage(
-                Assets.images.profileImage.path,
-              ),
-            ),
+            child: Obx(() {
+              final profile = adminController.userProfile.value;
+              final imageUrl = profile
+                  ?.image!.addBaseUrl; // Remove ! and .addBaseUrl if not needed
+
+              // Debug print
+              print('Profile image url: $imageUrl');
+
+              return CircleAvatar(
+                radius: 20,
+                backgroundImage: (imageUrl != null && imageUrl.isNotEmpty)
+                    ? NetworkImage(imageUrl)
+                    : AssetImage(Assets.images.profileImage.path)
+                        as ImageProvider,
+              );
+            }),
           ),
         ],
         elevation: 0, // Remove default shadow if you want only the line

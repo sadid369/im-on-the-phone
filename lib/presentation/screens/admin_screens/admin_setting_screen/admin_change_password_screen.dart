@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:groc_shopy/core/custom_assets/assets.gen.dart';
+import 'package:groc_shopy/presentation/screens/admin_screens/admin_setting_screen/controller/admin_settings_controller.dart';
 
 import '../../../../utils/app_colors/app_colors.dart';
 import '../../../../utils/static_strings/static_strings.dart';
@@ -38,6 +39,8 @@ class _AdminChangePasswordScreenState extends State<AdminChangePasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final AdminSettingsController changePasswordController =
+        Get.find<AdminSettingsController>();
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -152,15 +155,48 @@ class _AdminChangePasswordScreenState extends State<AdminChangePasswordScreen> {
               Gap(26.h),
               // Save Changes button
               AppButton(
-                text: AppStrings.changePassword.tr, // <-- Added .tr
-                onPressed: () {
-                  // Handle save changes action
+                text: AppStrings.changePassword.tr,
+                onPressed: () async {
+                  final current = _currentPassword.text.trim();
+                  final newPass = _newPassword.text.trim();
+                  final confirm = _confirmPassword.text.trim();
+
+                  if (current.isEmpty || newPass.isEmpty || confirm.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Please fill all fields')),
+                    );
+                    return;
+                  }
+                  if (newPass != confirm) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('New passwords do not match')),
+                    );
+                    return;
+                  }
+
+                  final success = await changePasswordController.changePassword(
+                    context,
+                    currentPassword: current,
+                    newPassword: newPass,
+                    confirmNewPassword: confirm,
+                  );
+
+                  if (success) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Password changed successfully')),
+                    );
+                    Navigator.of(context).pop();
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Failed to change password')),
+                    );
+                  }
                 },
                 height: 35.h,
                 backgroundColor: const Color(0xFF77E9D6),
                 borderRadius: 5.r,
                 textStyle: AppStyle.inter12w700CFFFFFF,
-              ),
+              )
               // Add more fields as needed...
             ],
           ),
