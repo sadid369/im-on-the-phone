@@ -111,7 +111,7 @@ class AppStrings {
   static const String getUnlimitedAccess =
       "Get unlimited access to our programs.";
   static const String takeTheFirstStep =
-      "Take the first step towards a healthier and happier life.";
+      "Go Premium for unlimited calls, exclusive ringtones, and customizable call times. Upgrade now!";
   static const String popular = "POPULAR";
   static const String forMoreAccess = "For more Access";
   static const String sixtyPointNoneNine = "\$60.99";
@@ -168,7 +168,8 @@ class AppStrings {
   ///====================== Report ========================
   static const String report = "Report";
   static const cancel = 'cancel';
-  static const takeFirstStep = 'take_first_step';
+  static const takeFirstStep =
+      'Go Premium for unlimited calls, exclusive ringtones, and customizable call times. Upgrade now!';
   static const monthlyPremiumPlan = 'monthly_premium_plan';
   static const yearlyPremiumPlan = 'yearly_premium_plan';
   static const moreScan = 'more_scan';
@@ -281,8 +282,10 @@ class AppStrings {
   static const String fullLibrary = "Full library of voices and themes";
   static const String customCaller = "Custom caller name and contact image";
 
+  // static const String subscriptionNote =
+  //     "You will be charged \$9.99 (annual plan) through your iTunes account. You can cancel at any time if you're not satisfied.";
   static const String subscriptionNote =
-      "You will be charged \$9.99 (annual plan) through your iTunes account. You can cancel at any time if you're not satisfied.";
+      "You will be charged \$1.99 per month (monthly plan) or \$9.99 per year (annual plan) saving 60% with the yearly plan—just \$0.83/month—through your paypal account. You can cancel at any time if you're not satisfied.";
 
   static const String passwordResetLinkSent =
       "Password reset link sent to your email";

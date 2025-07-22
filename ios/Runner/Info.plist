@@ -2,57 +2,52 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
     <dict>
+        <!-- Audio and Media Access -->
         <key>NSAppleMusicUsageDescription</key>
-        <string>Explain why your app uses music</string>
+        <string>This app needs access to audio files for selecting custom voice messages</string>
+        
+        <key>NSMicrophoneUsageDescription</key>
+        <string>We need access to the microphone to record audio in videos.</string>
+
+        <!-- Photo and Camera Access -->
+        <key>NSPhotoLibraryUsageDescription</key>
+        <string>We need access to your photo library to select images for your profile.</string>
+
+        <key>NSCameraUsageDescription</key>
+        <string>We need access to your camera to allow taking photos or videos.</string>
+
+        <!-- File System Access -->
+        <key>NSDocumentsFolderUsageDescription</key>
+        <string>We need access to your documents folder to pick audio files.</string>
+
+        <!-- Network Security -->
         <key>NSAppTransportSecurity</key>
         <dict>
             <key>NSAllowsArbitraryLoads</key>
             <true/>
         </dict>
-        <key>NSPhotoLibraryUsageDescription</key>
-        <string>Explain why your app uses photo library</string>
 
-        <key>NSCameraUsageDescription</key>
-        <string>Explain why your app needs camera access</string>
-
-        <key>NSMicrophoneUsageDescription</key>
-        <string>Explain why your app needs microphone access</string>
-
-        <key>NSDocumentsFolderUsageDescription</key>
-        <string>We need access to your documents folder to pick audio files.</string>
-
+        <!-- Background Modes -->
         <key>UIBackgroundModes</key>
         <array>
             <string>fetch</string>
             <string>remote-notification</string>
         </array>
 
+        <!-- Document Browser Support -->
         <key>UISupportsDocumentBrowser</key>
         <true/>
 
+        <!-- File Access Support -->
         <key>LSSupportsOpeningDocumentsInPlace</key>
         <true/>
 
-        <!-- Required for audio file picking -->
-        <key>NSAppleMusicUsageDescription</key>
-        <string>This app needs access to audio files for selecting custom voice messages</string>
-
-        <!-- For background file downloads (if needed) -->
-        <key>UIBackgroundModes</key>
-        <array>
-            <string>fetch</string>
-            <string>remote-notification</string>
-        </array>
-
-        <!-- For accessing original files instead of copies -->
-        <key>LSSupportsOpeningDocumentsInPlace</key>
-        <true/>
-
+        <!-- Bundle Configuration -->
         <key>CFBundleDevelopmentRegion</key>
         <string>$(DEVELOPMENT_LANGUAGE)</string>
 
         <key>CFBundleDisplayName</key>
-	<string>I'm on the phone</string>
+        <string>I'm on the phone</string>
 
         <key>CFBundleExecutable</key>
         <string>$(EXECUTABLE_NAME)</string>
@@ -64,7 +59,7 @@
         <string>6.0</string>
 
         <key>CFBundleName</key>
-	<string>I'm on the phone</string>
+        <string>I'm on the phone</string>
 
         <key>CFBundlePackageType</key>
         <string>APPL</string>
@@ -78,15 +73,18 @@
         <key>CFBundleVersion</key>
         <string>$(FLUTTER_BUILD_NUMBER)</string>
 
+        <!-- iOS Requirements -->
         <key>LSRequiresIPhoneOS</key>
         <true/>
 
+        <!-- UI Configuration -->
         <key>UILaunchStoryboardName</key>
         <string>LaunchScreen</string>
 
         <key>UIMainStoryboardFile</key>
         <string>Main</string>
 
+        <!-- Supported Orientations - iPhone -->
         <key>UISupportedInterfaceOrientations</key>
         <array>
             <string>UIInterfaceOrientationPortrait</string>
@@ -94,15 +92,7 @@
             <string>UIInterfaceOrientationLandscapeRight</string>
         </array>
 
-        <key>NSPhotoLibraryUsageDescription</key>
-        <string>We need access to your photo library to select images for your profile.</string>
-
-        <key>NSCameraUsageDescription</key>
-        <string>We need access to your camera to allow taking photos or videos.</string>
-
-        <key>NSMicrophoneUsageDescription</key>
-        <string>We need access to the microphone to record audio in videos.</string>
-
+        <!-- Supported Orientations - iPad -->
         <key>UISupportedInterfaceOrientations~ipad</key>
         <array>
             <string>UIInterfaceOrientationPortrait</string>
@@ -111,6 +101,7 @@
             <string>UIInterfaceOrientationLandscapeRight</string>
         </array>
 
+        <!-- Performance Settings -->
         <key>CADisableMinimumFrameDurationOnPhone</key>
         <true/>
 

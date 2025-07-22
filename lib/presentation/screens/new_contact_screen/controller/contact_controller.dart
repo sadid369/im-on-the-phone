@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:io';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
@@ -40,6 +42,9 @@ class ContactController extends GetxController {
   // Add this observable to notify when contacts change
   var contactsChanged = false.obs;
 
+  // Add the missing static variable declaration
+  static bool _isFilePickerActive = false;
+
   @override
   void onInit() {
     super.onInit();
@@ -48,10 +53,15 @@ class ContactController extends GetxController {
 
   @override
   void onClose() {
+    // Reset static flag
+    _isFilePickerActive = false;
+
+    // Dispose controllers
     firstNameController.dispose();
     lastNameController.dispose();
     phoneController.dispose();
     messageController.dispose();
+
     super.onClose();
   }
 
@@ -393,38 +403,76 @@ class ContactController extends GetxController {
     }
   }
 
-  // Pick voice file
+  // Pick voice file with better error handling
   Future<void> pickVoiceFile(BuildContext context) async {
-    if (isPickingFile.value) return;
+    // Prevent multiple simultaneous calls
+    if (_isFilePickerActive || isPickingFile.value) {
+      print('File picker already in progress, ignoring request');
+      return;
+    }
 
+    _isFilePickerActive = true;
     isPickingFile.value = true;
 
     try {
+      // Small delay to ensure UI updates
+      await Future.delayed(const Duration(milliseconds: 100));
+
       FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.audio,
+        type: FileType.custom,
+        allowedExtensions: ['mp3', 'wav', 'm4a', 'aac', 'ogg', 'flac'],
         allowMultiple: false,
+        withData: false, // Don't load file data in memory
+        withReadStream: false, // Don't create read stream
       );
 
       if (result != null && result.files.single.path != null) {
-        selectedVoiceFile.value = File(result.files.single.path!);
-        voiceFileName.value = result.files.single.name;
+        final file = File(result.files.single.path!);
 
+        // Verify file exists
+        if (await file.exists()) {
+          selectedVoiceFile.value = file;
+          voiceFileName.value = result.files.single.name;
+
+          _showAwesomeSnackbar(
+            context,
+            title: AppStrings.success.tr,
+            message: 'Voice file selected: ${result.files.single.name}',
+            contentType: ContentType.success,
+          );
+        } else {
+          throw Exception('Selected file does not exist');
+        }
+      } else {
+        print('File picker was cancelled by user');
+      }
+    } on PlatformException catch (e) {
+      print('Platform exception: ${e.code} - ${e.message}');
+
+      if (e.code == 'multiple_request') {
+        print('Multiple file picker requests detected');
+      } else if (!e.message.toString().contains('User cancelled')) {
         _showAwesomeSnackbar(
           context,
-          title: AppStrings.success.tr,
-          message: 'Voice file selected: ${result.files.single.name}',
-          contentType: ContentType.success,
+          title: AppStrings.error.tr,
+          message: 'Failed to pick voice file: ${e.message}',
+          contentType: ContentType.failure,
         );
       }
     } catch (e) {
+      print('File picker error: $e');
+
       _showAwesomeSnackbar(
         context,
         title: AppStrings.error.tr,
-        message: 'Failed to pick voice file: $e',
+        message: 'Failed to pick voice file: ${e.toString()}',
         contentType: ContentType.failure,
       );
     } finally {
+      // Reset flags with a small delay
+      await Future.delayed(const Duration(milliseconds: 100));
       isPickingFile.value = false;
+      _isFilePickerActive = false;
     }
   }
 

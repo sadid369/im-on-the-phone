@@ -23,8 +23,8 @@ class AuthController extends GetxController {
   // Text controllers for signup
   final fullNameController = TextEditingController(text: 'Abdullah Muhtasim');
   final emailController =
-      TextEditingController(text: 'abdullah.muhtasim@gmail.com');
-  // TextEditingController(text: 'sadid.jones@gmail.com');
+      // TextEditingController(text: 'abdullah.muhtasim@gmail.com');
+      TextEditingController(text: 'sadid.jones@gmail.com');
   final passwordController = TextEditingController(text: '123456Er');
   final confirmPasswordController = TextEditingController(text: '123456Er');
 

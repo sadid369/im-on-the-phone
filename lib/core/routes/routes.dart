@@ -174,15 +174,15 @@ class AppRouter {
         ),
 
         ///======================= Other Routes =======================
-        GoRoute(
-          name: RoutePath.subscription,
-          path: RoutePath.subscription.addBasePath,
-          pageBuilder: (context, state) => CustomTransitionPage(
-            key: state.pageKey,
-            child: const SubscriptionModal(),
-            transitionsBuilder: _fadeTransition,
-          ),
-        ),
+        // GoRoute(
+        //   name: RoutePath.subscription,
+        //   path: RoutePath.subscription.addBasePath,
+        //   pageBuilder: (context, state) => CustomTransitionPage(
+        //     key: state.pageKey,
+        //     child: const SubscriptionModal(),
+        //     transitionsBuilder: _fadeTransition,
+        //   ),
+        // ),
         GoRoute(
           name: RoutePath.paymentModal,
           path: RoutePath.paymentModal.addBasePath,

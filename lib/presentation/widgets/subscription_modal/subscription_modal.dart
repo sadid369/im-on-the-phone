@@ -1,150 +1,195 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:gap/gap.dart';
-import 'package:get/get.dart'; // for .tr
+import 'package:get/get.dart';
 import 'package:groc_shopy/utils/app_colors/app_colors.dart';
-import 'package:groc_shopy/utils/static_strings/static_strings.dart';
 import 'package:groc_shopy/utils/text_style/text_style.dart';
+import 'package:gap/gap.dart';
+
+import '../../../utils/static_strings/static_strings.dart';
 import '../custom_bottons/custom_button/app_button.dart';
 
-class SubscriptionModal extends StatelessWidget {
-  final VoidCallback? onSubscribe;
-  const SubscriptionModal({super.key, this.onSubscribe});
+// Model for static plans
+class SubscriptionPlan {
+  final String title; // translation key
+  final String price;
+  final String priceSuffix;
+  final List<String> features;
+
+  SubscriptionPlan({
+    required this.title,
+    required this.price,
+    this.priceSuffix = '/month',
+    required this.features,
+  });
+}
+
+class SubscriptionModal extends StatefulWidget {
+  final List<SubscriptionPlan> plans;
+  final VoidCallback onSubscribe;
+
+  const SubscriptionModal({
+    super.key,
+    required this.plans,
+    required this.onSubscribe,
+  });
+
+  @override
+  State<SubscriptionModal> createState() => _SubscriptionModalState();
+}
+
+class _SubscriptionModalState extends State<SubscriptionModal> {
+  int? selectedIndex;
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      backgroundColor: AppColors.subscriptionModalBackground,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(24.r),
-      ),
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
+    return Center(
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.9, // Reduced width
+        height: MediaQuery.of(context).size.height * 0.81, // Reduced height
+        decoration: BoxDecoration(
+          color: const Color(0xFFF5F7F8),
+          borderRadius: BorderRadius.circular(24.r),
+        ),
+        padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
+        child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Align(
-                alignment: Alignment.topRight,
+                alignment: Alignment.topLeft,
                 child: TextButton(
                   onPressed: () => Navigator.of(context).pop(),
                   child: Text(
-                    AppStrings.skip.tr, // <-- Added .tr
-                    style: AppStyle.inter16w500C6A4DFF,
+                    AppStrings.cancel.tr,
+                    style: AppStyle.roboto12w700CFFD673,
                   ),
                 ),
               ),
-              Gap(8.h),
               Text(
-                AppStrings.getUnlimitedAccess.tr, // <-- Added .tr
-                style: AppStyle.kohSantepheap20w700C090A0A,
+                AppStrings.getUnlimitedAccess.tr,
+                style: AppStyle.kohSantepheap16w700C090A0A,
                 textAlign: TextAlign.center,
               ),
-              Gap(24.h),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 24.w),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20.r),
-                ),
-                child: Column(
-                  children: [
-                    Gap(17.w),
-                    Text(
-                      AppStrings.popular.tr, // <-- Added .tr
-                      style: AppStyle.inter12w400C090A0A,
-                    ),
-                    Gap(4.h),
-                    Text(
-                      AppStrings.forCustom.tr, // <-- Added .tr
-                      style: AppStyle.roboto16w700C090A0A,
-                    ),
-                    Gap(8.h),
-                    Text(
-                      AppStrings.pricePerYear, // <-- Added .tr
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: const Color(0xFF090A0A),
-                        fontSize: 40,
-                        fontFamily: 'Roboto',
-                        fontWeight: FontWeight.w700,
-                        height: 1.40,
-                      ),
-                    ),
-                    Gap(4.h),
-                    Text(
-                      AppStrings.forOneYear.tr, // <-- Added .tr
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: const Color(0xFF090A0A),
-                        fontSize: 12,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w400,
-                        height: 1,
-                      ),
-                    ),
-                    Gap(8.h),
-                    SizedBox(
-                      width: 224,
-                      child: Text(
-                        AppStrings.fullLibrary.tr, // <-- Added .tr
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: const Color(0xFF090A0A),
-                          fontSize: 10,
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w400,
-                          height: 1.43,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 275,
-                      child: Text(
-                        AppStrings.customCaller.tr, // <-- Added .tr
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: const Color(0xFF090A0A),
-                          fontSize: 10,
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w400,
-                          height: 1.43,
-                        ),
-                      ),
-                    ),
-                    Gap(20.h),
-                    AppButton(
-                      text: AppStrings.subscribe.tr, // <-- Added .tr
-                      onPressed: onSubscribe,
-                      width: double.infinity,
-                      height: 48.h,
-                      backgroundColor: AppColors.primary,
-                      borderRadius: 24.r,
-                      textStyle: AppStyle.inter16w500White,
-                    ),
-                    Gap(20.h),
-                  ],
-                ),
-              ),
-              Gap(16.h),
+              Gap(6.h),
               SizedBox(
-                width: 262,
+                width: 300.w,
                 child: Text(
-                  AppStrings.subscriptionNote.tr, // <-- Added .tr
+                  AppStrings.takeFirstStep.tr,
+                  style: AppStyle.roboto12w400C090A0A,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: const Color(0xFF090A0A),
-                    fontSize: 12,
-                    fontFamily: 'Inter',
-                    fontWeight: FontWeight.w400,
-                    height: 1.33,
-                  ),
                 ),
               ),
+              Gap(20.h),
+              ...List.generate(widget.plans.length, (index) {
+                final plan = widget.plans[index];
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      selectedIndex = index;
+                    });
+                  },
+                  child: PlanCard(
+                    plan: plan,
+                    isHighlighted: selectedIndex == index,
+                  ),
+                );
+              }),
+              Gap(6.h),
+              AppButton(
+                text: AppStrings.subscribe.tr,
+                onPressed: selectedIndex != null ? widget.onSubscribe : null,
+                width: 200.w,
+                height: 44.h,
+                backgroundColor: AppColors.primary,
+                borderRadius: 30.r,
+                textStyle: AppStyle.inter16w700CFFFFFF,
+                enabled: selectedIndex != null,
+              ),
               Gap(16.h),
+              Text(
+                AppStrings.pricingInfo.tr,
+                style: AppStyle.inter12w400C090A0A,
+                textAlign: TextAlign.center,
+              ),
+              Gap(8.h),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class PlanCard extends StatelessWidget {
+  final SubscriptionPlan plan;
+  final bool isHighlighted;
+
+  const PlanCard({
+    super.key,
+    required this.plan,
+    required this.isHighlighted,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final borderColor =
+        isHighlighted ? AppColors.primary : Colors.black.withAlpha(26);
+    final backgroundColor = isHighlighted ? Colors.white : Colors.transparent;
+
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
+      margin: EdgeInsets.only(bottom: 20.h),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12.r),
+        color: backgroundColor,
+        border: Border.all(color: borderColor),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            plan.title.tr,
+            style: AppStyle.roboto16w500C090A0A,
+          ),
+          Gap(8.h),
+          RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: plan.price,
+                  style: AppStyle.roboto14w700CFFD673,
+                ),
+                TextSpan(
+                  text: ' ${plan.priceSuffix}',
+                  style: AppStyle.roboto14w400C090A0A,
+                ),
+              ],
+            ),
+          ),
+          Gap(12.h),
+          ...plan.features.map(
+            (feature) => Padding(
+              padding: EdgeInsets.only(bottom: 8.h),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.check_box_outlined,
+                    color: AppColors.primary,
+                    size: 15.sp,
+                  ),
+                  Gap(8.w),
+                  Expanded(
+                    child: Text(
+                      feature.tr,
+                      style: AppStyle.roboto12w400C000000,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -81,12 +81,35 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  final plans = [
+    SubscriptionPlan(
+      title: 'Monthly Premium',
+      price: '\$1.99',
+      priceSuffix: '/month',
+      features: [
+        'More calls',
+        'Choose new ringtone',
+        'Customize call time',
+      ],
+    ),
+    SubscriptionPlan(
+      title: 'Yearly Premium',
+      price: '\$9.99',
+      priceSuffix: '/year',
+      features: [
+        'Unlimited calls',
+        'Choose new ringtone',
+        'Customize call time',
+      ],
+    ),
+  ];
   void _showSubscriptionModal() {
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
         return SubscriptionModal(
+          plans: plans,
           onSubscribe: () {
             Navigator.of(context).pop();
             print('User subscribed!');

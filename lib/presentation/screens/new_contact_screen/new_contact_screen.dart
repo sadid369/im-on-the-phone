@@ -404,7 +404,13 @@ class _NewContactScreenState extends State<NewContactScreen> {
                                 : Colors.grey,
                             size: 24.r,
                           ),
-                    onTap: () => contactController.pickVoiceFile(context),
+                    onTap: contactController.isPickingFile.value
+                        ? null
+                        : () {
+                            if (!contactController.isPickingFile.value) {
+                              contactController.pickVoiceFile(context);
+                            }
+                          },
                     enabled: !contactController.isPickingFile.value,
                   )),
 

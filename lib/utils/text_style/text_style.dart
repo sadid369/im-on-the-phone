@@ -2,6 +2,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../app_colors/app_colors.dart';
+
 class AppStyle {
   static final inter16w500C000000 = GoogleFonts.inter(
     color: Colors.black,
@@ -400,7 +402,7 @@ class AppStyle {
     height: 1.38,
   );
   static final roboto12w700CFFD673 = GoogleFonts.roboto(
-    color: const Color(0xFFFFD673),
+    color: AppColors.primary,
     fontSize: 12.sp,
     fontWeight: FontWeight.w700,
     height: 2.83,
@@ -412,7 +414,7 @@ class AppStyle {
     height: 1.12,
   );
   static final roboto14w700CFFD673 = GoogleFonts.roboto(
-    color: const Color(0xFFFFD673),
+    color: AppColors.primary,
     fontSize: 14.sp,
     fontWeight: FontWeight.w700,
     height: 1.29,

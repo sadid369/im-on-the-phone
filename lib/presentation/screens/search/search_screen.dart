@@ -177,6 +177,9 @@ class _SearchScreenState extends State<SearchScreen> {
             // Force refresh the filtered list
             _initializeCallers();
 
+            // Notify other screens (like Home) to refresh contacts
+            contactController.notifyContactsChanged();
+
             // Force UI update
             setState(() {});
 
@@ -629,6 +632,9 @@ class _SearchScreenState extends State<SearchScreen> {
         if (success) {
           // Force refresh the filtered list
           _initializeCallers();
+
+          // Notify other screens (like Home) to refresh contacts
+          contactController.notifyContactsChanged();
 
           // Force UI update
           setState(() {});
