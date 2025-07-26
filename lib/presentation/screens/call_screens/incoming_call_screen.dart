@@ -16,12 +16,16 @@ class IncomingCallScreen extends StatefulWidget {
   final String callerName;
   final String time;
   final String callDuration;
+  final String? callerPhoto; // Add this parameter
+  final String? callerVoice; // Add this parameter
 
   const IncomingCallScreen({
     Key? key,
     required this.callerName,
     required this.time,
     required this.callDuration,
+    this.callerPhoto, // Add this parameter
+    this.callerVoice, // Add this parameter
   }) : super(key: key);
 
   @override
@@ -41,6 +45,10 @@ class _IncomingCallScreenState extends State<IncomingCallScreen>
   @override
   void initState() {
     super.initState();
+
+    // Add debug prints to see what's being received
+    print('IncomingCallScreen - Caller Name: ${widget.callerName}');
+    print('IncomingCallScreen - Caller Photo: ${widget.callerPhoto}');
 
     // Start playing ringtone and vibration
     _playRingtone();
@@ -177,17 +185,61 @@ class _IncomingCallScreenState extends State<IncomingCallScreen>
               Column(
                 children: [
                   CircleAvatar(
-                    backgroundColor: homeController
-                        .selectedIconColor.value, // <-- Use selected color
+                    backgroundColor: homeController.selectedIconColor.value,
                     radius: 40.r,
-                    child: Text(
-                      widget.callerName[0],
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 38.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    child: widget.callerPhoto != null &&
+                            widget.callerPhoto!.isNotEmpty
+                        ? ClipOval(
+                            child: Image.network(
+                              widget.callerPhoto!,
+                              width: 80.r,
+                              height: 80.r,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                print('Error loading image: $error');
+                                return Container(
+                                  width: 80.r,
+                                  height: 80.r,
+                                  color: homeController.selectedIconColor.value,
+                                  child: Text(
+                                    widget.callerName.isNotEmpty
+                                        ? widget.callerName[0]
+                                        : 'U',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 38.sp,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                );
+                              },
+                              loadingBuilder:
+                                  (context, child, loadingProgress) {
+                                if (loadingProgress == null) return child;
+                                return Container(
+                                  width: 80.r,
+                                  height: 80.r,
+                                  color: homeController.selectedIconColor.value,
+                                  child: Center(
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                      strokeWidth: 2,
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          )
+                        : Text(
+                            widget.callerName.isNotEmpty
+                                ? widget.callerName[0]
+                                : 'U',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 38.sp,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                   ),
                   Gap(16.h),
                   Text(
@@ -266,7 +318,13 @@ class _IncomingCallScreenState extends State<IncomingCallScreen>
                           onPressed: () {
                             context.pushNamed(
                               RoutePath.callReceivedScreen,
-                              extra: {'callerName': widget.callerName},
+                              extra: {
+                                'callerName': widget.callerName,
+                                'callerPhoto':
+                                    widget.callerPhoto, // Add this line
+                                'callerVoice':
+                                    widget.callerVoice, // Add this line
+                              },
                             );
                           },
                           isAccept: true,

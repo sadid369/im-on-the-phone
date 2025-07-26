@@ -684,9 +684,11 @@ class _HomeScreenState extends State<HomeScreen> {
   // New helper for immediate call
   void _startImmediateCall() {
     context.pushNamed(RoutePath.incomingCallScreen, extra: {
-      'callerName': selectedCaller!.fullName,
+      'callerName': selectedCaller?.fullName ?? 'Unknown',
       'time': _getFormattedTime(),
       'callDuration': '0',
+      'callerPhoto': selectedCaller?.photo,
+      'callerVoice': selectedCaller?.voice, // Add this line
     });
   }
 
@@ -695,12 +697,13 @@ class _HomeScreenState extends State<HomeScreen> {
     int delaySeconds = _getDelayInSeconds();
 
     if (delaySeconds == 0) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(AppStrings.pleaseSetValidTime.tr),
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
+      context.pushNamed(RoutePath.incomingCallScreen, extra: {
+        'callerName': selectedCaller?.fullName ?? 'Unknown',
+        'time': _getFormattedTime(),
+        'callDuration': delaySeconds.toString(),
+        'callerPhoto': selectedCaller?.photo,
+        'callerVoice': selectedCaller?.voice, // Add this line
+      });
       return;
     }
 
@@ -716,9 +719,11 @@ class _HomeScreenState extends State<HomeScreen> {
     Timer(Duration(seconds: delaySeconds), () {
       if (mounted) {
         context.pushNamed(RoutePath.incomingCallScreen, extra: {
-          'callerName': selectedCaller!.fullName,
+          'callerName': selectedCaller?.fullName ?? 'Unknown',
           'time': _getFormattedTime(),
-          'callDuration': selectedCallTime!,
+          'callDuration': delaySeconds.toString(),
+          'callerPhoto': selectedCaller?.photo,
+          'callerVoice': selectedCaller?.voice, // Add this line
         });
       }
     });

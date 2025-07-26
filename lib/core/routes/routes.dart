@@ -202,6 +202,8 @@ class AppRouter {
               key: state.pageKey,
               child: CallReceivedScreen(
                 callerName: args['callerName'] ?? 'Unknown',
+                callerPhoto: args['callerPhoto'],
+                callerVoice: args['callerVoice'], // Add this line
               ),
               transitionsBuilder: _fadeTransition,
             );
@@ -265,6 +267,8 @@ class AppRouter {
                 callerName: args['callerName'] ?? 'Unknown',
                 time: args['time'] ?? 'Now',
                 callDuration: args['callDuration'] ?? '15 sec',
+                callerPhoto: args['callerPhoto'],
+                callerVoice: args['callerVoice'], // Add this line
               ),
               transitionsBuilder: _fadeTransition,
             );

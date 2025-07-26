@@ -1,4 +1,6 @@
-
+import 'dart:io';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -29,9 +31,15 @@ class AudioRouteController {
 
 class CallReceivedScreen extends StatefulWidget {
   final String callerName;
+  final String? callerPhoto;
+  final String? callerVoice; // Add this parameter
 
-  const CallReceivedScreen({Key? key, required this.callerName})
-      : super(key: key);
+  const CallReceivedScreen({
+    Key? key,
+    required this.callerName,
+    this.callerPhoto,
+    this.callerVoice, // Add this parameter
+  }) : super(key: key);
 
   @override
   State<CallReceivedScreen> createState() => _CallReceivedScreenState();
@@ -47,6 +55,10 @@ class _CallReceivedScreenState extends State<CallReceivedScreen> {
   @override
   void initState() {
     super.initState();
+
+    // Add debug prints to see what's being received
+    print('CallReceivedScreen - Caller Name: ${widget.callerName}');
+    print('CallReceivedScreen - Caller Photo: ${widget.callerPhoto}');
 
     _stopwatch = Stopwatch();
     _timeString = '0:00';
@@ -64,8 +76,62 @@ class _CallReceivedScreenState extends State<CallReceivedScreen> {
     // Small delay to ensure routing is applied
     await Future.delayed(Duration(milliseconds: 500));
 
-    await _audioPlayer.play(AssetSource('sounds/mom.mp3'));
-    await _audioPlayer.setReleaseMode(ReleaseMode.loop);
+    try {
+      await _audioPlayer.setReleaseMode(ReleaseMode.loop);
+
+      // Use contact's voice if available, otherwise use default
+      if (widget.callerVoice != null && widget.callerVoice!.isNotEmpty) {
+        print(
+            'Attempting to download and play contact voice: ${widget.callerVoice}');
+
+        try {
+          // Download the audio file
+          final audioFile = await _downloadAudioFile(widget.callerVoice!);
+          if (audioFile != null) {
+            await _audioPlayer.play(DeviceFileSource(audioFile.path));
+            print('Successfully started playing downloaded contact voice');
+          } else {
+            await _playDefaultAudio();
+          }
+        } catch (downloadError) {
+          print('Download audio failed: $downloadError');
+          await _playDefaultAudio();
+        }
+      } else {
+        print('No contact voice provided, playing default audio');
+        await _playDefaultAudio();
+      }
+    } catch (e) {
+      print('Error in audio initialization: $e');
+      await _playDefaultAudio();
+    }
+  }
+
+  Future<File?> _downloadAudioFile(String url) async {
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        final tempDir = await getTemporaryDirectory();
+        final fileName = url.split('/').last;
+        final file = File('${tempDir.path}/$fileName');
+        await file.writeAsBytes(response.bodyBytes);
+        print('Audio file downloaded to: ${file.path}');
+        return file;
+      }
+    } catch (e) {
+      print('Error downloading audio file: $e');
+    }
+    return null;
+  }
+
+  Future<void> _playDefaultAudio() async {
+    try {
+      print('Playing default audio: sounds/mom.mp3');
+      await _audioPlayer.play(AssetSource('sounds/mom.mp3'));
+      print('Successfully started playing default audio');
+    } catch (fallbackError) {
+      print('Error playing fallback audio: $fallbackError');
+    }
   }
 
   Future<void> _toggleSpeaker() async {
@@ -110,14 +176,58 @@ class _CallReceivedScreenState extends State<CallReceivedScreen> {
                 CircleAvatar(
                   radius: 50.r,
                   backgroundColor: homeController.selectedIconColor.value,
-                  child: Text(
-                    widget.callerName[0],
-                    style: TextStyle(
-                      fontSize: 48.sp,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  child: widget.callerPhoto != null &&
+                          widget.callerPhoto!.isNotEmpty
+                      ? ClipOval(
+                          child: Image.network(
+                            widget.callerPhoto!,
+                            width: 100.r,
+                            height: 100.r,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              print('Error loading image: $error');
+                              return Container(
+                                width: 100.r,
+                                height: 100.r,
+                                color: homeController.selectedIconColor.value,
+                                child: Text(
+                                  widget.callerName.isNotEmpty
+                                      ? widget.callerName[0]
+                                      : 'U',
+                                  style: TextStyle(
+                                    fontSize: 48.sp,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              );
+                            },
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return Container(
+                                width: 100.r,
+                                height: 100.r,
+                                color: homeController.selectedIconColor.value,
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 2,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        )
+                      : Text(
+                          widget.callerName.isNotEmpty
+                              ? widget.callerName[0]
+                              : 'U',
+                          style: TextStyle(
+                            fontSize: 48.sp,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                 ),
                 Gap(16.h),
                 Text(

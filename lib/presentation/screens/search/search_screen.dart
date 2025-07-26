@@ -205,27 +205,18 @@ class _SearchScreenState extends State<SearchScreen> {
 
   void _makeDefaultCall(Map<String, dynamic> caller) {
     try {
-      final name = caller['name'] ?? 'Unknown';
-
-      // Navigate to incoming call screen
-      context.pushNamed(
-        RoutePath.incomingCallScreen,
-        extra: {
-          'callerName': name,
-          'time': 'Now',
-          'callDuration': '15 sec',
-        },
-      );
-
-      // _showAwesomeSnackbar(
-      //   title: 'Calling...',
-      //   message: 'Calling $name',
-      //   contentType: ContentType.success,
-      // );
+      final apiContact = caller['apiContact'] as Contact?;
+      context.pushNamed(RoutePath.incomingCallScreen, extra: {
+        'callerName': caller['name'] ?? 'Unknown',
+        'time': DateTime.now().toString(),
+        'callDuration': '0',
+        'callerPhoto': apiContact?.photo,
+        'callerVoice': apiContact?.voice, // Add this line
+      });
     } catch (e) {
       _showAwesomeSnackbar(
         title: AppStrings.error.tr,
-        message: 'Failed to make call: $e',
+        message: 'Failed to make call',
         contentType: ContentType.failure,
       );
     }
@@ -233,27 +224,17 @@ class _SearchScreenState extends State<SearchScreen> {
 
   void _makeCall(Contact contact) {
     try {
-      final name = contact.fullName;
-
-      // Navigate to incoming call screen
-      context.pushNamed(
-        RoutePath.incomingCallScreen,
-        extra: {
-          'callerName': name,
-          'time': 'Now',
-          'callDuration': '15 sec',
-        },
-      );
-
-      // _showAwesomeSnackbar(
-      //   title: 'Calling...',
-      //   message: 'Calling $name',
-      //   contentType: ContentType.success,
-      // );
+      context.pushNamed(RoutePath.incomingCallScreen, extra: {
+        'callerName': contact.fullName,
+        'time': DateTime.now().toString(),
+        'callDuration': '0',
+        'callerPhoto': contact.photo,
+        'callerVoice': contact.voice, // Add this line
+      });
     } catch (e) {
       _showAwesomeSnackbar(
         title: AppStrings.error.tr,
-        message: 'Failed to make call: $e',
+        message: 'Failed to make call',
         contentType: ContentType.failure,
       );
     }
@@ -354,6 +335,9 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   Widget _buildDefaultCallerTile(Map<String, dynamic> caller, int index) {
+    // Get the API contact from the caller data
+    final apiContact = caller['apiContact'] as Contact?;
+
     return Card(
       margin: EdgeInsets.symmetric(vertical: 8.h),
       shape: RoundedRectangleBorder(
@@ -368,14 +352,20 @@ class _SearchScreenState extends State<SearchScreen> {
         leading: Obx(() => CircleAvatar(
               radius: 30.r,
               backgroundColor: homeController.selectedIconColor.value,
-              child: Text(
-                caller['initials'] ?? 'C',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              backgroundImage:
+                  apiContact?.photo != null && apiContact!.photo!.isNotEmpty
+                      ? NetworkImage(apiContact.photo!)
+                      : null,
+              child: apiContact?.photo == null || apiContact!.photo!.isEmpty
+                  ? Text(
+                      caller['initials'] ?? 'C',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
+                  : null,
             )),
         title: Text(
           caller['name'] ?? 'Unknown',
@@ -461,10 +451,15 @@ class _SearchScreenState extends State<SearchScreen> {
               radius: 30.r,
               backgroundColor: homeController.selectedIconColor.value,
               backgroundImage:
-                  contact.profileImageSource != null && !contact.isApiContact
-                      ? FileImage(File(contact.profileImageSource!))
-                      : null,
-              child: contact.profileImageSource == null
+                  contact.photo != null && contact.photo!.isNotEmpty
+                      ? NetworkImage(contact.photo!)
+                      : (contact.profileImageSource != null &&
+                              contact.profileImageSource!.isNotEmpty
+                          ? FileImage(File(contact.profileImageSource!))
+                          : null),
+              child: (contact.photo == null || contact.photo!.isEmpty) &&
+                      (contact.profileImageSource == null ||
+                          contact.profileImageSource!.isEmpty)
                   ? Text(
                       contact.initials,
                       style: TextStyle(
